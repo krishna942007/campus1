@@ -24,8 +24,12 @@ export const AIAssistantSection: React.FC = () => {
   ];
 
   return (
-    <section id="ai-assistant" className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="ai-assistant" className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10 overflow-hidden">
+      {/* Ambient Lighting Blobs behind Glass Surface */}
+      <div className="absolute top-1/3 -right-20 w-96 h-96 bg-[#C99632]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-[#244F7D]/25 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-12 space-y-4">
@@ -48,8 +52,8 @@ export const AIAssistantSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Interactive Q&A Sandbox Deep Navy Glass Card */}
-        <div className="bg-[#0C2238] rounded-3xl p-8 sm:p-12 text-white shadow-2xl border border-[#C99632]/30 space-y-8 relative overflow-hidden">
+        {/* Interactive Q&A Sandbox Translucent Dark Blue Glass Card */}
+        <div className="bg-[#0C2340]/90 sm:bg-black/75 backdrop-blur-xl rounded-3xl p-8 sm:p-12 text-white shadow-2xl border border-white/10 space-y-8 relative overflow-hidden">
           
           {/* Top Header Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -58,7 +62,7 @@ export const AIAssistantSection: React.FC = () => {
                 <Bot className="w-6 h-6 text-[#E8C56B]" />
               </div>
               <div>
-                <h3 className="text-xl font-extrabold text-white tracking-tight">VITARA AI Assistant</h3>
+                <h3 className="text-xl font-extrabold text-white tracking-tight font-display">VITARA AI Assistant</h3>
                 <span className="text-xs text-[#E8C56B] font-bold tracking-wide">STUDENT CONTEXT: KRISHNA SINGH (2023CSE001)</span>
               </div>
             </div>
@@ -70,8 +74,8 @@ export const AIAssistantSection: React.FC = () => {
           </div>
 
           {/* Sample Topic Query Pills */}
-          <div className="space-y-2">
-            <p className="text-xs font-bold text-[#E8C56B] uppercase tracking-wider">Select Sample Student Query:</p>
+          <div className="space-y-3">
+            <p className="text-xs font-extrabold text-[#E8C56B] uppercase tracking-wider">Select Sample Student Query:</p>
             <div className="flex flex-wrap gap-3">
               {sampleQueries.map((item, idx) => (
                 <button
@@ -79,8 +83,8 @@ export const AIAssistantSection: React.FC = () => {
                   onClick={() => setSelectedTopic(idx)}
                   className={`px-4 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
                     selectedTopic === idx
-                      ? 'bg-[#C99632] text-white font-extrabold shadow-lg scale-[1.02]'
-                      : 'bg-white/10 text-slate-200 hover:bg-white/20 border border-white/15'
+                      ? 'bg-[#C99632] text-white font-extrabold shadow-lg scale-[1.02] border border-[#E8C56B]/40'
+                      : 'bg-white/10 text-slate-200 hover:bg-white/20 border border-white/15 backdrop-blur-md'
                   }`}
                 >
                   "{item.q}"
@@ -89,16 +93,17 @@ export const AIAssistantSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Answer Display Box */}
-          <div className="p-7 bg-[#07182A] border border-[#C99632]/35 space-y-4 rounded-2xl shadow-xl">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-[#E8C56B] flex items-center space-x-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#E8C56B]" />
+          {/* Answer Display Box in Glassmorphism */}
+          <div className="p-7 sm:p-8 bg-white/5 backdrop-blur-md border border-white/15 space-y-4 rounded-2xl shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C99632]/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-extrabold relative z-10">
+              <span className="text-[#E8C56B] flex items-center space-x-1.5 uppercase tracking-wider">
+                <Sparkles className="w-4 h-4 text-[#E8C56B]" />
                 <span>GROUNDED AI ADVISORY RESPONSE</span>
               </span>
               <span className="text-slate-300 font-medium">SOURCE: {sampleQueries[selectedTopic].citation}</span>
             </div>
-            <p className="text-sm sm:text-base text-slate-100 font-normal leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-100 font-normal leading-relaxed relative z-10">
               {sampleQueries[selectedTopic].response}
             </p>
           </div>
