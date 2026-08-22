@@ -42,7 +42,13 @@ All styles conform strictly to the bespoke VIT Mumbai brand palette defined in [
 * **Warm Gold Accent**: Primary `#C99632`, Light Gold `#E8C56B` / `#E2C06A`
 * **Soft Blue & Cream Accents**: `#244F7D`, `#DCE8F4`, `#EFE7D8`
 * **Typography**: Primary `Plus Jakarta Sans` / `Inter`, Display `Outfit`, Accent Serif `DM Serif Display`
-* **Surfaces**: `.glass-panel` (backdrop-blur 20px), `.glass-card` (interactive hover elevations, subtle borders `rgba(12, 34, 56, 0.08)`)
+* **Surfaces**: Ultra-transparent glass surfaces `.glass-panel`, `.glass-card` (`bg-[#FFFFFF]/10 backdrop-blur-[5px] border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05`).
+
+### 💎 Glassmorphism Design System & Skill
+All UI cards and interactive panels follow the **Glassmorphism Design System Skill** stored in [`.agents/skills/glassmorphism/SKILL.md`](file:///c:/Users/HP/Desktop/project1/.agents/skills/glassmorphism/SKILL.md).
+* **Core Philosophy**: Transparency first, blurred second, decorative last (`transparent → subtle 5px blur → clean 8% border → soft depth shadow → crisp typography`).
+* **Production Spec**: `bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05`.
+* **Rules**: Ultra-transparent 10% white fill, 5px backdrop blur, subtle 8% navy rim borders (`border-[#0C2238]/08`), and soft depth shadows.
 
 ---
 
