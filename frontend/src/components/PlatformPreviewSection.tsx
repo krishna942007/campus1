@@ -70,8 +70,11 @@ export const PlatformPreviewSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side Dashboard Showcase Card with Subtle 3D Tilt */}
-        <div className="lg:col-span-7 perspective-1000">
+        {/* Right Side Dashboard Showcase Card with Ambient Glow & Subtle 3D Tilt */}
+        <div className="lg:col-span-7 perspective-1000 relative">
+          {/* Ambient Lighting Blobs behind Glass Surface */}
+          <div className="absolute -top-12 -right-12 w-80 h-80 bg-[#C99632]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-12 -left-12 w-80 h-80 bg-[#244F7D]/20 rounded-full blur-3xl pointer-events-none" />
           <div 
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -79,11 +82,13 @@ export const PlatformPreviewSection: React.FC = () => {
               transform: `rotateX(${rotatePos.x}deg) rotateY(${rotatePos.y}deg)`,
               transition: 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1)'
             }}
-            className="bg-[#FFFCF7] rounded-3xl border border-[#0C2238]/10 shadow-2xl overflow-hidden grid grid-cols-12 min-h-[500px]"
+            className="p-1 sm:p-2 bg-black/ backdrop-blur-xs border border-gray-800/20 shadow-lg rounded-2xl relative overflow-hidden"
           >
+            {/* Dashboard Showcase Window resting on parent background */}
+            <div className="relative rounded-lg overflow-hidden grid grid-cols-12 min-h-[480px]">
             
             {/* Left Navy Sidebar matching screenshot */}
-            <div className="col-span-3 bg-[#0C2340] text-white p-4 space-y-6 flex flex-col justify-between">
+            <div className="col-span-3 bg-[#0C2340]/90 backdrop-blur-xl text-white p-4 space-y-6 flex flex-col justify-between border-r border-white/10">
               <div className="space-y-6">
                 {/* Shield Logo */}
                 <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center font-bold text-xs text-[#F5C056]">
@@ -196,7 +201,7 @@ export const PlatformPreviewSection: React.FC = () => {
             </div>
 
             {/* Main Content Area matching screenshot */}
-            <div className="col-span-9 p-5 bg-[#FAF9F5] space-y-5">
+            <div className="col-span-9 p-5 bg-[#FFFFFF]/60 backdrop-blur-xl space-y-5">
               
               {/* Header */}
               <div className="flex items-center justify-between">
@@ -208,46 +213,46 @@ export const PlatformPreviewSection: React.FC = () => {
                   <p className="text-[11px] text-[#64748B]">Let's make today productive.</p>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-[#EAE2D5] text-slate-600">
+                  <div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center border border-[#0C2238]/08 text-slate-600 shadow-xs">
                     <Bell className="w-4 h-4" />
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                     alt="Krishna Profile"
-                    className="w-8 h-8 rounded-full object-cover border border-[#EAE2D5]"
+                    className="w-8 h-8 rounded-full object-cover border border-[#0C2238]/12"
                   />
                 </div>
               </div>
 
-              {/* 4 Stat Boxes matching screenshot */}
+              {/* 4 Stat Boxes in White Glassmorphism */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="bg-white p-3 rounded-2xl border border-[#EAE2D5]">
+                <div className="bg-white/70 hover:bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 transition-all duration-300">
                   <p className="text-[10px] text-[#64748B] font-medium">Courses</p>
                   <p className="text-xl font-bold text-[#0F2537]">06</p>
                   <p className="text-[9px] text-[#64748B]">Active Courses</p>
                 </div>
 
-                <div className="bg-white p-3 rounded-2xl border border-[#EAE2D5]">
+                <div className="bg-white/70 hover:bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 transition-all duration-300">
                   <p className="text-[10px] text-[#64748B] font-medium">Tasks</p>
                   <p className="text-xl font-bold text-[#0F2537]">12</p>
                   <p className="text-[9px] text-[#64748B]">Pending Tasks</p>
                 </div>
 
-                <div className="bg-white p-3 rounded-2xl border border-[#EAE2D5]">
+                <div className="bg-white/70 hover:bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 transition-all duration-300">
                   <p className="text-[10px] text-[#64748B] font-medium">Progress</p>
                   <p className="text-xl font-bold text-[#B58A3C]">75%</p>
                   <p className="text-[9px] text-[#64748B]">This Semester</p>
                 </div>
 
-                <div className="bg-white p-3 rounded-2xl border border-[#EAE2D5]">
+                <div className="bg-white/70 hover:bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 transition-all duration-300">
                   <p className="text-[10px] text-[#64748B] font-medium">Opportunities</p>
                   <p className="text-xl font-bold text-[#B58A3C]">08</p>
                   <p className="text-[9px] text-[#64748B]">New Matches</p>
                 </div>
               </div>
 
-              {/* Your Progress Timeline Bar matching screenshot */}
-              <div className="bg-white p-4 rounded-2xl border border-[#EAE2D5] space-y-3">
+              {/* Progress Timeline in White Glassmorphism */}
+              <div className="bg-white/70 backdrop-blur-md p-4 rounded-2xl border border-[#0C2238]/08 space-y-3 shadow-xl shadow-[#0C2238]/05">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#0F2537]">Your Progress</span>
                   <span className="text-[10px] font-semibold text-[#64748B]">67% Completed</span>
@@ -280,9 +285,9 @@ export const PlatformPreviewSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Bottom 2 Action Cards matching screenshot */}
+              {/* Bottom 2 Action Cards in White Glassmorphism */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="bg-white p-3.5 rounded-2xl border border-[#EAE2D5] flex items-center justify-between">
+                <div className="bg-white/70 hover:bg-white/90 backdrop-blur-md p-3.5 rounded-2xl border border-[#0C2238]/08 flex items-center justify-between shadow-xl shadow-[#0C2238]/05 transition-all duration-300">
                   <div className="space-y-1">
                     <span className="text-[9px] font-bold uppercase text-[#64748B]">Upcoming Event</span>
                     <h5 className="text-xs font-bold text-[#0F2537]">Tech Talk: AI in Future</h5>
@@ -297,7 +302,7 @@ export const PlatformPreviewSection: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-white p-3.5 rounded-2xl border border-[#EAE2D5] flex items-center justify-between">
+                <div className="bg-white/70 hover:bg-white/90 backdrop-blur-md p-3.5 rounded-2xl border border-[#0C2238]/08 flex items-center justify-between shadow-xl shadow-[#0C2238]/05 transition-all duration-300">
                   <div className="space-y-1">
                     <span className="text-[9px] font-bold uppercase text-[#64748B]">AI Recommendation</span>
                     <h5 className="text-xs font-bold text-[#0F2537]">Focus on Data Structures</h5>
@@ -317,8 +322,9 @@ export const PlatformPreviewSection: React.FC = () => {
 
           </div>
         </div>
-
       </div>
-    </section>
-  );
+
+    </div>
+  </section>
+);
 };
