@@ -70,6 +70,7 @@ import {
 } from '../services/mentoringStore';
 import { ToastNotification, ToastMessage } from './ToastNotification';
 import { ChatGPTAIWorkspace } from './ChatGPTAIWorkspace';
+import { WeeklyActivitySection } from './WeeklyActivitySection';
 import { useAuthStore } from '../store/useAuthStore';
 
 interface StudentPortalProps {
@@ -1140,6 +1141,9 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                 </div>
 
               </div>
+
+              {/* WEEKLY ACTIVITY & PROGRESS (NEW INTEGRATED SECTION) */}
+              <WeeklyActivitySection targetRole={targetRoleInput || 'AI Research Engineer'} />
 
               {/* MAIN 2-COLUMN STRUCTURED BENTO LAYOUT */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
