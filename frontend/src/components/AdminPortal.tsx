@@ -49,12 +49,20 @@ import {
   Zap,
   HelpCircle,
   ToggleLeft,
-  ToggleRight
+  ToggleRight,
+  Upload,
+  FileSpreadsheet,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  Info,
+  UserPlus
 } from 'lucide-react';
 
 import { ToastNotification, ToastMessage } from './ToastNotification';
 import { getMentoringStore, saveMentoringStore, MentorRequest } from '../services/mentoringStore';
 import { ChatGPTAIWorkspace } from './ChatGPTAIWorkspace';
+import { studentAdminApi } from '../services/api';
 
 interface AdminPortalProps {
   onBackToLanding: () => void;
@@ -138,15 +146,44 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
   const [newUserRole, setNewUserRole] = useState('Student');
   const [newUserDept, setNewUserDept] = useState('Computer Engineering');
 
-  // Students Directory State
-  const [studentsList, setStudentsList] = useState([
-    { id: '2023CSE001', name: 'Krishna Singh', dept: 'Computer Engineering', year: 'Year 3 (Sem V)', cgpa: 8.92, attendance: 86.4, status: 'Good Standing', mentor: 'Prof. S. Kulkarni' },
-    { id: '2023CSE014', name: 'Aarav Sharma', dept: 'Computer Engineering', year: 'Year 3 (Sem V)', cgpa: 7.10, attendance: 72.0, status: 'Attendance Warning', mentor: 'Prof. S. Kulkarni' },
-    { id: '2023IT042', name: 'Ananya Deshmukh', dept: 'Information Technology', year: 'Year 3 (Sem V)', cgpa: 9.45, attendance: 92.1, status: 'Honors Track', mentor: 'Dr. Priya Nair' },
-    { id: '2023AI008', name: 'Rohan Joshi', dept: 'AI & Data Science', year: 'Year 2 (Sem III)', cgpa: 8.15, attendance: 84.0, status: 'Good Standing', mentor: 'Dr. R. Mehta' },
-    { id: '2023EXTC022', name: 'Sneha Patel', dept: 'Electronics & Telecom', year: 'Year 4 (Sem VII)', cgpa: 8.78, attendance: 88.5, status: 'Capstone Ready', mentor: 'Dr. Priya Nair' },
-  ]);
+  // Real API Student Management State
+  const [realStudents, setRealStudents] = useState<any[]>([]);
+  const [loadingStudents, setLoadingStudents] = useState<boolean>(false);
   const [studentSearch, setStudentSearch] = useState('');
+  const [studentDeptFilter, setStudentDeptFilter] = useState('All');
+  const [studentSemFilter, setStudentSemFilter] = useState('All');
+  const [studentStatusFilter, setStudentStatusFilter] = useState('All');
+  const [studentPagination, setStudentPagination] = useState({ totalCount: 0, currentPage: 1, totalPages: 1, limit: 50 });
+
+  // Student Details Drawer/Modal
+  const [selectedStudentDetails, setSelectedStudentDetails] = useState<any | null>(null);
+  const [showStudentDetailsModal, setShowStudentDetailsModal] = useState<boolean>(false);
+
+  // Add / Edit Student Modal State
+  const [showStudentFormModal, setShowStudentFormModal] = useState<boolean>(false);
+  const [editingStudent, setEditingStudent] = useState<any | null>(null);
+  const [studentFormData, setStudentFormData] = useState({
+    name: '',
+    email: '',
+    rollNo: '',
+    department: 'Computer Engineering',
+    semester: 1,
+    division: 'Div A',
+    cgpa: 0.0,
+    attendancePercentage: 100.0,
+    phone: '',
+    assignedMentor: '',
+    password: '',
+  });
+
+  // Bulk CSV Import Modal State
+  const [showBulkImportModal, setShowBulkImportModal] = useState<boolean>(false);
+  const [importStep, setImportStep] = useState<number>(1);
+  const [rawCsvFileName, setRawCsvFileName] = useState<string>('');
+  const [parsedCsvRows, setParsedCsvRows] = useState<any[]>([]);
+  const [previewResult, setPreviewResult] = useState<any | null>(null);
+  const [commitResult, setCommitResult] = useState<any | null>(null);
+  const [isImporting, setIsImporting] = useState<boolean>(false);
 
   // Faculty Directory State
   const [facultyList, setFacultyList] = useState([
@@ -198,9 +235,293 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
     { sender: 'AI', text: 'Hello Admin! I am the VIT Institutional AI Operations Assistant. How can I assist system monitoring today?' },
   ]);
   const [inputMessage, setInputMessage] = useState('');
-
   // Mentoring Store state hook
   const [mentoringStore, setMentoringStoreState] = useState(getMentoringStore());
+
+  // Fetch live student records from MongoDB API
+  const fetchStudentsList = async () => {
+    setLoadingStudents(true);
+    try {
+      const params: any = {
+        search: studentSearch,
+        page: studentPagination.currentPage,
+        limit: studentPagination.limit,
+      };
+      if (studentDeptFilter !== 'All') params.department = studentDeptFilter;
+      if (studentSemFilter !== 'All') params.semester = studentSemFilter;
+      if (studentStatusFilter !== 'All') params.status = studentStatusFilter;
+
+      const res: any = await studentAdminApi.getStudents(params);
+      if (res?.data) {
+        setRealStudents(res.data.students || []);
+        if (res.data.pagination) {
+          setStudentPagination((prev) => ({
+            ...prev,
+            totalCount: res.data.pagination.totalCount,
+            totalPages: res.data.pagination.totalPages,
+          }));
+        }
+      }
+    } catch (err: any) {
+      console.warn('Backend API connection warning (using store sync):', err.message);
+    } finally {
+      setLoadingStudents(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudentsList();
+  }, [studentSearch, studentDeptFilter, studentSemFilter, studentStatusFilter, studentPagination.currentPage]);
+
+  // Open Add Student Modal
+  const handleOpenAddStudent = () => {
+    setEditingStudent(null);
+    setStudentFormData({
+      name: '',
+      email: '',
+      rollNo: '',
+      department: 'Computer Engineering',
+      semester: 1,
+      division: 'Div A',
+      cgpa: 0.0,
+      attendancePercentage: 100.0,
+      phone: '',
+      assignedMentor: '',
+      password: '',
+    });
+    setShowStudentFormModal(true);
+  };
+
+  // Open Edit Student Modal
+  const handleOpenEditStudent = (student: any) => {
+    setEditingStudent(student);
+    setStudentFormData({
+      name: student.name || '',
+      email: student.email || '',
+      rollNo: student.rollNo || '',
+      department: student.department || 'Computer Engineering',
+      semester: student.semester || 1,
+      division: student.division || 'Div A',
+      cgpa: student.cgpa || 0.0,
+      attendancePercentage: student.attendancePercentage || 100.0,
+      phone: student.phone || '',
+      assignedMentor: student.assignedMentor?._id || student.assignedMentor || '',
+      password: '',
+    });
+    setShowStudentFormModal(true);
+  };
+
+  // Save Student (Add / Edit)
+  const handleSaveStudentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (editingStudent) {
+        await studentAdminApi.updateStudent(editingStudent._id, studentFormData);
+        addToast('Student Record Updated', `${studentFormData.name}'s information updated successfully.`, 'success');
+        setAuditLogs((prev) => [
+          { id: `LOG-${Date.now().toString().slice(-4)}`, time: new Date().toLocaleTimeString(), actor: 'Super Administrator', action: `STUDENT_UPDATED: ${studentFormData.name} (${studentFormData.rollNo})`, target: 'Student Database', ip: '192.168.1.10', status: 'Success' },
+          ...prev,
+        ]);
+      } else {
+        await studentAdminApi.createStudent(studentFormData);
+        addToast('Student Enrolled', `New student ${studentFormData.name} enrolled successfully.`, 'success');
+        setAuditLogs((prev) => [
+          { id: `LOG-${Date.now().toString().slice(-4)}`, time: new Date().toLocaleTimeString(), actor: 'Super Administrator', action: `STUDENT_CREATED: ${studentFormData.name} (${studentFormData.rollNo})`, target: 'Student Database', ip: '192.168.1.10', status: 'Success' },
+          ...prev,
+        ]);
+      }
+      setShowStudentFormModal(false);
+      fetchStudentsList();
+    } catch (err: any) {
+      addToast('Operation Failed', err.message || 'Could not save student record', 'error');
+    }
+  };
+
+  // Toggle Student Status (ACTIVE <-> INACTIVE)
+  const handleToggleStudentStatus = async (student: any) => {
+    const nextStatus = student.status === 'INACTIVE' ? 'ACTIVE' : 'INACTIVE';
+    try {
+      await studentAdminApi.updateStatus(student._id, nextStatus);
+      addToast('Status Updated', `${student.name}'s status changed to ${nextStatus}.`, 'info');
+      setAuditLogs((prev) => [
+        { id: `LOG-${Date.now().toString().slice(-4)}`, time: new Date().toLocaleTimeString(), actor: 'Super Administrator', action: `STUDENT_STATUS_CHANGED: ${student.name} -> ${nextStatus}`, target: 'Student Database', ip: '192.168.1.10', status: 'Success' },
+        ...prev,
+      ]);
+      fetchStudentsList();
+    } catch (err: any) {
+      addToast('Update Failed', err.message, 'error');
+    }
+  };
+
+  // Delete / Safe Deactivate Student
+  const handleDeleteStudent = async (student: any) => {
+    if (!window.confirm(`Are you sure you want to delete or deactivate student ${student.name} (${student.rollNo})?`)) return;
+    try {
+      const res: any = await studentAdminApi.deleteStudent(student._id);
+      const msg = res?.data?.deactivationOnly
+        ? `Student ${student.name} has active records; account safely marked INACTIVE.`
+        : `Student ${student.name} record permanently deleted.`;
+      addToast('Record Processed', msg, 'info');
+      setAuditLogs((prev) => [
+        { id: `LOG-${Date.now().toString().slice(-4)}`, time: new Date().toLocaleTimeString(), actor: 'Super Administrator', action: `STUDENT_DELETED_OR_DEACTIVATED: ${student.name}`, target: 'Student Database', ip: '192.168.1.10', status: 'Success' },
+        ...prev,
+      ]);
+      fetchStudentsList();
+    } catch (err: any) {
+      addToast('Delete Failed', err.message, 'error');
+    }
+  };
+
+  // Native CSV Parser Utility
+  const parseCSVText = (text: string) => {
+    // Strip UTF-8 BOM if present
+    const cleanText = text.replace(/^\uFEFF/, '');
+    const lines = cleanText.split(/\r\n|\n/).filter((line) => line.trim() !== '');
+    if (lines.length === 0) return { headers: [], rows: [] };
+
+    const parseRow = (rowStr: string) => {
+      const result: string[] = [];
+      let insideQuote = false;
+      let entry = '';
+      for (let i = 0; i < rowStr.length; i++) {
+        const char = rowStr[i];
+        if (char === '"') {
+          insideQuote = !insideQuote;
+        } else if (char === ',' && !insideQuote) {
+          result.push(entry.trim().replace(/^"|"$/g, '').trim());
+          entry = '';
+        } else {
+          entry += char;
+        }
+      }
+      result.push(entry.trim().replace(/^"|"$/g, '').trim());
+      return result;
+    };
+
+    const rawHeaders = parseRow(lines[0]);
+    const rows = lines.slice(1).map((line) => {
+      const values = parseRow(line);
+      const obj: Record<string, string> = {};
+      rawHeaders.forEach((h, idx) => {
+        obj[h] = values[idx] || '';
+      });
+      return obj;
+    });
+
+    return { headers: rawHeaders, rows };
+  };
+
+  // Handle CSV File Select
+  const handleCSVFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setRawCsvFileName(file.name);
+    setIsImporting(true);
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target?.result as string;
+        const { rows } = parseCSVText(text);
+
+        if (rows.length === 0) {
+          addToast('Empty File', 'The uploaded CSV file contains no valid data rows.', 'warning');
+          setIsImporting(false);
+          return;
+        }
+
+        setParsedCsvRows(rows);
+        setImportStep(2);
+
+        // Dry-run preview API call
+        const previewRes: any = await studentAdminApi.previewImport(rows);
+        if (previewRes?.data) {
+          setPreviewResult(previewRes.data);
+          setImportStep(3); // Move to interactive preview
+        }
+      } catch (err: any) {
+        addToast('CSV Import Error', err.message || 'Failed to process CSV file. Ensure you are logged in as Admin.', 'error');
+      } finally {
+        setIsImporting(false);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Confirm and Commit Bulk Import
+  const handleConfirmCommitImport = async () => {
+    if (!previewResult || !previewResult.rows || previewResult.rows.length === 0) return;
+    setIsImporting(true);
+    setImportStep(5);
+
+    try {
+      const commitRes: any = await studentAdminApi.commitImport(previewResult.rows);
+      if (commitRes?.data) {
+        setCommitResult(commitRes.data);
+        setImportStep(6);
+        addToast('Bulk Import Complete', `Created: ${commitRes.data.createdCount}, Updated: ${commitRes.data.updatedCount}, Failed: ${commitRes.data.failedCount}`, 'success');
+        
+        // Refresh live student roster
+        fetchStudentsList();
+        
+        // Log Audit Event
+        const newLog = {
+          id: `LOG-${Math.floor(1000 + Math.random() * 9000)}`,
+          time: new Date().toLocaleTimeString(),
+          actor: 'Super Administrator',
+          action: `Bulk Imported Students (Created: ${commitRes.data.createdCount}, Updated: ${commitRes.data.updatedCount})`,
+          target: 'Student Directory',
+          ip: '192.168.1.10',
+          status: 'Success',
+        };
+        setAuditLogs((prev) => [newLog, ...prev]);
+      }
+    } catch (err: any) {
+      addToast('Commit Failed', err.message || 'Failed to commit student import data', 'error');
+      setImportStep(3); // Return to preview step on failure
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  // Download Sample CSV Template
+  const downloadSampleCSVTemplate = () => {
+    const csvContent = 
+      "Roll Number / PRN,Full Name,Email Address,Department,Semester,Division,CGPA,Attendance %,Phone Number,Mentor Email\n" +
+      "2023CSE101,Aarav Verma,aarav.v@vit.edu.in,Computer Engineering,5,Div A,8.75,92.5,9876543210,s.kulkarni@vit.edu.in\n" +
+      "2023AIDS102,Riya Sharma,riya.s@vit.edu.in,AI & Data Science,3,Div B,9.10,88.0,9876543211,p.sharma@vit.edu.in\n" +
+      "2023IT103,Karan Patel,karan.p@vit.edu.in,Information Technology,5,Div A,7.60,74.5,9876543212,a.deshmukh@vit.edu.in";
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "VIT_Student_Import_Template.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Download Import Error Report
+  const downloadImportErrorReport = () => {
+    if (!commitResult || !commitResult.failures || commitResult.failures.length === 0) return;
+    let csvContent = "Row Number,Student,Error Reason\n";
+    commitResult.failures.forEach((f: any) => {
+      csvContent += `${f.rowNumber},"${f.student}","${f.error}"\n`;
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "Import_Failure_Report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     setMentoringStoreState(getMentoringStore());
@@ -1011,104 +1332,248 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
           )}
 
           {/* ========================================================================= */}
-          {/* VIEW 3: STUDENTS MANAGEMENT */}
+          {/* VIEW 3: STUDENTS DATA MANAGEMENT */}
           {/* ========================================================================= */}
           {activeNav === 'Students' && (
             <div className="space-y-6">
+              {/* HEADER BAR */}
               <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-extrabold text-[#102A43]">Student Academic Roster</h2>
-                  <p className="text-xs text-[#5A6E7F]">Official student records synced with VIT Autonomous ERP & examination database.</p>
+                  <h2 className="text-xl font-extrabold text-[#102A43] flex items-center gap-2">
+                    <GraduationCap className="w-5 h-5 text-[#C49A52]" />
+                    <span>Student Data Management</span>
+                  </h2>
+                  <p className="text-xs text-[#5A6E7F] mt-1">Official institutional student records, roll numbers, CGPA, statutory attendance, and mentor linkages.</p>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <button 
-                    onClick={() => addToast('Exporting Roster', 'Downloading student master dataset in CSV format...', 'info')}
-                    className="flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-bold text-[#102A43] hover:bg-[#E9DDC9]"
+                    onClick={downloadSampleCSVTemplate}
+                    className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-bold text-[#102A43] hover:bg-[#E9DDC9] transition-colors"
                   >
                     <Download className="w-3.5 h-3.5 text-[#123B63]" />
-                    <span>Export CSV</span>
+                    <span>Template</span>
                   </button>
                   <button
-                    onClick={() => setShowAddUserModal(true)}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-bold shadow-xs cursor-pointer"
+                    onClick={() => {
+                      setImportStep(1);
+                      setParsedCsvRows([]);
+                      setPreviewResult(null);
+                      setCommitResult(null);
+                      setShowBulkImportModal(true);
+                    }}
+                    className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-bold shadow-xs cursor-pointer transition-colors"
                   >
-                    <Plus className="w-3.5 h-3.5 text-[#F5C056]" />
-                    <span>Enroll Student</span>
+                    <Upload className="w-3.5 h-3.5 text-[#F5C056]" />
+                    <span>Import CSV</span>
+                  </button>
+                  <button
+                    onClick={handleOpenAddStudent}
+                    className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#C49A52] hover:bg-[#B38743] text-white text-xs font-bold shadow-xs cursor-pointer transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-white" />
+                    <span>Add Student</span>
                   </button>
                 </div>
               </div>
 
-              {/* SEARCH & FILTERS */}
-              <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#E2D7C6] shadow-xs flex items-center justify-between gap-3">
+              {/* SEARCH & FILTERS TOOLBAR */}
+              <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#E2D7C6] shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
                 <div className="relative flex-1 max-w-md">
                   <Search className="w-4 h-4 text-[#5A6E7F] absolute left-3 top-2.5" />
                   <input
                     type="text"
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
-                    placeholder="Search by student name or roll number..."
-                    className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43] focus:outline-none"
+                    placeholder="Search student by name, PRN / roll number, email..."
+                    className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43] focus:outline-none focus:border-[#123B63]"
                   />
                 </div>
-                <span className="text-xs text-[#5A6E7F] font-bold">Total Enrolled: {studentsList.length * 824}</span>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  {/* Department Filter */}
+                  <select
+                    value={studentDeptFilter}
+                    onChange={(e) => setStudentDeptFilter(e.target.value)}
+                    className="px-3 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-[#102A43] font-bold focus:outline-none"
+                  >
+                    <option value="All">All Departments</option>
+                    <option value="Computer Engineering">Computer Engineering</option>
+                    <option value="AI & Data Science">AI & Data Science</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Electronics & Telecommunication">Electronics & Telecom</option>
+                  </select>
+
+                  {/* Semester Filter */}
+                  <select
+                    value={studentSemFilter}
+                    onChange={(e) => setStudentSemFilter(e.target.value)}
+                    className="px-3 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-[#102A43] font-bold focus:outline-none"
+                  >
+                    <option value="All">All Semesters</option>
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
+                      <option key={s} value={s}>Semester {s}</option>
+                    ))}
+                  </select>
+
+                  {/* Status Filter */}
+                  <select
+                    value={studentStatusFilter}
+                    onChange={(e) => setStudentStatusFilter(e.target.value)}
+                    className="px-3 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-[#102A43] font-bold focus:outline-none"
+                  >
+                    <option value="All">All Statuses</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                  </select>
+
+                  <button
+                    onClick={fetchStudentsList}
+                    className="p-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-[#102A43] hover:bg-[#E9DDC9]"
+                    title="Refresh Data"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loadingStudents ? 'animate-spin' : ''}`} />
+                  </button>
+                </div>
               </div>
 
-              {/* STUDENTS TABLE */}
+              {/* STUDENTS LIVE TABLE */}
               <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
                       <tr className="border-b border-[#E2D7C6] text-[#5A6E7F]">
-                        <th className="py-3 px-3 font-bold">ROLL NO & NAME</th>
-                        <th className="py-3 px-3 font-bold">DEPARTMENT & YEAR</th>
-                        <th className="py-3 px-3 font-bold">OFFICIAL CGPA</th>
-                        <th className="py-3 px-3 font-bold">ATTENDANCE</th>
-                        <th className="py-3 px-3 font-bold">ACADEMIC STATUS</th>
+                        <th className="py-3 px-3 font-bold">STUDENT & ROLL NO</th>
+                        <th className="py-3 px-3 font-bold">DEPARTMENT & SEMESTER</th>
+                        <th className="py-3 px-3 font-bold">CGPA</th>
+                        <th className="py-3 px-3 font-bold">ATTENDANCE %</th>
                         <th className="py-3 px-3 font-bold">ASSIGNED MENTOR</th>
-                        <th className="py-3 px-3 font-bold text-right">ACTION</th>
+                        <th className="py-3 px-3 font-bold">STATUS</th>
+                        <th className="py-3 px-3 font-bold text-right">ACTIONS</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#E2D7C6]">
-                      {studentsList
-                        .filter(s => s.name.toLowerCase().includes(studentSearch.toLowerCase()) || s.id.toLowerCase().includes(studentSearch.toLowerCase()))
-                        .map((s) => (
-                          <tr key={s.id} className="hover:bg-[#F7F2E9]/60">
+                      {loadingStudents ? (
+                        <tr>
+                          <td colSpan={7} className="py-8 text-center text-[#5A6E7F]">
+                            <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#123B63] mb-2" />
+                            <p className="font-bold text-xs">Fetching live student records from database...</p>
+                          </td>
+                        </tr>
+                      ) : realStudents.length === 0 ? (
+                        <tr>
+                          <td colSpan={7} className="py-8 text-center text-[#5A6E7F]">
+                            <GraduationCap className="w-8 h-8 mx-auto text-[#C49A52] mb-2 opacity-60" />
+                            <p className="font-bold text-sm text-[#102A43]">No student records found</p>
+                            <p className="text-xs mt-1">Try adjusting your filters or click "Import CSV" to add bulk students.</p>
+                          </td>
+                        </tr>
+                      ) : (
+                        realStudents.map((s) => (
+                          <tr key={s._id} className="hover:bg-[#F7F2E9]/60 transition-colors">
                             <td className="py-3 px-3">
-                              <p className="font-bold text-[#102A43]">{s.name}</p>
-                              <p className="font-mono text-[10px] text-[#5A6E7F]">{s.id}</p>
+                              <div className="flex items-center space-x-2">
+                                <div className="w-7 h-7 rounded-full bg-[#123B63] text-white flex items-center justify-center font-bold text-[10px]">
+                                  {s.name ? s.name.charAt(0) : 'S'}
+                                </div>
+                                <div>
+                                  <p className="font-bold text-[#102A43]">{s.name}</p>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-mono text-[10px] text-[#5A6E7F] font-bold">{s.rollNo || s.email}</span>
+                                    {s.division && (
+                                      <span className="px-1.5 py-0.2 bg-[#F7F2E9] border border-[#E2D7C6] text-[9px] rounded font-bold text-[#102A43]">
+                                        {s.division}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
                             </td>
                             <td className="py-3 px-3">
-                              <p className="font-semibold text-[#102A43]">{s.dept}</p>
-                              <p className="text-[10px] text-[#5A6E7F]">{s.year}</p>
+                              <p className="font-semibold text-[#102A43]">{s.department}</p>
+                              <p className="text-[10px] text-[#5A6E7F]">Semester {s.semester}</p>
                             </td>
-                            <td className="py-3 px-3 font-extrabold text-[#123B63]">{s.cgpa.toFixed(2)} / 10.00</td>
+                            <td className="py-3 px-3 font-extrabold text-[#123B63]">
+                              {s.cgpa !== undefined ? Number(s.cgpa).toFixed(2) : '0.00'} / 10.00
+                            </td>
                             <td className="py-3 px-3">
-                              <span className={`font-bold ${s.attendance >= 75 ? 'text-[#15803D]' : 'text-[#B91C1C]'}`}>
-                                {s.attendance.toFixed(1)}%
+                              <span className={`font-extrabold ${ (s.attendancePercentage || 100) >= 75 ? 'text-[#15803D]' : 'text-[#B91C1C]' }`}>
+                                {(s.attendancePercentage || 100).toFixed(1)}%
                               </span>
+                            </td>
+                            <td className="py-3 px-3 font-semibold text-[#C49A52]">
+                              {s.assignedMentor?.name || s.assignedMentor || 'Unassigned'}
                             </td>
                             <td className="py-3 px-3">
                               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                s.status.includes('Good') || s.status.includes('Ready') || s.status.includes('Honors')
-                                  ? 'bg-[#DCFCE7] text-[#15803D]'
-                                  : 'bg-[#FEE2E2] text-[#B91C1C]'
+                                s.status === 'INACTIVE' ? 'bg-[#FEE2E2] text-[#B91C1C]' : 'bg-[#DCFCE7] text-[#15803D]'
                               }`}>
-                                {s.status}
+                                {s.status || 'ACTIVE'}
                               </span>
                             </td>
-                            <td className="py-3 px-3 font-semibold text-[#C49A52]">{s.mentor}</td>
                             <td className="py-3 px-3 text-right">
-                              <button 
-                                onClick={() => addToast('Intervention Logged', `Flagged academic review for ${s.name}`, 'warning')}
-                                className="text-xs font-bold text-[#123B63] hover:underline"
-                              >
-                                Review
-                              </button>
+                              <div className="flex items-center justify-end space-x-2">
+                                <button
+                                  onClick={() => {
+                                    setSelectedStudentDetails(s);
+                                    setShowStudentDetailsModal(true);
+                                  }}
+                                  className="p-1 rounded hover:bg-[#E9DDC9] text-[#123B63]"
+                                  title="View Details"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleOpenEditStudent(s)}
+                                  className="p-1 rounded hover:bg-[#E9DDC9] text-[#102A43]"
+                                  title="Edit Record"
+                                >
+                                  <Edit className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleToggleStudentStatus(s)}
+                                  className="p-1 rounded hover:bg-[#E9DDC9] text-[#C49A52]"
+                                  title="Toggle Status"
+                                >
+                                  <ToggleRight className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteStudent(s)}
+                                  className="p-1 rounded hover:bg-[#FEE2E2] text-[#B91C1C]"
+                                  title="Delete / Deactivate"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
                             </td>
                           </tr>
-                        ))}
+                        ))
+                      )}
                     </tbody>
                   </table>
+                </div>
+
+                {/* PAGINATION FOOTER */}
+                <div className="mt-4 flex items-center justify-between border-t border-[#E2D7C6] pt-3 text-xs text-[#5A6E7F]">
+                  <span>Showing {realStudents.length} of {studentPagination.totalCount} student records</span>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      disabled={studentPagination.currentPage <= 1}
+                      onClick={() => setStudentPagination((prev) => ({ ...prev, currentPage: prev.currentPage - 1 }))}
+                      className="px-3 py-1.5 rounded-lg bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-bold text-[#102A43] disabled:opacity-40"
+                    >
+                      Previous
+                    </button>
+                    <span className="font-bold text-[#102A43]">
+                      Page {studentPagination.currentPage} of {studentPagination.totalPages || 1}
+                    </span>
+                    <button
+                      disabled={studentPagination.currentPage >= studentPagination.totalPages}
+                      onClick={() => setStudentPagination((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }))}
+                      className="px-3 py-1.5 rounded-lg bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-bold text-[#102A43] disabled:opacity-40"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2368,10 +2833,525 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
         )}
       </AnimatePresence>
 
+      {/* ========================================================================= */}
+      {/* MODAL 1: STUDENT DETAILS DRAWER */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {showStudentDetailsModal && selectedStudentDetails && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-[#FFFDF8] rounded-3xl p-6 border border-[#E2D7C6] shadow-2xl max-w-lg w-full space-y-4"
+            >
+              <div className="flex items-center justify-between border-b border-[#E2D7C6] pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-[#123B63] text-white flex items-center justify-center font-bold text-sm">
+                    {selectedStudentDetails.name ? selectedStudentDetails.name.charAt(0) : 'S'}
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-[#102A43]">{selectedStudentDetails.name}</h3>
+                    <p className="text-xs text-[#5A6E7F] font-mono">{selectedStudentDetails.rollNo || selectedStudentDetails.email}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowStudentDetailsModal(false)}
+                  className="p-1 rounded-lg hover:bg-[#F7F2E9]"
+                >
+                  <X className="w-5 h-5 text-[#102A43]" />
+                </button>
+              </div>
+
+              <div className="space-y-3 text-xs text-[#102A43]">
+                <div className="grid grid-cols-2 gap-3 bg-[#F7F2E9] p-3.5 rounded-2xl border border-[#E2D7C6]">
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-[#5A6E7F]">Department</p>
+                    <p className="font-bold text-[#102A43] mt-0.5">{selectedStudentDetails.department}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-[#5A6E7F]">Semester & Division</p>
+                    <p className="font-bold text-[#102A43] mt-0.5">Sem {selectedStudentDetails.semester} ({selectedStudentDetails.division || 'Div A'})</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-[#5A6E7F]">CGPA Score</p>
+                    <p className="font-extrabold text-[#123B63] mt-0.5">{Number(selectedStudentDetails.cgpa || 0).toFixed(2)} / 10.00</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-[#5A6E7F]">Attendance Record</p>
+                    <p className={`font-extrabold mt-0.5 ${(selectedStudentDetails.attendancePercentage || 100) >= 75 ? 'text-[#15803D]' : 'text-[#B91C1C]'}`}>
+                      {(selectedStudentDetails.attendancePercentage || 100).toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between py-1 border-b border-[#E2D7C6]">
+                    <span className="text-[#5A6E7F] font-bold">Email Address:</span>
+                    <span className="font-semibold text-[#102A43]">{selectedStudentDetails.email}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-[#E2D7C6]">
+                    <span className="text-[#5A6E7F] font-bold">Phone Contact:</span>
+                    <span className="font-semibold text-[#102A43]">{selectedStudentDetails.phone || 'Not provided'}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-[#E2D7C6]">
+                    <span className="text-[#5A6E7F] font-bold">Assigned Faculty Mentor:</span>
+                    <span className="font-bold text-[#C49A52]">{selectedStudentDetails.assignedMentor?.name || 'Unassigned'}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-[#E2D7C6]">
+                    <span className="text-[#5A6E7F] font-bold">Account Status:</span>
+                    <span className={`font-bold ${selectedStudentDetails.status === 'INACTIVE' ? 'text-[#B91C1C]' : 'text-[#15803D]'}`}>
+                      {selectedStudentDetails.status || 'ACTIVE'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 flex justify-end space-x-2">
+                <button
+                  onClick={() => {
+                    setShowStudentDetailsModal(false);
+                    handleOpenEditStudent(selectedStudentDetails);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-[#123B63] text-white text-xs font-bold hover:bg-[#1D4E73]"
+                >
+                  Edit Student Record
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================================= */}
+      {/* MODAL 2: ADD / EDIT STUDENT FORM MODAL */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {showStudentFormModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
+            <form onSubmit={handleSaveStudentSubmit} className="bg-[#FFFDF8] rounded-3xl p-6 border border-[#E2D7C6] shadow-2xl max-w-lg w-full space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-[#E2D7C6] pb-3">
+                <h3 className="text-base font-extrabold text-[#102A43] flex items-center gap-2">
+                  <UserPlus className="w-5 h-5 text-[#C49A52]" />
+                  <span>{editingStudent ? 'Edit Student Record' : 'Enroll New Student'}</span>
+                </h3>
+                <button type="button" onClick={() => setShowStudentFormModal(false)} className="p-1 rounded-lg hover:bg-[#F7F2E9]">
+                  <X className="w-5 h-5 text-[#102A43]" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="font-bold text-[#102A43]">Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={studentFormData.name}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, name: e.target.value })}
+                    placeholder="e.g. Rahul Sharma"
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Email Address *</label>
+                  <input
+                    type="email"
+                    required
+                    value={studentFormData.email}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, email: e.target.value })}
+                    placeholder="e.g. rahul.s@vit.edu.in"
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Roll Number / PRN *</label>
+                  <input
+                    type="text"
+                    required
+                    value={studentFormData.rollNo}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, rollNo: e.target.value })}
+                    placeholder="e.g. 2023CSE001"
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Phone Number</label>
+                  <input
+                    type="text"
+                    value={studentFormData.phone}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, phone: e.target.value })}
+                    placeholder="e.g. 9876543210"
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Department</label>
+                  <select
+                    value={studentFormData.department}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, department: e.target.value })}
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  >
+                    <option value="Computer Engineering">Computer Engineering</option>
+                    <option value="AI & Data Science">AI & Data Science</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Electronics & Telecommunication">Electronics & Telecom</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Semester</label>
+                  <select
+                    value={studentFormData.semester}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, semester: Number(e.target.value) })}
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  >
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
+                      <option key={s} value={s}>Semester {s}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Division</label>
+                  <input
+                    type="text"
+                    value={studentFormData.division}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, division: e.target.value })}
+                    placeholder="e.g. Div A"
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">CGPA Score (0 - 10)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max="10"
+                    value={studentFormData.cgpa}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, cgpa: parseFloat(e.target.value) || 0 })}
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-[#102A43]">Attendance % (0 - 100)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    value={studentFormData.attendancePercentage}
+                    onChange={(e) => setStudentFormData({ ...studentFormData, attendancePercentage: parseFloat(e.target.value) || 100 })}
+                    className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                  />
+                </div>
+
+                {!editingStudent && (
+                  <div>
+                    <label className="font-bold text-[#102A43]">Initial Password (Optional)</label>
+                    <input
+                      type="password"
+                      value={studentFormData.password}
+                      onChange={(e) => setStudentFormData({ ...studentFormData, password: e.target.value })}
+                      placeholder="Auto-generated if left blank"
+                      className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#102A43]"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-[#E2D7C6]">
+                <button
+                  type="button"
+                  onClick={() => setShowStudentFormModal(false)}
+                  className="px-4 py-2 rounded-xl bg-[#E9DDC9] text-[#102A43] text-xs font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-[#123B63] text-white text-xs font-bold hover:bg-[#1D4E73]"
+                >
+                  {editingStudent ? 'Save Changes' : 'Create Student'}
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================================= */}
+      {/* MODAL 3: MULTI-STEP BULK CSV IMPORT MODAL */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {showBulkImportModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-[#FFFDF8] rounded-3xl p-6 border border-[#E2D7C6] shadow-2xl max-w-3xl w-full space-y-4 max-h-[90vh] flex flex-col"
+            >
+              {/* MODAL HEADER */}
+              <div className="flex items-center justify-between border-b border-[#E2D7C6] pb-3">
+                <div className="flex items-center space-x-2.5">
+                  <FileSpreadsheet className="w-5 h-5 text-[#123B63]" />
+                  <div>
+                    <h3 className="text-base font-extrabold text-[#102A43]">Bulk Student Data Import Engine</h3>
+                    <p className="text-[11px] text-[#5A6E7F]">Step {importStep} of 6 — Upload, Validate & Sync Institutional Records</p>
+                  </div>
+                </div>
+                <button type="button" onClick={() => setShowBulkImportModal(false)} className="p-1 rounded-lg hover:bg-[#F7F2E9]">
+                  <X className="w-5 h-5 text-[#102A43]" />
+                </button>
+              </div>
+
+              {/* STEP PROGRESS INDICATOR */}
+              <div className="grid grid-cols-6 gap-1 text-[10px] font-bold text-center">
+                {['Upload', 'Header Check', 'Dry-Run Preview', 'Confirmation', 'Commit', 'Results'].map((lbl, idx) => (
+                  <div
+                    key={lbl}
+                    className={`py-1 rounded-lg transition-colors ${
+                      importStep === idx + 1
+                        ? 'bg-[#123B63] text-white'
+                        : importStep > idx + 1
+                        ? 'bg-[#DCFCE7] text-[#15803D]'
+                        : 'bg-[#F7F2E9] text-[#5A6E7F]'
+                    }`}
+                  >
+                    {lbl}
+                  </div>
+                ))}
+              </div>
+
+              {/* MODAL BODY BY STEP */}
+              <div className="flex-1 overflow-y-auto space-y-4 py-2 text-xs text-[#102A43]">
+                {/* STEP 1: UPLOAD FILE */}
+                {importStep === 1 && (
+                  <div className="space-y-4 text-center py-6">
+                    <div className="border-2 border-dashed border-[#E2D7C6] rounded-3xl p-8 bg-[#F7F2E9]/50 hover:bg-[#F7F2E9] transition-colors relative cursor-pointer">
+                      <input
+                        type="file"
+                        accept=".csv"
+                        onChange={handleCSVFileSelect}
+                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                      />
+                      <Upload className="w-10 h-10 mx-auto text-[#123B63] mb-3" />
+                      <p className="font-extrabold text-sm text-[#102A43]">Click or drag & drop a CSV student file</p>
+                      <p className="text-xs text-[#5A6E7F] mt-1">Accepts standard `.csv` files with Roll Number, Name, Email, and Department.</p>
+                    </div>
+
+                    <div className="flex items-center justify-center space-x-3 pt-2">
+                      <button
+                        onClick={downloadSampleCSVTemplate}
+                        className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] font-bold text-[#123B63] hover:bg-[#E9DDC9]"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>Download Sample CSV Template</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 2: PROCESSING & SERVER PREVIEW LOADING */}
+                {importStep === 2 && (
+                  <div className="py-12 text-center space-y-3">
+                    <RefreshCw className="w-8 h-8 animate-spin mx-auto text-[#123B63]" />
+                    <p className="font-bold text-sm text-[#102A43]">Parsing CSV rows & verifying server-side dry-run validation...</p>
+                    <p className="text-xs text-[#5A6E7F]">Checking duplicate roll numbers, email formats, and existing database records.</p>
+                  </div>
+                )}
+
+                {/* STEP 3 & 4: INTERACTIVE PREVIEW & CONFIRMATION */}
+                {(importStep === 3 || importStep === 4) && previewResult && (
+                  <div className="space-y-4">
+                    {/* STATS BADGES */}
+                    <div className="grid grid-cols-4 gap-2 text-center">
+                      <div className="p-3 bg-[#F7F2E9] rounded-2xl border border-[#E2D7C6]">
+                        <p className="text-[10px] font-bold text-[#5A6E7F] uppercase">Total Rows</p>
+                        <p className="text-lg font-extrabold text-[#102A43]">{previewResult.totalRows}</p>
+                      </div>
+                      <div className="p-3 bg-[#DCFCE7] rounded-2xl border border-[#86EFAC]">
+                        <p className="text-[10px] font-bold text-[#15803D] uppercase">New Students</p>
+                        <p className="text-lg font-extrabold text-[#15803D]">{previewResult.validNewCount}</p>
+                      </div>
+                      <div className="p-3 bg-[#FEF3C7] rounded-2xl border border-[#FDE047]">
+                        <p className="text-[10px] font-bold text-[#D97706] uppercase">Existing Updates</p>
+                        <p className="text-lg font-extrabold text-[#D97706]">{previewResult.validUpdateCount}</p>
+                      </div>
+                      <div className="p-3 bg-[#FEE2E2] rounded-2xl border border-[#FCA5A5]">
+                        <p className="text-[10px] font-bold text-[#B91C1C] uppercase">Invalid Rows</p>
+                        <p className="text-lg font-extrabold text-[#B91C1C]">{previewResult.invalidCount}</p>
+                      </div>
+                    </div>
+
+                    {/* PREVIEW TABLE */}
+                    <div className="border border-[#E2D7C6] rounded-2xl overflow-hidden max-h-60 overflow-y-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-[#F7F2E9] sticky top-0 font-bold text-[#5A6E7F]">
+                          <tr>
+                            <th className="py-2 px-3">ROW</th>
+                            <th className="py-2 px-3">STATUS</th>
+                            <th className="py-2 px-3">ROLL NO & NAME</th>
+                            <th className="py-2 px-3">EMAIL & DEPT</th>
+                            <th className="py-2 px-3">VALIDATION DETAILS</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#E2D7C6]">
+                          {previewResult.rows.map((row: any) => (
+                            <tr key={row.rowNumber} className={row.status === 'INVALID' ? 'bg-[#FFF5F5]' : ''}>
+                              <td className="py-2 px-3 font-mono text-[11px]">{row.rowNumber}</td>
+                              <td className="py-2 px-3">
+                                <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold ${
+                                  row.status === 'VALID_NEW'
+                                    ? 'bg-[#DCFCE7] text-[#15803D]'
+                                    : row.status === 'VALID_UPDATE'
+                                    ? 'bg-[#FEF3C7] text-[#D97706]'
+                                    : 'bg-[#FEE2E2] text-[#B91C1C]'
+                                }`}>
+                                  {row.status}
+                                </span>
+                              </td>
+                              <td className="py-2 px-3 font-bold">{row.data.name} ({row.data.rollNo})</td>
+                              <td className="py-2 px-3">{row.data.email} ({row.data.department})</td>
+                              <td className="py-2 px-3 text-[11px]">
+                                {row.errors.length > 0 ? (
+                                  <span className="text-[#B91C1C] font-semibold">{row.errors.join(', ')}</span>
+                                ) : (
+                                  <span className="text-[#15803D] font-semibold">✓ Verified clean</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {importStep === 4 && (
+                      <div className="p-3 bg-[#FEF3C7] border border-[#FDE047] rounded-2xl flex items-center space-x-2 text-[#92400E]">
+                        <AlertTriangle className="w-5 h-5 shrink-0 text-[#D97706]" />
+                        <p className="font-semibold">
+                          <strong>Admin Confirmation Required:</strong> You are about to commit {previewResult.validNewCount + previewResult.validUpdateCount} validated student records to the MongoDB production database. Existing passwords will NOT be modified.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* STEP 5: COMMIT PROGRESS */}
+                {importStep === 5 && (
+                  <div className="py-12 text-center space-y-3">
+                    <RefreshCw className="w-8 h-8 animate-spin mx-auto text-[#123B63]" />
+                    <p className="font-bold text-sm text-[#102A43]">Committing student records to database...</p>
+                    <p className="text-xs text-[#5A6E7F]">Inserting new accounts, linking faculty mentors, and preserving security tokens.</p>
+                  </div>
+                )}
+
+                {/* STEP 6: FINAL RESULTS SUMMARY */}
+                {importStep === 6 && commitResult && (
+                  <div className="space-y-4 text-center py-4">
+                    <CheckCircle2 className="w-12 h-12 text-[#15803D] mx-auto" />
+                    <h4 className="text-lg font-extrabold text-[#102A43]">Bulk Import Completed Successfully</h4>
+
+                    <div className="grid grid-cols-4 gap-3">
+                      <div className="p-3 bg-[#F7F2E9] rounded-2xl border border-[#E2D7C6]">
+                        <p className="text-[10px] font-bold text-[#5A6E7F]">TOTAL PROCESSED</p>
+                        <p className="text-xl font-extrabold text-[#102A43]">{commitResult.totalProcessed}</p>
+                      </div>
+                      <div className="p-3 bg-[#DCFCE7] rounded-2xl border border-[#86EFAC]">
+                        <p className="text-[10px] font-bold text-[#15803D]">CREATED</p>
+                        <p className="text-xl font-extrabold text-[#15803D]">{commitResult.createdCount}</p>
+                      </div>
+                      <div className="p-3 bg-[#FEF3C7] rounded-2xl border border-[#FDE047]">
+                        <p className="text-[10px] font-bold text-[#D97706]">UPDATED</p>
+                        <p className="text-xl font-extrabold text-[#D97706]">{commitResult.updatedCount}</p>
+                      </div>
+                      <div className="p-3 bg-[#FEE2E2] rounded-2xl border border-[#FCA5A5]">
+                        <p className="text-[10px] font-bold text-[#B91C1C]">FAILED</p>
+                        <p className="text-xl font-extrabold text-[#B91C1C]">{commitResult.failedCount}</p>
+                      </div>
+                    </div>
+
+                    {commitResult.failures && commitResult.failures.length > 0 && (
+                      <div className="pt-2">
+                        <button
+                          onClick={downloadImportErrorReport}
+                          className="flex items-center space-x-1.5 mx-auto px-4 py-2 rounded-xl bg-[#FEE2E2] border border-[#FCA5A5] text-xs font-bold text-[#B91C1C] hover:bg-[#FCA5A5]/40"
+                        >
+                          <Download className="w-4 h-4 text-[#B91C1C]" />
+                          <span>Download Error Report ({commitResult.failures.length} Failures)</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* MODAL FOOTER BUTTONS */}
+              <div className="flex items-center justify-between border-t border-[#E2D7C6] pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowBulkImportModal(false)}
+                  className="px-4 py-2 rounded-xl bg-[#E9DDC9] text-[#102A43] text-xs font-bold"
+                >
+                  {importStep === 6 ? 'Close Window' : 'Cancel'}
+                </button>
+
+                {importStep === 3 && (
+                  <button
+                    onClick={() => setImportStep(4)}
+                    className="px-5 py-2 rounded-xl bg-[#123B63] text-white text-xs font-bold hover:bg-[#1D4E73]"
+                  >
+                    Proceed to Confirmation
+                  </button>
+                )}
+
+                {importStep === 4 && (
+                  <button
+                    disabled={isImporting}
+                    onClick={() => {
+                      setImportStep(5);
+                      handleConfirmCommitImport();
+                    }}
+                    className="px-6 py-2 rounded-xl bg-[#15803D] text-white text-xs font-bold hover:bg-[#166534] flex items-center space-x-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>Confirm & Commit to Database</span>
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Website Theme Toast Notifications */}
       <ToastNotification toasts={toasts} onDismiss={dismissToast} />
 
     </div>
   );
 };
+
 

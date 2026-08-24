@@ -38,6 +38,7 @@ const userSchema = new Schema(
     rollNo: {
       type: String,
       sparse: true,
+      unique: true,
     },
     cgpa: {
       type: Number,
@@ -50,6 +51,24 @@ const userSchema = new Schema(
     semester: {
       type: Number,
       default: 1,
+    },
+    division: {
+      type: String,
+      default: "Div A",
+    },
+    phone: {
+      type: String,
+      default: "",
+    },
+    status: {
+      type: String,
+      enum: ["ACTIVE", "INACTIVE"],
+      default: "ACTIVE",
+    },
+    assignedMentor: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
     // Mentor specific attributes
     designation: {
