@@ -29,15 +29,15 @@ export const SkillGapSection: React.FC = () => {
         >
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
             <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              SKILL GAP INTELLIGENCE
+            <span className="text-[11px] font-extrabold tracking-wider text-[#7A6437]">
+              Skill Gap Intelligence
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-            KNOW WHERE <br />
-            <span className="text-[#C99632] font-serif-accent italic font-normal">
-              YOU STAND.
+            Know where <br />
+            <span className="text-[#10253A] font-serif-accent font-normal">
+              you stand.
             </span>
           </h2>
 

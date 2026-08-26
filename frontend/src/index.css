@@ -29,26 +29,69 @@
   body {
     background-color: var(--background);
     color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Geist', 'Helvetica Neue', Helvetica, sans-serif;
+    font-weight: 400;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    text-transform: none;
+  }
 }
 
 /* Typography Utility Classes */
 .font-sans {
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: 'Geist', 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 400;
 }
 
-.font-serif-accent {
-  font-family: 'DM Serif Display', Georgia, serif;
+/* Subheadings & Highlights - Normal Font Style & Primary Color */
+.font-serif-accent, .font-serif-italic {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em;
 }
 
 .font-display {
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  text-transform: none;
+}
+
+.font-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  text-transform: none;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: normal !important;
+  text-transform: none;
+}
+
+/* Remove gold text gradient on accents so headings stay uniform */
+.text-gold-gradient {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: initial;
+  color: inherit;
+}
+
+/* Refine heavy Playfair Display weights so headings stay sleek, crisp, and high-end */
+h1.font-extrabold, h2.font-extrabold, h3.font-extrabold, h4.font-extrabold,
+h1.font-black, h2.font-black, h3.font-black,
+h1.font-bold, h2.font-bold, h3.font-bold,
+.font-display.font-extrabold, .font-display.font-black, .font-display.font-bold {
+  font-weight: 500;
 }
 
 /* Locked VIT Mumbai Color System & Glass Utilities */

@@ -46,7 +46,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.15]">
         {title}{' '}
         {italicTitle && (
-          <span className="font-serif-accent italic font-normal text-[#C99632] block sm:inline mt-1 sm:mt-0">
+          <span className="font-serif-accent font-normal text-[#10253A] block sm:inline mt-1 sm:mt-0">
             {italicTitle}
           </span>
         )}

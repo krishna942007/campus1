@@ -26,8 +26,13 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Outfit', 'Plus Jakarta Sans', 'sans-serif'],
+        sans: ['Geist', 'Helvetica Neue', 'Helvetica', 'sans-serif'],
+        heading: ['Playfair Display', 'Georgia', 'serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
+        playfair: ['Playfair Display', 'Georgia', 'serif'],
+        helvetica: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        geist: ['Geist', 'Helvetica Neue', 'Helvetica', 'sans-serif'],
       },
       boxShadow: {
         'glow-gold': '0 0 25px -5px rgba(201, 154, 61, 0.3)',

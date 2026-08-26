@@ -661,7 +661,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
               <span className="text-[#F5C056]">VIT</span>
             </div>
             <div>
-              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT MUMBAI</h2>
+              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT Mumbai</h2>
               <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
                 INSTITUTIONAL ADMIN
               </p>

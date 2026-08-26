@@ -217,7 +217,7 @@ export const InteractivePlayground: React.FC = () => {
                 {/* Interactive Slider & Metrics */}
                 <div className="space-y-6 bg-[#0D1B2A]/90 p-6 rounded-2xl border border-[#3D5A80]/40">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-bold text-[#C8D9E6] uppercase tracking-wider flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-[#C8D9E6] tracking-wider flex items-center gap-2">
                       <Sliders className="w-4 h-4 text-[#F2EFE7]" />
                       <span>SGPA Projection Slider</span>
                     </h4>
@@ -267,7 +267,7 @@ export const InteractivePlayground: React.FC = () => {
                 {/* Skill Radar Chart */}
                 <div className="bg-[#0D1B2A]/90 p-6 rounded-2xl border border-[#3D5A80]/40 flex flex-col justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-[#C8D9E6] uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-[#C8D9E6] tracking-wider mb-2 flex items-center gap-2">
                       <Brain className="w-4 h-4 text-[#C8D9E6]" />
                       <span>Skill Radar Competency Map</span>
                     </h4>
@@ -289,7 +289,7 @@ export const InteractivePlayground: React.FC = () => {
                 {/* Academic Trend & Mentor Feedback */}
                 <div className="space-y-6 bg-[#0D1B2A]/90 p-6 rounded-2xl border border-[#3D5A80]/40">
                   <div>
-                    <h4 className="text-sm font-bold text-[#C8D9E6] uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-[#C8D9E6] tracking-wider mb-2 flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-[#F2EFE7]" />
                       <span>Semester Progression Trend</span>
                     </h4>
@@ -510,7 +510,7 @@ export const InteractivePlayground: React.FC = () => {
                   </p>
 
                   <div className="border-t border-[#3D5A80]/40 pt-4">
-                    <h5 className="text-[11px] font-bold text-[#C8D9E6] uppercase tracking-wider mb-2">
+                    <h5 className="text-[11px] font-bold text-[#C8D9E6] tracking-wider mb-2">
                       Source Document Citations:
                     </h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

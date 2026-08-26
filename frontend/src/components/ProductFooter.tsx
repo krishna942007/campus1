@@ -17,8 +17,8 @@ export const ProductFooter: React.FC<ProductFooterProps> = ({ onSelectRole }) =>
               VIT
             </div>
             <div>
-              <h3 className="text-base font-extrabold tracking-tight text-white">VIT MUMBAI</h3>
-              <p className="text-xs text-[#E8C56B] font-bold uppercase tracking-wider">AI Student Development Platform</p>
+              <h3 className="text-base font-extrabold tracking-tight text-white">VIT Mumbai</h3>
+              <p className="text-xs text-[#E8C56B] font-bold tracking-wider">AI Student Development Platform</p>
             </div>
           </div>
 
@@ -53,7 +53,7 @@ export const ProductFooter: React.FC<ProductFooterProps> = ({ onSelectRole }) =>
 
         {/* Column 1: Platform */}
         <div className="space-y-3">
-          <h4 className="text-xs font-bold text-[#E8C56B] uppercase tracking-wider">Platform</h4>
+          <h4 className="text-xs font-bold text-[#E8C56B] tracking-wider">Platform</h4>
           <ul className="space-y-2 text-xs text-slate-300 font-medium">
             <li><a href="#ai-assistant" className="hover:text-white transition-colors">AI Assistant</a></li>
             <li><a href="#roadmap" className="hover:text-white transition-colors">Roadmap</a></li>
@@ -65,7 +65,7 @@ export const ProductFooter: React.FC<ProductFooterProps> = ({ onSelectRole }) =>
 
         {/* Column 2: Support */}
         <div className="space-y-3">
-          <h4 className="text-xs font-bold text-[#E8C56B] uppercase tracking-wider">Support</h4>
+          <h4 className="text-xs font-bold text-[#E8C56B] tracking-wider">Support</h4>
           <ul className="space-y-2 text-xs text-slate-300 font-medium">
             <li><a href="#help" className="hover:text-white transition-colors">Help Center</a></li>
             <li><a href="#contact" className="hover:text-white transition-colors">Contact Us</a></li>
@@ -77,7 +77,7 @@ export const ProductFooter: React.FC<ProductFooterProps> = ({ onSelectRole }) =>
         {/* Column 3: Legal & Social */}
         <div className="space-y-4">
           <div className="space-y-2">
-            <h4 className="text-xs font-bold text-[#E8C56B] uppercase tracking-wider">Legal</h4>
+            <h4 className="text-xs font-bold text-[#E8C56B] tracking-wider">Legal</h4>
             <ul className="space-y-1.5 text-xs text-slate-300 font-medium">
               <li><a href="#privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
               <li><a href="#terms" className="hover:text-white transition-colors">Terms of Use</a></li>
@@ -86,7 +86,7 @@ export const ProductFooter: React.FC<ProductFooterProps> = ({ onSelectRole }) =>
           </div>
 
           <div className="space-y-2 pt-2">
-            <h4 className="text-xs font-bold text-[#E8C56B] uppercase tracking-wider">Stay Connected</h4>
+            <h4 className="text-xs font-bold text-[#E8C56B] tracking-wider">Stay Connected</h4>
             <div className="flex items-center space-x-4 text-slate-300">
               <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-[#E8C56B] transition-colors">
                 <Linkedin className="w-4 h-4" />

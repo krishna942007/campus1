@@ -80,7 +80,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-serif-accent italic font-normal text-[#C99632] tracking-tight leading-[1.08]"
+              className="text-5xl sm:text-6xl lg:text-7xl font-serif-accent font-normal text-[#10253A] tracking-tight leading-[1.08]"
             >
               Lead the Future.
             </motion.h1>

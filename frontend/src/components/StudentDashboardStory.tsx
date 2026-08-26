@@ -11,25 +11,25 @@ export const StudentDashboardStory: React.FC = () => {
 
   const studentQuestions = [
     {
-      q: "HOW AM I PERFORMING ACADEMICALLY?",
+      q: "How am I performing academically?",
       answer: "Current CGPA is 8.92 (Rank 4 in Computer Engineering Dept). Attendance across all 6 core subjects is 86.4%, comfortably above the 75% institutional requirement.",
       metric: "8.92 CGPA // 86.4% ATTENDANCE",
       status: "EXCELLENT",
     },
     {
-      q: "WHERE ARE MY SKILL GAPS?",
+      q: "Where are my skill gaps?",
       answer: "Strong in Python, Algorithms, and Data Structures. Target role (AI Engineer) requires additional proficiency in Deep Neural Networks (PyTorch) and Distributed System Design.",
       metric: "GAP DETECTED: PYTORCH & CUDA",
       status: "ADVISORY ACTION",
     },
     {
-      q: "WHAT HAS MY MENTOR SAID?",
+      q: "What has my mentor said?",
       answer: "Faculty Mentor Prof. S. Kulkarni logged meeting outcome: 'Strong academic performance. Recommended focusing on final year capstone AI research paper submission for IEEE.'",
       metric: "MEETING LOGGED 12-AUG-2026",
       status: "MENTOR SIGN-OFF",
     },
     {
-      q: "WHAT SHOULD I DO NEXT?",
+      q: "What should I do next?",
       answer: "Complete Module 3 of Deep Learning Specialization and publish GitHub repository for Autonomous Computer Vision project before next mentor check-in.",
       metric: "RECOMMENDED ACTION ITEM",
       status: "NEXT STEP",
@@ -54,15 +54,15 @@ export const StudentDashboardStory: React.FC = () => {
         >
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
             <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              PERSONALIZED STUDENT DASHBOARD
+            <span className="text-[11px] font-extrabold tracking-wider text-[#7A6437]">
+              Personalized Student Dashboard
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-            UNDERSTAND YOUR <br />
+            Understand your <br />
             <span className="text-[#C99632] font-serif-accent italic font-normal">
-              ENTIRE JOURNEY.
+              entire journey.
             </span>
           </h2>
 

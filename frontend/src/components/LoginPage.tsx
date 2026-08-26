@@ -74,9 +74,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             <span className="text-[#E8C56B]">VIT</span>
           </div>
           <div>
-            <h1 className="text-sm font-extrabold text-[#10253A] tracking-tight">VIT MUMBAI</h1>
-            <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#C99632]">
-              UNIFIED AUTHENTICATION GATEWAY
+            <h1 className="text-sm font-extrabold text-[#10253A] tracking-tight">VIT Mumbai</h1>
+            <p className="text-[10px] font-extrabold tracking-wider text-[#C99632]">
+              Unified Authentication Gateway
             </p>
           </div>
         </div>

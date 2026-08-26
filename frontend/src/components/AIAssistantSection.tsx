@@ -35,15 +35,15 @@ export const AIAssistantSection: React.FC = () => {
         <div className="max-w-3xl mb-12 space-y-4">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
             <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              CONTEXT-AWARE AI ADVISORY ENGINE
+            <span className="text-[11px] font-extrabold tracking-wider text-[#7A6437]">
+              Context-Aware AI Advisory Engine
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-            YOUR SECOND BRAIN.<br />
+            Your second brain.<br />
             <span className="text-[#C99632] font-serif-accent italic font-normal">
-              ASK. UNDERSTAND. MOVE FORWARD.
+              Ask. Understand. Move forward.
             </span>
           </h2>
 
