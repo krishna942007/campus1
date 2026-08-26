@@ -48,8 +48,12 @@ export const LearningRoadmapSection: React.FC = () => {
   ];
 
   return (
-    <section id="roadmap" className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="roadmap" className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10 overflow-hidden">
+      {/* Ambient Lighting Blobs behind Glass Surface */}
+      <div className="absolute top-1/3 -right-20 w-96 h-96 bg-[#C99632]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-[#244F7D]/15 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Headline */}
         <motion.div 
@@ -78,11 +82,11 @@ export const LearningRoadmapSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Step-by-Step Trajectory Path Visual with Scroll Reveal */}
+        {/* Step-by-Step Trajectory Path Visual in Glassmorphism */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-5 items-stretch relative">
           
           {/* Connecting Progressive Line */}
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-[#C99632]/20 -translate-y-6 z-0" />
+          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-[#C99632]/30 -translate-y-6 z-0" />
 
           {steps.map((s, idx) => (
             <motion.div
@@ -91,12 +95,12 @@ export const LearningRoadmapSection: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className={`p-6 border flex flex-col justify-between relative space-y-4 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 z-10 ${
+              className={`p-6 border flex flex-col justify-between relative space-y-4 rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 z-10 ${
                 s.completed
-                  ? 'bg-[#0C2238] text-white border-[#0C2238]'
+                  ? 'bg-[#0C2340]/90 backdrop-blur-md text-white border-[#C99632]/50 shadow-[#0C2238]/15 scale-[1.02]'
                   : idx === 1
-                  ? 'bg-[#FFFCF7] text-[#10253A] border-[#C99632] ring-2 ring-[#C99632]/30'
-                  : 'bg-[#FFFCF7]/90 text-[#10253A] border-[#0C2238]/10'
+                  ? 'bg-[#FFFFFF]/25 hover:bg-[#FFFFFF]/40 backdrop-blur-[5px] text-[#10253A] border-2 border-[#C99632] shadow-[#C99632]/10 scale-[1.02]'
+                  : 'bg-[#FFFFFF]/10 hover:bg-[#FFFFFF]/25 backdrop-blur-[5px] text-[#10253A] border-[#0C2238]/08 shadow-[#0C2238]/05'
               }`}
             >
               <div className="space-y-3">
@@ -107,7 +111,7 @@ export const LearningRoadmapSection: React.FC = () => {
                   {s.completed ? (
                     <CheckCircle2 className="w-5 h-5 text-[#E8C56B]" />
                   ) : (
-                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-[#C99632]/30 bg-[#EFE7D8] text-[#7A6437]">
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-[#C99632]/30 bg-[#EFE7D8]/80 backdrop-blur-xs text-[#7A6437]">
                       {s.status}
                     </span>
                   )}

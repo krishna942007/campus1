@@ -50,7 +50,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#FFFCF7]/90 backdrop-blur-md border border-[#0C2238]/10 shadow-xs"
+            className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#FFFCF7]/40 backdrop-blur-xl border border-[#0C2238]/10 shadow-xs"
           >
             <span className="w-2 h-2 rounded-full bg-[#C99632]" />
             <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A6437]">
@@ -113,7 +113,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
 
             <a
               href="#features"
-              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-full bg-[#FFFCF7]/90 backdrop-blur-md hover:bg-[#FFFCF7] text-[#10253A] font-bold text-sm border border-[#0C2238]/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-full bg-[#FFFCF7]/40 backdrop-blur-xl hover:bg-[#FFFCF7]/65 text-[#10253A] font-bold text-sm border border-[#0C2238]/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 fill-[#10253A] text-[#10253A]" />
               <span>Explore Platform</span>
@@ -177,7 +177,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
         id="features" 
         className="max-w-7xl mx-auto px-6 w-full pt-4 pb-8 z-20"
       >
-        <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-[#0C2238]/10 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="bg-[#FFFFFF]/10 backdrop-blur-[5px] rounded-3xl p-6 sm:p-5 border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           
           {[
             {
@@ -225,7 +225,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
             return (
               <div 
                 key={idx}
-                className="flex flex-col items-center text-center space-y-3 p-5 rounded-2xl bg-[#FFFCF7]/80 hover:bg-[#F7F4EE] border border-[#0C2238]/05 hover:border-[#C99632]/40 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+                className="flex flex-col items-center text-center space-y-3 p-5 rounded-3xl bg-[#FFFCF7]/90 hover:bg-[#FFFCF7]/65 backdrop-blur-md border border-[#0C2238]/08 hover:border-[#C99632]/40 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
               >
                 <div className={`w-12 h-12 rounded-2xl ${card.bg} border ${card.border} flex items-center justify-center ${card.iconColor} group-hover:scale-105 group-hover:rotate-3 transition-all duration-300 shadow-sm`}>
                   <IconComp className={`w-5 h-5 ${card.iconColor}`} />

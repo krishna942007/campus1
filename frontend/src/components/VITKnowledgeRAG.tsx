@@ -25,8 +25,12 @@ export const VITKnowledgeRAG: React.FC = () => {
   ];
 
   return (
-    <section id="rag" className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="rag" className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10 overflow-hidden">
+      {/* Ambient Lighting Blobs behind Glass Surface */}
+      <div className="absolute top-1/3 -right-20 w-96 h-96 bg-[#C99632]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-[#244F7D]/25 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Section Headline */}
         <motion.div 
@@ -61,7 +65,7 @@ export const VITKnowledgeRAG: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-[#FFFCF7] border border-[#0C2238]/10 p-8 sm:p-12 shadow-2xl space-y-8 rounded-3xl"
+          className="bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 p-8 sm:p-12 space-y-8 rounded-3xl relative overflow-hidden"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#0C2238]/08 pb-6">
             <div className="flex items-center space-x-4">
@@ -82,10 +86,10 @@ export const VITKnowledgeRAG: React.FC = () => {
               <div
                 key={idx}
                 onClick={() => setActiveQuery(idx)}
-                className={`p-6 border transition-all duration-200 cursor-pointer space-y-3 rounded-2xl shadow-sm ${
+                className={`p-6 border transition-all duration-300 cursor-pointer space-y-3 rounded-2xl ${
                   activeQuery === idx
-                    ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-xl'
-                    : 'bg-[#F7F4EE]/80 text-[#10253A] border-[#0C2238]/10 hover:border-[#C99632]/40 hover:bg-[#F7F4EE]'
+                    ? 'bg-[#0C2340]/90 backdrop-blur-md text-white border-[#C99632]/50 shadow-xl shadow-[#0C2238]/15 scale-[1.01]'
+                    : 'bg-[#FFFCF7]/60 hover:bg-[#FFFCF7]/90 backdrop-blur-md text-[#10253A] border-[#0C2238]/08 shadow-sm hover:border-[#C99632]/40'
                 }`}
               >
                 <div className={`flex items-center justify-between text-xs font-extrabold ${

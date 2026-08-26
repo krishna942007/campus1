@@ -42,7 +42,13 @@ All styles conform strictly to the bespoke VIT Mumbai brand palette defined in [
 * **Warm Gold Accent**: Primary `#C99632`, Light Gold `#E8C56B` / `#E2C06A`
 * **Soft Blue & Cream Accents**: `#244F7D`, `#DCE8F4`, `#EFE7D8`
 * **Typography**: Primary `Plus Jakarta Sans` / `Inter`, Display `Outfit`, Accent Serif `DM Serif Display`
-* **Surfaces**: `.glass-panel` (backdrop-blur 20px), `.glass-card` (interactive hover elevations, subtle borders `rgba(12, 34, 56, 0.08)`)
+* **Surfaces**: Ultra-transparent glass surfaces `.glass-panel`, `.glass-card` (`bg-[#FFFFFF]/10 backdrop-blur-[5px] border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05`).
+
+### 💎 Glassmorphism Design System & Skill
+All UI cards and interactive panels follow the **Glassmorphism Design System Skill** stored in [`.agents/skills/glassmorphism/SKILL.md`](file:///c:/Users/HP/Desktop/project1/.agents/skills/glassmorphism/SKILL.md).
+* **Core Philosophy**: Transparency first, blurred second, decorative last (`transparent → subtle 5px blur → clean 8% border → soft depth shadow → crisp typography`).
+* **Production Spec**: `bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05`.
+* **Rules**: Ultra-transparent 10% white fill, 5px backdrop blur, subtle 8% navy rim borders (`border-[#0C2238]/08`), and soft depth shadows.
 
 ---
 
@@ -281,6 +287,7 @@ The project is fully build-ready and pre-configured for one-click deployment acr
 3. **Per-Account First-Login Onboarding**: Interactive multi-step setup modals for Students (career vision, specialization track, target milestones & AI roadmap) and Teachers (designation, semesters taught, research domains & office hours).
 4. **Authentic Personalized Academic Metrics**: Dynamically calculated CGPA trajectory curves, subject attendance ratios, and avatar initials tailored per individual student account.
 5. **Goal-Adaptive Course Recommendation Matrix**: Dynamic curriculum matching verified real university courses (Stanford, Harvard, MIT, Helsinki, Google, AWS) to each student's chosen technical specialization track.
+6. **Admin Student Data Management & CSV Bulk Import Engine**: Unified production student roster CRUD and multi-step CSV dry-run preview & bulk commit engine integrated with MongoDB `User` model (`role: "STUDENT"`), complete with duplicate PRN/email protection, password safety, and audit logging.
 
 ---
 *Document maintained automatically. Updated for VITARA 2.0 release on GitHub.*
