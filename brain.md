@@ -288,6 +288,7 @@ The project is fully build-ready and pre-configured for one-click deployment acr
 4. **Authentic Personalized Academic Metrics**: Dynamically calculated CGPA trajectory curves, subject attendance ratios, and avatar initials tailored per individual student account.
 5. **Goal-Adaptive Course Recommendation Matrix**: Dynamic curriculum matching verified real university courses (Stanford, Harvard, MIT, Helsinki, Google, AWS) to each student's chosen technical specialization track.
 6. **Admin Student Data Management & CSV Bulk Import Engine**: Unified production student roster CRUD and multi-step CSV dry-run preview & bulk commit engine integrated with MongoDB `User` model (`role: "STUDENT"`), complete with duplicate PRN/email protection, password safety, and audit logging.
+7. **Student Mentor Change Request Workflow**: Complete backend, database, store, and UI implementation ensuring a student's `assignedMentor` remains unchanged when a `CHANGE_PENDING` request is sent to a new mentor. Only upon explicit acceptance by the target mentor (`status: ACCEPTED`) is `User.assignedMentor` updated. Features interactive Faculty Teacher Selection Dropdowns, target teacher preview cards, request status alert badges, and a professional 8-test automated suite in [`backend/tests/test_mentor_change_workflow.js`](file:///c:/Users/HP/Desktop/project1/backend/tests/test_mentor_change_workflow.js).
 
 ---
 *Document maintained automatically. Updated for VITARA 2.0 release on GitHub.*

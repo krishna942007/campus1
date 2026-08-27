@@ -206,7 +206,8 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
   const [mentorConfirmModal, setMentorConfirmModal] = useState<any | null>(null);
   const [customMentorNote, setCustomMentorNote] = useState('');
   const [showChangeMentorModal, setShowChangeMentorModal] = useState(false);
-  const [changeReason, setChangeReason] = useState('Shift in specialization track');
+  const [selectedNewMentorId, setSelectedNewMentorId] = useState<string>('T102');
+  const [changeReason, setChangeReason] = useState('Shift in specialization track towards Cloud & DevOps');
   const [showWhySeeingInsight, setShowWhySeeingInsight] = useState(false);
 
   // 100% REAL ONLINE COURSES DYNAMICALLY MATCHED TO SELECTED CAREER GOAL & FIELD
@@ -795,32 +796,65 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
     addToast('Work Turned In', `File successfully turned in for ${selectedAssignmentModal.code}. Submitted to Prof. S. Kulkarni.`, 'success');
   };
 
-  // REQUEST MENTOR CHANGE (Persists to Shared Store)
+  // REQUEST MENTOR CHANGE (Persists to Shared Store & Backend)
   const handleRequestMentorChange = () => {
-    const changeReq: ChangeMentorRequest = {
-      id: `change-${Date.now()}`,
-      studentId: profileData.studentId,
-      studentName: profileData.name,
-      currentMentor: 'Prof. S. Kulkarni',
-      reason: changeReason,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      status: 'CHANGE_PENDING'
+    const targetMentorObj = (storeState.availableMentors || []).find((m: any) => m.id === selectedNewMentorId) || {
+      id: 'T102',
+      name: 'Prof. V. Sharma',
+      matchScore: 91
     };
 
-    const updatedRequests = storeState.mentorRequests.map((r: MentorRequest) => 
-      r.studentId === profileData.studentId ? { ...r, status: 'CHANGE_PENDING' as const } : r
-    );
+    const activeMentorName = (latestRequest?.status === 'ACCEPTED' && latestRequest?.requestedMentorName)
+      ? latestRequest.requestedMentorName
+      : (latestRequest?.previousMentorName || 'Prof. S. Kulkarni');
+
+    const newChangeReq: MentorRequest = {
+      id: `req-${Date.now()}`,
+      studentId: profileData.studentId,
+      studentName: profileData.name,
+      mentorId: targetMentorObj.id,
+      requestedMentorName: targetMentorObj.name,
+      previousMentorId: latestRequest?.mentorId || 'T101',
+      previousMentorName: activeMentorName,
+      program: 'B.Tech Engineering',
+      branch: profileData.branch,
+      semester: profileData.semester,
+      cgpa: profileData.cgpa,
+      attendancePct: profileData.attendancePct,
+      goal: profileData.targetRole,
+      goals: [profileData.targetRole, profileData.specializationTrack],
+      field: profileData.specializationTrack,
+      matchScore: targetMentorObj.matchScore || 91,
+      matchReason: `Requested mentor change: ${changeReason}`,
+      note: changeReason,
+      requestDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      status: 'CHANGE_PENDING' as const
+    };
+
+    const updatedRequests = [
+      newChangeReq,
+      ...storeState.mentorRequests.filter((r: MentorRequest) => r.studentId !== profileData.studentId)
+    ];
+
+    const newFacultyNotif = {
+      id: Date.now(),
+      category: 'Mentoring',
+      title: 'New Mentor Change Request',
+      text: `${profileData.name} requested a mentor change to you (${targetMentorObj.name}) from ${activeMentorName}.`,
+      time: 'Just now',
+      read: false
+    };
 
     const updatedStore = {
       ...storeState,
       mentorRequests: updatedRequests,
-      changeMentorRequests: [changeReq, ...storeState.changeMentorRequests]
+      facultyNotifications: [newFacultyNotif, ...(storeState.facultyNotifications || [])]
     };
 
     saveMentoringStore(updatedStore);
     setStoreState(updatedStore);
     setShowChangeMentorModal(false);
-    addToast('Change Request Submitted', 'Sent to Department Review. Existing mentor remains active.', 'info');
+    addToast('Change Request Submitted', `Sent request to ${targetMentorObj.name}. ${activeMentorName} remains your active mentor until approved.`, 'info');
   };
 
   return (
@@ -2305,7 +2339,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
         )}
       </AnimatePresence>
 
-      {/* CHANGE MENTOR DIALOG */}
+      {/* CHANGE MENTOR DIALOG WITH TEACHER DROPDOWN */}
       <AnimatePresence>
         {showChangeMentorModal && (
           <motion.div
@@ -2314,33 +2348,95 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
           >
-            <div className="bg-[#FFFDF8] rounded-3xl p-6 border border-[#E2D7C6] shadow-2xl max-w-md w-full space-y-4">
-              <h3 className="text-base font-extrabold text-[#102A43]">Change Faculty Mentor Request</h3>
-              <p className="text-xs text-[#5A6E7F]">Current Mentor: Prof. S. Kulkarni ({mentorStatus})</p>
+            <div className="bg-[#FFFDF8] rounded-3xl p-6 border border-[#E2D7C6] shadow-2xl max-w-lg w-full space-y-4">
+              <div className="flex items-center justify-between border-b border-[#E2D7C6] pb-3">
+                <h3 className="text-base font-extrabold text-[#102A43]">Request Faculty Mentor Change</h3>
+                <span className="px-2.5 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-bold">
+                  ACTIVE: {latestRequest?.requestedMentorName || 'Prof. S. Kulkarni'}
+                </span>
+              </div>
 
+              {/* CURRENT MENTOR NOTICE */}
+              <div className="p-3 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs text-[#5A6E7F]">
+                Current Active Mentor: <span className="font-extrabold text-[#102A43]">{latestRequest?.requestedMentorName || 'Prof. S. Kulkarni'}</span> (Department of Computer Engineering)
+              </div>
+
+              {/* TEACHER SELECTION DROPDOWN */}
               <div className="space-y-2 text-xs">
-                <label className="font-bold text-[#102A43]">Reason for Mentor Change:</label>
+                <label className="font-bold text-[#102A43] flex items-center justify-between">
+                  <span>Select New Target Faculty Mentor:</span>
+                  <span className="text-[#C49A52] font-semibold text-[11px]">Faculty Directory</span>
+                </label>
                 <select 
-                  value={changeReason}
-                  onChange={(e) => setChangeReason(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs"
+                  value={selectedNewMentorId}
+                  onChange={(e) => setSelectedNewMentorId(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-bold text-[#102A43] focus:outline-hidden focus:ring-2 focus:ring-[#123B63]"
                 >
-                  <option>Shift in specialization track</option>
-                  <option>Schedule mismatch</option>
-                  <option>Completed current milestone</option>
+                  {(storeState.availableMentors || []).map((mentor: any) => (
+                    <option key={mentor.id} value={mentor.id}>
+                      {mentor.name} ({mentor.designation} • {mentor.department} — {mentor.matchScore}% AI Match)
+                    </option>
+                  ))}
                 </select>
               </div>
+
+              {/* SELECTED TEACHER PREVIEW CARD */}
+              {(() => {
+                const targetTeacher = (storeState.availableMentors || []).find((m: any) => m.id === selectedNewMentorId) || storeState.availableMentors?.[1];
+                return targetTeacher ? (
+                  <div className="p-4 rounded-xl bg-[#FFFDF8] border border-[#C99632]/40 space-y-2 text-xs shadow-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-[#0C2238] text-[#E8C56B] flex items-center justify-center font-bold text-xs">
+                          {targetTeacher.name.split(' ').map((n: string) => n[0]).join('')}
+                        </div>
+                        <div>
+                          <p className="font-extrabold text-[#102A43]">{targetTeacher.name}</p>
+                          <p className="text-[11px] text-[#5A6E7F]">{targetTeacher.designation} • {targetTeacher.department}</p>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] font-extrabold text-[11px]">
+                        {targetTeacher.matchScore}% Match
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {targetTeacher.domainExpertise?.map((domain: string, idx: number) => (
+                        <span key={idx} className="px-2 py-0.5 rounded-md bg-[#F7F2E9] text-[#102A43] text-[10px] font-semibold border border-[#E2D7C6]">
+                          {domain}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null;
+              })()}
+
+              {/* REASON INPUT */}
+              <div className="space-y-1.5 text-xs">
+                <label className="font-bold text-[#102A43]">Reason for Requested Change:</label>
+                <input 
+                  type="text"
+                  value={changeReason}
+                  onChange={(e) => setChangeReason(e.target.value)}
+                  placeholder="e.g. Seeking guidance in Cloud Computing & Systems..."
+                  className="w-full p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs focus:outline-hidden focus:ring-2 focus:ring-[#123B63]"
+                />
+              </div>
+
+              {/* POLICY DISCLAIMER */}
+              <p className="text-[11px] text-[#854D0E] bg-[#FEF3C7]/60 p-2.5 rounded-xl border border-[#FDE68A]">
+                ℹ️ <strong>Business Rule:</strong> Your current assigned mentor remains active until the requested mentor explicitly approves this change request.
+              </p>
 
               <div className="flex justify-end space-x-2 pt-2 text-xs">
                 <button
                   onClick={() => setShowChangeMentorModal(false)}
-                  className="px-4 py-2 rounded-xl bg-[#E9DDC9] text-[#102A43] font-bold cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl bg-[#E9DDC9] text-[#102A43] font-bold cursor-pointer hover:bg-[#E2D7C6]"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleRequestMentorChange}
-                  className="px-5 py-2 rounded-xl bg-[#123B63] text-white font-bold cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold cursor-pointer shadow-md"
                 >
                   Submit Change Request
                 </button>

@@ -2,6 +2,10 @@ export interface MentorRequest {
   id: string;
   studentId: string;
   studentName: string;
+  mentorId?: string;
+  requestedMentorName?: string;
+  previousMentorId?: string;
+  previousMentorName?: string;
   program: string;
   branch: string;
   semester: string;
@@ -16,6 +20,16 @@ export interface MentorRequest {
   requestDate: string;
   status: 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'CHANGE_PENDING';
   declineReason?: string;
+}
+
+export interface FacultyMentorOption {
+  id: string;
+  name: string;
+  designation: string;
+  department: string;
+  domainExpertise: string[];
+  avatar: string;
+  matchScore: number;
 }
 
 export interface ChangeMentorRequest {
@@ -93,11 +107,51 @@ export interface AssignedOnlineCourse {
 const STORE_KEY = 'vit_mumbai_mentoring_store_v2';
 
 const defaultStoreState = {
+  availableMentors: [
+    {
+      id: 'T101',
+      name: 'Prof. S. Kulkarni',
+      designation: 'Professor & HOD',
+      department: 'Computer Engineering',
+      domainExpertise: ['AI / Machine Learning', 'Distributed Systems', 'Natural Language Processing'],
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+      matchScore: 96
+    },
+    {
+      id: 'T102',
+      name: 'Prof. V. Sharma',
+      designation: 'Associate Professor',
+      department: 'Computer Engineering',
+      domainExpertise: ['Cloud Computing', 'DevOps & Microservices', 'Cybersecurity'],
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      matchScore: 91
+    },
+    {
+      id: 'T103',
+      name: 'Dr. R. Mehta',
+      designation: 'Assistant Professor',
+      department: 'Data Science & AI',
+      domainExpertise: ['Data Analytics', 'Big Data Engineering', 'Computer Vision'],
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150',
+      matchScore: 88
+    },
+    {
+      id: 'T104',
+      name: 'Dr. P. Joshi',
+      designation: 'Associate Professor',
+      department: 'Information Technology',
+      domainExpertise: ['Fullstack Web Development', 'Blockchain & Web3', 'Mobile Systems'],
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+      matchScore: 84
+    }
+  ] as FacultyMentorOption[],
   mentorRequests: [
     {
       id: 'req-101',
       studentId: '2023CSE001',
       studentName: 'Krishna Singh',
+      mentorId: 'T101',
+      requestedMentorName: 'Prof. S. Kulkarni',
       program: 'B.Tech Engineering',
       branch: 'Computer Engineering & AI',
       semester: 'Semester IV',
