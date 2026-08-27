@@ -1,4 +1,4 @@
-# 🧠 VITARA / VIT Mumbai 2.0 — Comprehensive Project Brain (`brain.md`)
+# 🧠 Campus 1 / VIT Mumbai Platform — Comprehensive Project Brain (`brain.md`)
 
 > **Master Technical Knowledge Base & Architectural Blueprint**
 > 
@@ -8,12 +8,12 @@
 
 ## 📌 1. Project Overview & Vision
 
-**VITARA** (Vidyalankar Institute of Technology Academic & Career Acceleration Platform) is a unified, next-generation AI-powered institutional ecosystem built for **VIT Mumbai**. 
+**Campus 1** is a unified, next-generation AI-powered institutional ecosystem built for **VIT Mumbai**. 
 
 ### 🎯 Core Problem & Purpose
 Traditional college ERP systems are fragmented: attendance is disconnected from academic mentoring, career roadmaps lack real-time skill-gap analysis, and institutional knowledge (ordinances, syllabi, exam rules) is scattered across static PDFs. 
 
-VITARA unifies:
+Campus 1 unifies:
 1. **Academic ERP & Attendance Monitoring**: Live tracking with 75% statutory compliance warnings and makeup schedule calculators.
 2. **AI-Powered Faculty Mentorship Engine**: Automated student-mentor compatibility matching (40% goals, 25% domain, 10% course, 10% dept), meeting scheduling, and structured feedback loops.
 3. **Institutional RAG Knowledge Base**: Grounded Gemini 2.0 / RAG search over autonomous college ordinances, credit regulations, and placement policies.
@@ -291,4 +291,4 @@ The project is fully build-ready and pre-configured for one-click deployment acr
 7. **Student Mentor Change Request Workflow**: Complete backend, database, store, and UI implementation ensuring a student's `assignedMentor` remains unchanged when a `CHANGE_PENDING` request is sent to a new mentor. Only upon explicit acceptance by the target mentor (`status: ACCEPTED`) is `User.assignedMentor` updated. Features interactive Faculty Teacher Selection Dropdowns, target teacher preview cards, request status alert badges, and a professional 8-test automated suite in [`backend/tests/test_mentor_change_workflow.js`](file:///c:/Users/HP/Desktop/project1/backend/tests/test_mentor_change_workflow.js).
 
 ---
-*Document maintained automatically. Updated for VITARA 2.0 release on GitHub.*
+*Document maintained automatically. Updated for Campus 1 release on GitHub.*

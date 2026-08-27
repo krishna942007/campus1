@@ -17,5 +17,5 @@ app.use('/api/health', healthRouter);
 app.use('/api/mentoring', mentoringRouter);
 
 app.listen(PORT, () => {
-  console.log(`🚀 VITARA Backend Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Campus 1 Backend Server running on http://localhost:${PORT}`);
 });

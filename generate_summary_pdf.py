@@ -57,7 +57,7 @@ class NumberedCanvas(canvas.Canvas):
             
             self.setFont("Helvetica-Bold", 7.5)
             self.setFillColor(NAVY_PRIMARY)
-            self.drawString(32, 760, "VITARA 2.0  •  VIT Mumbai Academic & Career Acceleration Platform")
+            self.drawString(32, 760, "Campus 1  •  VIT Mumbai Academic & Career Acceleration Platform")
             
             self.setFont("Helvetica", 7.5)
             self.setFillColor(MUTED_TEXT)
@@ -221,7 +221,7 @@ def build_pdf(filename="VITARA_Project_Summary_Draft.pdf"):
     # ==========================
     banner_data = [
         [
-            Paragraph("<b>VITARA 2.0 -- Executive Summary &amp; Feature Brief</b>", title_style),
+            Paragraph("<b>Campus 1 -- Executive Summary &amp; Feature Brief</b>", title_style),
             Paragraph("<b>STATUS: LIVE v2.0</b>", badge_style)
         ],
         [

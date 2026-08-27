@@ -2612,7 +2612,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
               <div className="flex items-center space-x-2.5">
                 <Sparkles className="w-5 h-5 text-[#F5C056]" />
                 <div>
-                  <h3 className="text-sm font-bold text-white">VITARA AI Academic Advisor</h3>
+                  <h3 className="text-sm font-bold text-white">Campus 1 AI Academic Advisor</h3>
                   <p className="text-[10px] text-slate-300">Context-Aware RAG Engine</p>
                 </div>
               </div>
@@ -2681,7 +2681,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                 <div className="relative z-10">
                   <div className="flex items-center space-x-2 text-[#E8C56B] text-xs font-bold uppercase tracking-wider mb-1">
                     <Sparkles className="w-4 h-4" />
-                    <span>VITARA Student Onboarding & Career Roadmap</span>
+                    <span>Campus 1 Student Onboarding & Career Roadmap</span>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-extrabold text-white">
                     {onboardingStep === 1 && "Confirm Your Academic Profile"}

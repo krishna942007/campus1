@@ -2762,7 +2762,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
               <div className="flex items-center space-x-2.5">
                 <Sparkles className="w-5 h-5 text-[#F5C056]" />
                 <div>
-                  <h3 className="text-sm font-bold text-white">VITARA AI Admin Operations Assistant</h3>
+                  <h3 className="text-sm font-bold text-white">Campus 1 AI Admin Operations Assistant</h3>
                   <p className="text-[10px] text-slate-300">Institutional Governance & System Telemetry</p>
                 </div>
               </div>

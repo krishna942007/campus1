@@ -62,7 +62,7 @@ export const AIAssistantSection: React.FC = () => {
                 <Bot className="w-6 h-6 text-[#E8C56B]" />
               </div>
               <div>
-                <h3 className="text-xl font-extrabold text-white tracking-tight font-display">VITARA AI Assistant</h3>
+                <h3 className="text-xl font-extrabold text-white tracking-tight font-display">Campus 1 AI Assistant</h3>
                 <span className="text-xs text-[#E8C56B] font-bold tracking-wide">STUDENT CONTEXT: KRISHNA SINGH (2023CSE001)</span>
               </div>
             </div>

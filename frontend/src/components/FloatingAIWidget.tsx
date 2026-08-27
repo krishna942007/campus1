@@ -7,7 +7,7 @@ export const FloatingAIWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: 'AI', text: 'Hi! I am VITARA AI. Ask me anything about syllabus, attendance criteria, faculty mentors, or career roadmaps!' }
+    { sender: 'AI', text: 'Hi! I am Campus 1 AI. Ask me anything about syllabus, attendance criteria, faculty mentors, or career roadmaps!' }
   ]);
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
@@ -54,7 +54,7 @@ export const FloatingAIWidget: React.FC = () => {
       if (!responseText) {
         const q = textToSend.toLowerCase().trim();
         if (q === 'hi' || q === 'hello' || q === 'hey') {
-          responseText = `Hello! 👋 I am your VITARA AI Academic Copilot. How can I help you today? Feel free to ask about your courses, attendance requirements, syllabus, faculty mentors, or career roadmaps!`;
+          responseText = `Hello! 👋 I am your Campus 1 AI Academic Copilot. How can I help you today? Feel free to ask about your courses, attendance requirements, syllabus, faculty mentors, or career roadmaps!`;
         } else if (q.includes('attendance') || q.includes('rule') || q.includes('criteria')) {
           responseText = 'Under VIT Autonomous Ordinance 4.2, students must maintain a minimum of 75% attendance in every course. Students between 65%-74% require Dean approval for medical/extenuating reasons.';
         } else if (q.includes('mentor') || q.includes('faculty') || q.includes('kulkarni')) {
@@ -101,7 +101,7 @@ export const FloatingAIWidget: React.FC = () => {
 
           {/* Quick Tooltip */}
           <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl bg-[#0C2238]/90 backdrop-blur-md text-white text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg border border-[#C99632]/30">
-            ✦ VITARA AI • Drag anywhere
+            ✦ Campus 1 AI • Drag anywhere
           </div>
         </div>
       </motion.div>
@@ -128,7 +128,7 @@ export const FloatingAIWidget: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-xs font-black text-white tracking-tight flex items-center space-x-1.5">
-                    <span>VITARA AI Copilot</span>
+                    <span>Campus 1 AI Copilot</span>
                     <span className="px-1.5 py-0.2 rounded-full bg-[#159A72] text-[9px] font-bold text-white">RAG Active</span>
                   </h3>
                   <p className="text-[9px] text-slate-300 font-medium">VIT Mumbai Academic Knowledge</p>

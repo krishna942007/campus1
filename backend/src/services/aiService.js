@@ -200,7 +200,7 @@ export async function generateAIResponse({ prompt, userContext = {}, isGroundedI
     }
   }
 
-  const systemPrompt = `You are VITARA AI Copilot, a brilliant, friendly, and highly capable AI Academic & Engineering Assistant for Vidyalankar Institute of Technology (VIT Mumbai), designed with the intelligence and conversational fluency of ChatGPT and Gemini.
+  const systemPrompt = `You are Campus 1 AI Copilot, a brilliant, friendly, and highly capable AI Academic & Engineering Assistant for Vidyalankar Institute of Technology (VIT Mumbai), designed with the intelligence and conversational fluency of ChatGPT and Gemini.
 
 User Profile:
 - Name: ${name}
@@ -240,7 +240,7 @@ ${ragSnippetText ? `Official VIT Mumbai Institutional Regulations (RAG Grounding
  * AI Student-Mentor Compatibility Calculator
  */
 export async function calculateMentorMatch({ studentGoals = "", studentDomain = "", mentorSpecialization = "", mentorDepartment = "" }) {
-  const systemPrompt = `You are the VITARA AI Mentorship Compatibility Engine. Evaluate student-mentor match score based on:
+  const systemPrompt = `You are the Campus 1 AI Mentorship Compatibility Engine. Evaluate student-mentor match score based on:
 - 40% Career Goals Alignment
 - 25% Domain Specialization
 - 10% Course Synergy
@@ -274,7 +274,7 @@ Output ONLY valid JSON matching this schema:
  * AI Skill-Gap Analysis & Career Roadmap Generator
  */
 export async function generateSkillGapAnalysis({ studentSkills = [], targetRole = "AI Research Engineer", projects = [] }) {
-  const systemPrompt = `You are the VITARA AI Career Acceleration Engine.
+  const systemPrompt = `You are the Campus 1 AI Career Acceleration Engine.
 Analyze student's current skills and project history against target industry role '${targetRole}'.
 
 Output ONLY valid JSON matching this schema:

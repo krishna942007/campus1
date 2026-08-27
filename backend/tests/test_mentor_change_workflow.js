@@ -1,6 +1,6 @@
 /**
  * ====================================================================================
- * VITARA 2.0 — Student Mentor Change Request Controller Integration Test Suite
+ * Campus 1 — Student Mentor Change Request Controller Integration Test Suite
  * ====================================================================================
  * 
  * Description:
@@ -125,7 +125,7 @@ function logTest(testNum, title, passed, details) {
 }
 
 async function runTestSuite() {
-  logHeader("VITARA 2.0 — Controller Integration Test Suite");
+  logHeader("Campus 1 — Controller Integration Test Suite");
 
   try {
     console.log("Connecting to MongoDB Database...");

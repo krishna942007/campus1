@@ -117,7 +117,7 @@ export const StudentDashboardStory: React.FC = () => {
               {/* Centered URL Address Pill */}
               <div className="px-5 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-mono text-slate-200 flex items-center space-x-2 shadow-inner hidden sm:flex">
                 <Lock className="w-3 h-3 text-emerald-400" />
-                <span className="text-[#E8C56B]">https://vitara.edu/student-app/dashboard</span>
+                <span className="text-[#E8C56B]">https://campus1.edu/student-app/dashboard</span>
               </div>
 
               <div className="flex items-center space-x-3">
