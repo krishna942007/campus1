@@ -624,7 +624,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
     }, 650);
   };
 
-  const pendingRequestsCount = storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING').length;
+  const pendingRequestsCount = storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').length;
 
   return (
     <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
@@ -907,15 +907,27 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
                       </span>
                     </div>
 
-                    {storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING').length === 0 ? (
+                    {storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').length === 0 ? (
                       <div className="p-6 bg-[#F7F4EE]/70 rounded-2xl border border-dashed border-[#0C2238]/10 text-center space-y-1">
                         <CheckCircle2 className="w-6 h-6 text-[#159A72] mx-auto mb-1" />
                         <p className="text-xs font-bold text-[#10253A]">All Applications Processed</p>
                         <p className="text-[11px] text-[#627083]">No pending student mentorship requests in queue.</p>
                       </div>
                     ) : (
-                      storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING').map((req: MentorRequest) => (
+                      storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').map((req: MentorRequest) => (
                         <div key={req.id} className="p-5 rounded-2xl bg-[#F7F4EE] border border-[#0C2238]/08 space-y-3.5 hover:border-[#C99632]/40 transition-colors">
+                          {/* CHANGE REQUEST BADGER */}
+                          {req.status === 'CHANGE_PENDING' && (
+                            <div className="px-3 py-1.5 rounded-xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-between text-xs text-[#854D0E] font-extrabold">
+                              <span className="flex items-center space-x-1.5">
+                                <span>🔄 MENTOR CHANGE REQUEST</span>
+                              </span>
+                              <span className="text-[11px] text-[#A16207]">
+                                Previous: {req.previousMentorName || 'Prof. S. Kulkarni'} ➔ Requested: {req.requestedMentorName || 'You'}
+                              </span>
+                            </div>
+                          )}
+
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-3">
                               <div className="w-10 h-10 rounded-xl bg-[#0C2238] text-[#E8C56B] flex items-center justify-center font-bold text-xs shadow-xs">
@@ -949,13 +961,13 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
                               onClick={() => setDeclineModal(req)}
                               className="px-4 py-2 rounded-xl bg-[#EFE7D8] hover:bg-[#E2D7C6] text-[#10253A] font-extrabold text-xs cursor-pointer transition-colors"
                             >
-                              Decline
+                              {req.status === 'CHANGE_PENDING' ? 'Decline Change' : 'Decline'}
                             </button>
                             <button
                               onClick={() => setAcceptConfirmModal(req)}
                               className="px-5 py-2 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center space-x-1.5"
                             >
-                              <span>Accept Mentee</span>
+                              <span>{req.status === 'CHANGE_PENDING' ? 'Accept Mentor Change' : 'Accept Mentee'}</span>
                               <ChevronRight className="w-3.5 h-3.5 text-[#E8C56B]" />
                             </button>
                           </div>

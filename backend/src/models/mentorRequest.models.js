@@ -12,6 +12,11 @@ const mentorRequestSchema = new Schema(
       ref: "User",
       required: true,
     },
+    previousMentor: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
     matchScore: {
       type: Number,
       default: 85,

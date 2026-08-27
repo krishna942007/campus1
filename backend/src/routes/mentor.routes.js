@@ -3,6 +3,7 @@ import {
   createMentorRequest,
   getMentorRequests,
   respondMentorRequest,
+  getAllMentors,
   assignOnlineCourse,
   getAssignedCourses,
   scheduleMeeting,
@@ -15,6 +16,7 @@ const router = Router();
 // All routes require authentication
 router.use(verifyJWT);
 
+router.route("/all").get(getAllMentors);
 router.route("/request").post(createMentorRequest).get(getMentorRequests);
 router.route("/request/:requestId/respond").patch(respondMentorRequest);
 router.route("/assign-course").post(assignOnlineCourse).get(getAssignedCourses);
