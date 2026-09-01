@@ -281,6 +281,7 @@ The project is fully build-ready and pre-configured for one-click deployment acr
 3. **Per-Account First-Login Onboarding**: Interactive multi-step setup modals for Students (career vision, specialization track, target milestones & AI roadmap) and Teachers (designation, semesters taught, research domains & office hours).
 4. **Authentic Personalized Academic Metrics**: Dynamically calculated CGPA trajectory curves, subject attendance ratios, and avatar initials tailored per individual student account.
 5. **Goal-Adaptive Course Recommendation Matrix**: Dynamic curriculum matching verified real university courses (Stanford, Harvard, MIT, Helsinki, Google, AWS) to each student's chosen technical specialization track.
+6. **ThreeUI Bestsellers Book Showcase Integration & High-Fidelity Rendering**: Integrated `<BestsellersBookShowcase />` (`public/landing-pages/bestsellers-book-showcase.html`) right after the interactive sketchbook section on the landing page. Refined camera perspective (`fov: 28`), viewport-adaptive responsive sizing (`h-[88vh] min-h-[720px] max-h-[960px]`), crisp serif typography, unclipped book geometry (Codex, Claude Code, Cursor), and fully interactive 3D field notes inspection.
 
 ---
 *Document maintained automatically. Updated for VITARA 2.0 release on GitHub.*
