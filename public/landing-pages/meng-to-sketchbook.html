@@ -47,12 +47,12 @@ button{font:inherit}
 /* the painted ground the whole page sits on */
 .wash{
   position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:url(meng-to-sketchbook/bg-wash.jpg) center top / cover no-repeat;
-  opacity:.85;
+  background:radial-gradient(circle at 50% 35%, #f4efe4 0%, #ece7dc 70%, #e4dfd3 100%);
+  opacity:1;
 }
 .wash:after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(236,231,220,.25) 0%,rgba(236,231,220,.72) 58%,var(--paper) 88%);
+  background:linear-gradient(180deg,rgba(236,231,220,.1) 0%,rgba(236,231,220,.4) 58%,var(--paper) 88%);
 }
 
 /* ---------------- top bar ---------------- */
@@ -102,13 +102,7 @@ button{font:inherit}
   padding:clamp(64px,7.5vh,85px) clamp(16px,2vw,32px) clamp(16px,2vh,28px);
   overflow:hidden;
 }
-.botany{
-  position:absolute;bottom:0;width:clamp(120px,15vw,250px);opacity:.5;
-  pointer-events:none;user-select:none;z-index:0;
-}
-.botany.l{left:clamp(-40px,-1vw,0px);bottom:2%}
-.botany.r{right:clamp(-30px,0vw,10px);bottom:-2%;width:clamp(100px,12vw,200px)}
-@media (max-width:900px){.botany{display:none}}
+
 
 .hero-kicker{
   font-size:12px;font-weight:400;letter-spacing:var(--track-caps);text-align:center;
@@ -410,17 +404,12 @@ button{font:inherit}
 .about{
   position:relative;max-width:1080px;margin:0 auto;
   padding:0 clamp(20px,5vw,48px);
-  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,60px);align-items:start;
+  display:block;
 }
-.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:56ch}
+.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:68ch}
 .bio-link{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(43,39,33,.28);
   text-underline-offset:4px;transition:text-decoration-color .2s}
 .bio-link:hover{text-decoration-color:var(--ink)}
-.bloom{width:clamp(150px,17vw,260px);opacity:.9;user-select:none;align-self:center}
-@media (max-width:760px){
-  .about{grid-template-columns:1fr}
-  .bloom{width:170px;justify-self:center}
-}
 
 .plates{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
 .plate-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline)}
@@ -461,8 +450,6 @@ button{font:inherit}
 
   <div id="contentSlider" style="will-change:transform;">
     <section id="sketchbook" class="hero">
-      <img class="botany l" src="meng-to-sketchbook/botany-left.png" alt="" aria-hidden="true">
-      <img class="botany r" src="meng-to-sketchbook/botany-right.png" alt="" aria-hidden="true">
 
       <p class="hero-kicker">AI Academic & Career Acceleration Platform / Vidyalankar Institute of Technology @ Wadala, Mumbai</p>
 
@@ -515,7 +502,6 @@ button{font:inherit}
         <p class="section-label">About VITARA</p>
         <p class="bio">VITARA (Vidyalankar Institute of Technology Academic & Career Acceleration Platform) is a unified, next-generation AI-powered institutional ecosystem built for <a class="bio-link" href="#">VIT Mumbai</a>. It unifies live attendance tracking with safe-to-miss lecture calculators, an automated student-mentor compatibility matching engine, grounded Gemini 2.0 RAG search over autonomous college regulations, and milestone-based technical career roadmaps.</p>
       </div>
-      <img class="bloom" src="meng-to-sketchbook/bloom.png" alt="" aria-hidden="true">
     </section>
 
     <div class="rule short" aria-hidden="true"></div>
