@@ -29,6 +29,10 @@ public/campus/
 public/images/
 public/*.jpg
 public/*.png
+!public/bg.png
+!frontend/public/bg.png
 scratch/
 *.docx
 srs_full_text.txt
+ACCOUNTS_AND_PASSWORDS.txt
+SIMPLE_ACCOUNTS.txt

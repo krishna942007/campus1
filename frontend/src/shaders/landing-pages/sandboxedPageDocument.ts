@@ -1,0 +1,1 @@
+export const buildSandboxedPageDocument = (source: string, options?: any) => '';

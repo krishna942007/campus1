@@ -1,0 +1,1 @@
+export declare const buildMeridianDocument: (variant?: any, presentation?: any) => string;
