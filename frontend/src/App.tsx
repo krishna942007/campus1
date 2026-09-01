@@ -7,9 +7,11 @@ import { PlatformPreviewSection } from './components/PlatformPreviewSection';
 import { StudentCommunitySection } from './components/StudentCommunitySection';
 
 import { StudentDashboardStory } from './components/StudentDashboardStory';
+import { StudentDigitalTwinSection } from './components/StudentDigitalTwinSection';
 import { AIAssistantSection } from './components/AIAssistantSection';
 import { LearningRoadmapSection } from './components/LearningRoadmapSection';
 import { SkillGapSection } from './components/SkillGapSection';
+import { WeeklyPlanSection } from './components/WeeklyPlanSection';
 import { ToastNotification, ToastMessage } from './components/ToastNotification';
 import { FloatingAIWidget } from './components/FloatingAIWidget';
 import { MentoringSection } from './components/MentoringSection';
@@ -25,6 +27,7 @@ import { AdminPortal } from './components/AdminPortal';
 
 export function App() {
   const [loginRole, setLoginRole] = useState<'STUDENT' | 'MENTOR' | 'ADMIN'>('STUDENT');
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [activeView, setActiveView] = useState<'LANDING' | 'LOGIN' | 'STUDENT' | 'MENTOR' | 'ADMIN'>(() => {
     const path = window.location.pathname;
     if (path.startsWith('/login')) return 'LOGIN';
@@ -33,6 +36,28 @@ export function App() {
     if (path.startsWith('/admin')) return 'ADMIN';
     return 'LANDING';
   });
+
+  useEffect(() => {
+    const handleToastEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<ToastMessage>;
+      if (customEvent.detail) {
+        const newToast: ToastMessage = {
+          id: Date.now().toString(),
+          type: customEvent.detail.type || 'success',
+          title: customEvent.detail.title,
+          message: customEvent.detail.message,
+        };
+        setToasts((prev) => [...prev, newToast]);
+      }
+    };
+
+    window.addEventListener('campus-toast', handleToastEvent);
+    return () => window.removeEventListener('campus-toast', handleToastEvent);
+  }, []);
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   useEffect(() => {
     const handlePopState = () => {
@@ -115,6 +140,11 @@ export function App() {
                 <MengToSketchbookSection />
               </div>
 
+              {/* Section 4.8: Flagship Student Digital Twin Visualization */}
+              <div id="digital-twin">
+                <StudentDigitalTwinSection />
+              </div>
+
               {/* Section 5: Student Profile Story */}
               <div id="dashboard">
                 <StudentDashboardStory />
@@ -129,6 +159,7 @@ export function App() {
               <div id="roadmap">
                 <LearningRoadmapSection />
                 <SkillGapSection />
+                <WeeklyPlanSection />
               </div>
 
               {/* Section 8: Faculty Mentoring */}
@@ -210,6 +241,9 @@ export function App() {
 
       {/* Global Movable Floating AI Circle Widget */}
       <FloatingAIWidget />
+
+      {/* Global Toast Notification Container */}
+      <ToastNotification toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 }
