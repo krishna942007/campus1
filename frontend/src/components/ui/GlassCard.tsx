@@ -31,7 +31,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative overflow-hidden rounded-3xl bg-[#FFFCF8]/90 backdrop-blur-md border border-[#0C2238]/10 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-[#C99632]/35 hover:shadow-xl ${className}`}
+      className={`relative overflow-hidden rounded-3xl bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 transition-all duration-300 hover:-translate-y-1.5 hover:bg-[#FFFFFF]/25 hover:border-[#C99632]/35 ${className}`}
     >
       {/* Subtle Mouse-Following Radial Spotlight */}
       {enableSpotlight && isHovered && (

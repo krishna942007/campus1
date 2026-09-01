@@ -78,6 +78,10 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid user credentials");
   }
 
+  if (user.status === "INACTIVE") {
+    throw new ApiError(403, "Account deactivated. Contact college administrator.");
+  }
+
   const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(
     user._id
   );

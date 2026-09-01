@@ -18,3 +18,31 @@ api.interceptors.response.use(
     return Promise.reject(new Error(message));
   }
 );
+
+// Admin Student Data Management API Calls
+export const studentAdminApi = {
+  getStudents: (params?: { search?: string; department?: string; semester?: string; status?: string; page?: number; limit?: number }) =>
+    api.get('/admin/students', { params }),
+
+  getStudentById: (id: string) =>
+    api.get(`/admin/students/${id}`),
+
+  createStudent: (data: any) =>
+    api.post('/admin/students', data),
+
+  updateStudent: (id: string, data: any) =>
+    api.put(`/admin/students/${id}`, data),
+
+  updateStatus: (id: string, status: 'ACTIVE' | 'INACTIVE') =>
+    api.patch(`/admin/students/${id}/status`, { status }),
+
+  deleteStudent: (id: string) =>
+    api.delete(`/admin/students/${id}`),
+
+  previewImport: (rows: any[]) =>
+    api.post('/admin/students/import-preview', { rows }),
+
+  commitImport: (rows: any[]) =>
+    api.post('/admin/students/import-commit', { rows }),
+};
+
