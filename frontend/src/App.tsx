@@ -16,6 +16,7 @@ import { MentoringSection } from './components/MentoringSection';
 import { AcademicAttendanceSection } from './components/AcademicAttendanceSection';
 import { VITKnowledgeRAG } from './components/VITKnowledgeRAG';
 import { MengToSketchbookSection } from './components/MengToSketchbookSection';
+import { BestsellersBookShowcaseSection } from './components/BestsellersBookShowcaseSection';
 import { ProductFooter } from './components/ProductFooter';
 
 import { LoginPage } from './components/LoginPage';
@@ -113,6 +114,11 @@ export function App() {
               {/* Section 4.5: Meng To Sketchbook Interactive Portfolio */}
               <div id="sketchbook">
                 <MengToSketchbookSection />
+              </div>
+
+              {/* Section 4.6: Field Manuals Bestsellers Book Showcase */}
+              <div id="bestsellers-showcase">
+                <BestsellersBookShowcaseSection />
               </div>
 
               {/* Section 5: Student Profile Story */}
