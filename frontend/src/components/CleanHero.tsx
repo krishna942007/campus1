@@ -1,88 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play, Shield, Sparkles, GraduationCap, Users, BarChart3, Bell, ChevronDown, Zap, Target, Cpu } from 'lucide-react';
+import { ArrowRight, Play, Shield, Sparkles, GraduationCap, Users, BarChart3, Bell } from 'lucide-react';
 
 interface CleanHeroProps {
   onSelectRole: (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => void;
 }
 
-export interface CareerGoalProfile {
-  id: string;
-  title: string;
-  readiness: number;
-  alignment: number;
-  nextAction: string;
-  focusSkills: string[];
-}
-
-export const CAREER_PROFILES: Record<string, CareerGoalProfile> = {
-  'AI Research Engineer': {
-    id: 'ai-research',
-    title: 'AI Research Engineer',
-    readiness: 74,
-    alignment: 68,
-    nextAction: 'Complete PyTorch Module 3',
-    focusSkills: ['PyTorch', 'Transformers', 'Math for AI']
-  },
-  'ML Engineer': {
-    id: 'ml-engineer',
-    title: 'ML Engineer',
-    readiness: 82,
-    alignment: 79,
-    nextAction: 'Strengthen System Design',
-    focusSkills: ['MLOps', 'System Design', 'Scikit-Learn']
-  },
-  'Software Engineer': {
-    id: 'software-engineer',
-    title: 'Software Engineer',
-    readiness: 86,
-    alignment: 84,
-    nextAction: 'Complete DSA Practice Set',
-    focusSkills: ['Algorithms', 'TypeScript', 'Distributed Systems']
-  },
-  'Data Scientist': {
-    id: 'data-scientist',
-    title: 'Data Scientist',
-    readiness: 78,
-    alignment: 73,
-    nextAction: 'Complete SQL + Statistics module',
-    focusSkills: ['SQL', 'Inferential Stats', 'Pandas']
-  }
-};
-
-const AnimatedNumber: React.FC<{ value: number }> = ({ value }) => {
-  const [displayValue, setDisplayValue] = useState(value);
-
-  useEffect(() => {
-    let start = displayValue;
-    let end = value;
-    if (start === end) return;
-    let duration = 600;
-    let startTime: number | null = null;
-
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const current = Math.floor(start + (end - start) * progress);
-      setDisplayValue(current);
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
-    };
-
-    const animId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animId);
-  }, [value]);
-
-  return <span>{displayValue}%</span>;
-};
-
 export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-  const [selectedGoalKey, setSelectedGoalKey] = useState<string>('AI Research Engineer');
-  const [isCalculating, setIsCalculating] = useState(false);
-
-  const profile = CAREER_PROFILES[selectedGoalKey] || CAREER_PROFILES['AI Research Engineer'];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -94,51 +19,6 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
 
   const handleMouseLeave = () => {
     setMouseOffset({ x: 0, y: 0 });
-  };
-
-  const handleCareerGoalChange = (newGoalKey: string) => {
-    if (newGoalKey === selectedGoalKey) return;
-    setIsCalculating(true);
-    setSelectedGoalKey(newGoalKey);
-
-    const newProfile = CAREER_PROFILES[newGoalKey];
-    window.dispatchEvent(
-      new CustomEvent('career-goal-changed', {
-        detail: { goal: newGoalKey, profile: newProfile }
-      })
-    );
-
-    setTimeout(() => {
-      setIsCalculating(false);
-    }, 600);
-  };
-
-  const handleStartJourney = () => {
-    const target = document.getElementById('dashboard');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-      target.classList.add('ring-4', 'ring-[#C99632]/50', 'transition-all', 'duration-500');
-      setTimeout(() => {
-        target.classList.remove('ring-4', 'ring-[#C99632]/50');
-      }, 2000);
-    }
-    window.dispatchEvent(
-      new CustomEvent('campus-toast', {
-        detail: {
-          title: 'Personalized Journey Ready',
-          message: `Your customized pathway for ${profile.title} is now active.`,
-          type: 'success'
-        }
-      })
-    );
-  };
-
-  const handleExplorePlatform = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const target = document.getElementById('features') || document.getElementById('ai-assistant');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   return (
@@ -222,26 +102,21 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
             transition={{ duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-wrap items-center gap-4 pt-2"
           >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleStartJourney}
-              className="inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-[#0C2238] hover:bg-[#07182A] text-white font-bold text-sm shadow-xl hover:shadow-2xl transition-all group cursor-pointer"
+            <button
+              onClick={() => onSelectRole('STUDENT')}
+              className="inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-[#0C2238] hover:bg-[#07182A] text-white font-bold text-sm shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 transition-all group cursor-pointer"
             >
               <span>Start Your Journey</span>
               <ArrowRight className="w-4 h-4 text-[#E8C56B] group-hover:translate-x-1.5 transition-transform duration-200" />
-            </motion.button>
+            </button>
 
-            <motion.a
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <a
               href="#features"
-              onClick={handleExplorePlatform}
-              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-full bg-[#FFFCF7]/40 backdrop-blur-xl hover:bg-[#FFFCF7]/65 text-[#10253A] font-bold text-sm border border-[#0C2238]/10 shadow-sm hover:shadow-md transition-all cursor-pointer"
+              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-full bg-[#FFFCF7]/90 backdrop-blur-md hover:bg-[#FFFCF7] text-[#10253A] font-bold text-sm border border-[#0C2238]/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 fill-[#10253A] text-[#10253A]" />
               <span>Explore Platform</span>
-            </motion.a>
+            </a>
           </motion.div>
 
           {/* Trust Social Proof Badges */}
@@ -288,131 +163,8 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
 
         </div>
 
-        {/* Right Column: Interactive Live Student Intelligence Preview */}
-        <motion.div 
-          initial={{ opacity: 0, y: 25, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-5 w-full z-20 py-2"
-        >
-          <div className="relative group rounded-3xl bg-[#FFFCF7]/85 backdrop-blur-xl border border-[#0C2238]/12 shadow-[0_20px_50px_rgba(12,34,56,0.12)] p-6 sm:p-7 space-y-5 overflow-hidden transition-all duration-300 hover:border-[#C99632]/40">
-            
-            {/* Subtle top ambient glow */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-[#C99632]/10 via-[#0C2238]/5 to-transparent rounded-bl-full pointer-events-none" />
-
-            {/* Header Pill & Live AI Status */}
-            <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-4">
-              <div className="flex items-center space-x-2">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#159A72] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#159A72]"></span>
-                </span>
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#10253A]">
-                  CURRENT STUDENT STATE
-                </span>
-              </div>
-              
-              <div className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#0C2238]/06 border border-[#0C2238]/10 text-[10px] font-bold text-[#0C2238]">
-                <Sparkles className="w-3 h-3 text-[#C99632]" />
-                <span>Real-time Engine</span>
-              </div>
-            </div>
-
-            {/* Career Goal Dropdown */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label htmlFor="hero-career-select" className="text-xs font-bold text-[#627083]">
-                  Career Goal
-                </label>
-                {isCalculating && (
-                  <span className="text-[10px] font-semibold text-[#C99632] animate-pulse">
-                    AI recalculating readiness...
-                  </span>
-                )}
-              </div>
-              <div className="relative">
-                <select
-                  id="hero-career-select"
-                  value={selectedGoalKey}
-                  onChange={(e) => handleCareerGoalChange(e.target.value)}
-                  className="w-full appearance-none px-4 py-3 rounded-2xl bg-[#F7F4EE] border border-[#0C2238]/15 text-sm font-extrabold text-[#10253A] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C99632] focus:border-transparent transition-all pr-10 hover:border-[#0C2238]/30 shadow-2xs"
-                >
-                  {Object.keys(CAREER_PROFILES).map((key) => (
-                    <option key={key} value={key} className="bg-white text-[#10253A] font-semibold py-2">
-                      {key}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="w-4 h-4 text-[#0C2238] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Progress Bars Container */}
-            <div className={`space-y-4 transition-opacity duration-300 ${isCalculating ? 'opacity-50' : 'opacity-100'}`}>
-              
-              {/* Career Readiness */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-bold text-[#10253A]">
-                  <span className="flex items-center space-x-1.5">
-                    <Target className="w-3.5 h-3.5 text-[#C99632]" />
-                    <span>Career Readiness</span>
-                  </span>
-                  <span className="font-extrabold text-[#0C2238]">
-                    <AnimatedNumber value={profile.readiness} />
-                  </span>
-                </div>
-                <div className="w-full h-2.5 rounded-full bg-[#EFE7D8] overflow-hidden p-0.5 border border-[#0C2238]/06">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${profile.readiness}%` }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full rounded-full bg-gradient-to-r from-[#0C2238] via-[#123B63] to-[#C99632] shadow-xs"
-                  />
-                </div>
-              </div>
-
-              {/* Skill Alignment */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-bold text-[#10253A]">
-                  <span className="flex items-center space-x-1.5">
-                    <Cpu className="w-3.5 h-3.5 text-[#244F7D]" />
-                    <span>Skill Alignment</span>
-                  </span>
-                  <span className="font-extrabold text-[#0C2238]">
-                    <AnimatedNumber value={profile.alignment} />
-                  </span>
-                </div>
-                <div className="w-full h-2.5 rounded-full bg-[#EFE7D8] overflow-hidden p-0.5 border border-[#0C2238]/06">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${profile.alignment}%` }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full rounded-full bg-gradient-to-r from-[#244F7D] to-[#159A72] shadow-xs"
-                  />
-                </div>
-              </div>
-
-            </div>
-
-            {/* Next Best Action Pill */}
-            <div className="pt-2 border-t border-[#0C2238]/08">
-              <div className="p-3.5 rounded-2xl bg-[#0C2238]/05 border border-[#0C2238]/10 flex items-start space-x-3 transition-all hover:bg-[#0C2238]/08">
-                <div className="w-7 h-7 rounded-xl bg-[#0C2238] text-[#E8C56B] flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
-                  <Zap className="w-3.5 h-3.5 fill-[#E8C56B]" />
-                </div>
-                <div className="space-y-0.5 min-w-0">
-                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-                    Next Best Action
-                  </p>
-                  <p className="text-xs font-bold text-[#10253A] truncate flex items-center space-x-1">
-                    <span>→ {profile.nextAction}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </motion.div>
+        {/* Right Column: Open space showing background artwork with subtle parallax */}
+        <div className="lg:col-span-5 min-h-[380px] pointer-events-none" />
 
       </div>
 
@@ -490,4 +242,3 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
     </section>
   );
 };
-
