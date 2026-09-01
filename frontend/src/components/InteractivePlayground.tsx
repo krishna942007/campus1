@@ -103,7 +103,7 @@ export const InteractivePlayground: React.FC = () => {
     setTimeout(() => {
       setIsSearchingRag(false);
       setRagResponse({
-        answer: `VITARA RAG Engine processed "${ragQuery}". According to official Vidyalankar Institute regulations, students must complete at least 2 honors credits or 1 industry internship by Sem 6 to qualify for top-tier AI lab access.`,
+        answer: `Campus 1 RAG Engine processed "${ragQuery}". According to official Vidyalankar Institute regulations, students must complete at least 2 honors credits or 1 industry internship by Sem 6 to qualify for top-tier AI lab access.`,
         citations: [
           { doc: 'VIT_Syllabus_BTech_2026.pdf', page: 42, section: 'Honors & Minors Policy' },
           { doc: 'VIT_Placement_Eligibility_Rules.pdf', page: 9, section: 'Tier-1 Recruiter Policy' },
@@ -133,7 +133,7 @@ export const InteractivePlayground: React.FC = () => {
           <span>Interactive Million-Dollar Sandbox</span>
         </div>
         <h2 className="text-3xl md:text-5xl font-extrabold text-[#0D1B2A] tracking-tight">
-          Test drive <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0D1B2A] via-[#3D5A80] to-[#4B6B7C]">VITARA</span> live in action
+          Test drive <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0D1B2A] via-[#3D5A80] to-[#4B6B7C]">Campus 1</span> live in action
         </h2>
         <p className="text-[#3D5A80] mt-3 text-base md:text-lg font-medium">
           Experience real-time AI engines, digital twin simulations, mentor risk matrices, and RAG knowledge retrieval built for Vidyalankar Institute of Technology.

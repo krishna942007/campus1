@@ -75,7 +75,7 @@ export const ChatGPTAIWorkspace: React.FC<ChatGPTAIWorkspaceProps> = ({
       messages: [
         {
           sender: 'AI',
-          text: `Hello ${userName}! I am your VITARA AI Operations & Academic Copilot. How can I assist your coursework, research, or system telemetry today?`,
+          text: `Hello ${userName}! I am your Campus 1 AI Operations & Academic Copilot. How can I assist your coursework, research, or system telemetry today?`,
           timestamp: '10:15 AM'
         },
         {
@@ -151,7 +151,7 @@ export const ChatGPTAIWorkspace: React.FC<ChatGPTAIWorkspaceProps> = ({
       messages: [
         {
           sender: 'AI',
-          text: `Hello ${userName}! I am your VITARA AI Copilot. Ask me anything about academic ordinances, course roadmaps, or research guidance.`,
+          text: `Hello ${userName}! I am your Campus 1 AI Copilot. Ask me anything about academic ordinances, course roadmaps, or research guidance.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]
@@ -251,7 +251,7 @@ export const ChatGPTAIWorkspace: React.FC<ChatGPTAIWorkspaceProps> = ({
       if (!reply) {
         const query = text.toLowerCase().trim();
         if (query === 'hi' || query === 'hello' || query === 'hey') {
-          reply = `Hello ${userName}! 👋 I am your VITARA AI Academic Copilot. How can I assist with your coursework, attendance criteria, faculty mentors, or career goals today?`;
+          reply = `Hello ${userName}! 👋 I am your Campus 1 AI Academic Copilot. How can I assist with your coursework, attendance criteria, faculty mentors, or career goals today?`;
           thoughts = `Reasoning: Greeted student and initialized conversational context for active semester trajectory.`;
         } else if (query.includes('cgpa') || query.includes('grade') || query.includes('marks')) {
           reply = `Your official academic record is synchronized with VIT ERP. Keep completing all lab coursework and milestone checkpoints to optimize your End-Sem SGPA.`;
@@ -630,7 +630,7 @@ export const ChatGPTAIWorkspace: React.FC<ChatGPTAIWorkspaceProps> = ({
             </form>
 
             <p className="text-center text-[10px] text-[#5A6E7F]">
-              VITARA AI answers are strictly grounded in official VIT Mumbai ordinances and autonomous department regulations.
+              Campus 1 AI answers are strictly grounded in official VIT Mumbai ordinances and autonomous department regulations.
             </p>
           </div>
         </div>

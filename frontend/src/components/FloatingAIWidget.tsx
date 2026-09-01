@@ -1,16 +1,34 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, X, Send, Bot, Move, Minimize2, Maximize2, Compass, BookOpen, GraduationCap, ChevronRight } from 'lucide-react';
+import { Sparkles, X, Send, Bot, Move, Minimize2, Maximize2, Compass, BookOpen, GraduationCap, ChevronRight, Check } from 'lucide-react';
 import { API_BASE_URL } from '../services/api';
 
 export const FloatingAIWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: 'AI', text: 'Hi! I am VITARA AI. Ask me anything about syllabus, attendance criteria, faculty mentors, or career roadmaps!' }
+    { sender: 'AI', text: 'Hi! I am Campus 1 AI. Ask me anything about syllabus, attendance criteria, faculty mentors, or career roadmaps!' }
   ]);
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
+  const [orbState, setOrbState] = useState<'idle' | 'thinking' | 'recalculated'>('idle');
+
+  useEffect(() => {
+    const handleCareerChange = () => {
+      setOrbState('thinking');
+      const thinkTimer = setTimeout(() => {
+        setOrbState('recalculated');
+        const showTimer = setTimeout(() => {
+          setOrbState('idle');
+        }, 2500);
+        return () => clearTimeout(showTimer);
+      }, 800);
+      return () => clearTimeout(thinkTimer);
+    };
+
+    window.addEventListener('career-goal-changed', handleCareerChange);
+    return () => window.removeEventListener('career-goal-changed', handleCareerChange);
+  }, []);
 
   const handleSend = (queryText?: string) => {
     const textToSend = queryText || input;
@@ -54,7 +72,7 @@ export const FloatingAIWidget: React.FC = () => {
       if (!responseText) {
         const q = textToSend.toLowerCase().trim();
         if (q === 'hi' || q === 'hello' || q === 'hey') {
-          responseText = `Hello! 👋 I am your VITARA AI Academic Copilot. How can I help you today? Feel free to ask about your courses, attendance requirements, syllabus, faculty mentors, or career roadmaps!`;
+          responseText = `Hello! 👋 I am your Campus 1 AI Academic Copilot. How can I help you today? Feel free to ask about your courses, attendance requirements, syllabus, faculty mentors, or career roadmaps!`;
         } else if (q.includes('attendance') || q.includes('rule') || q.includes('criteria')) {
           responseText = 'Under VIT Autonomous Ordinance 4.2, students must maintain a minimum of 75% attendance in every course. Students between 65%-74% require Dean approval for medical/extenuating reasons.';
         } else if (q.includes('mentor') || q.includes('faculty') || q.includes('kulkarni')) {
@@ -85,7 +103,13 @@ export const FloatingAIWidget: React.FC = () => {
       >
         <div className="relative group">
           {/* Subtle glowing animated pulse rings */}
-          <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-[#C99632] via-[#0C2238] to-[#C99632] opacity-70 blur-md group-hover:opacity-100 animate-pulse transition duration-500" />
+          <div className={`absolute -inset-1.5 rounded-full transition duration-500 blur-md ${
+            orbState === 'thinking'
+              ? 'bg-gradient-to-r from-[#C99632] via-[#159A72] to-[#C99632] opacity-100 animate-spin'
+              : orbState === 'recalculated'
+              ? 'bg-[#159A72] opacity-80'
+              : 'bg-gradient-to-r from-[#C99632] via-[#0C2238] to-[#C99632] opacity-70 group-hover:opacity-100 animate-pulse'
+          }`} />
           
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -93,16 +117,41 @@ export const FloatingAIWidget: React.FC = () => {
             title="Drag to move anywhere • Click to open AI"
             aria-label="Open VIT AI Assistant"
           >
-            <Sparkles className="w-6 h-6 text-[#E8C56B] animate-spin-slow" />
+            {orbState === 'thinking' ? (
+              <Sparkles className="w-6 h-6 text-[#E8C56B] animate-spin" />
+            ) : orbState === 'recalculated' ? (
+              <Check className="w-6 h-6 text-[#159A72]" />
+            ) : (
+              <Sparkles className="w-6 h-6 text-[#E8C56B] animate-spin-slow" />
+            )}
             
             {/* Online Indicator Dot */}
-            <span className="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-[#159A72] border-2 border-white shadow-xs" />
+            <span className={`absolute top-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white shadow-xs transition-colors ${
+              orbState === 'thinking' ? 'bg-[#C99632] animate-ping' : 'bg-[#159A72]'
+            }`} />
           </button>
 
-          {/* Quick Tooltip */}
-          <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl bg-[#0C2238]/90 backdrop-blur-md text-white text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg border border-[#C99632]/30">
-            ✦ VITARA AI • Drag anywhere
-          </div>
+          {/* Recalculated Floating Tooltip */}
+          <AnimatePresence>
+            {orbState === 'recalculated' && (
+              <motion.div
+                initial={{ opacity: 0, x: 10, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 10, scale: 0.9 }}
+                className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl bg-[#0C2238] text-white text-[11px] font-extrabold whitespace-nowrap shadow-xl border border-[#159A72]/60 flex items-center space-x-1.5 pointer-events-none"
+              >
+                <Check className="w-3.5 h-3.5 text-[#159A72]" />
+                <span>Profile recalculated</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Default Hover Tooltip */}
+          {orbState !== 'recalculated' && (
+            <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl bg-[#0C2238]/90 backdrop-blur-md text-white text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg border border-[#C99632]/30">
+              ✦ Campus 1 AI • Drag anywhere
+            </div>
+          )}
         </div>
       </motion.div>
 
@@ -128,7 +177,7 @@ export const FloatingAIWidget: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-xs font-black text-white tracking-tight flex items-center space-x-1.5">
-                    <span>VITARA AI Copilot</span>
+                    <span>Campus 1 AI Copilot</span>
                     <span className="px-1.5 py-0.2 rounded-full bg-[#159A72] text-[9px] font-bold text-white">RAG Active</span>
                   </h3>
                   <p className="text-[9px] text-slate-300 font-medium">VIT Mumbai Academic Knowledge</p>

@@ -79,7 +79,7 @@ async function requestApi(endpoint, options = {}) {
 
 async function runTestSuite() {
   console.log("\n=======================================================");
-  console.log("🚀 VITARA ADMIN STUDENT DATA MANAGEMENT AUTOMATED TEST SUITE");
+  console.log("🚀 Campus 1 ADMIN STUDENT DATA MANAGEMENT AUTOMATED TEST SUITE");
   console.log("=======================================================\n");
 
   // 1. Connect DB & Start Local Test HTTP Server
