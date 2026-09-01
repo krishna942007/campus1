@@ -29,7 +29,7 @@
 html,body{
   margin:0;padding:0;
   overflow-x:hidden;
-  overflow-y:auto;
+  overflow-y:hidden;
   scrollbar-width:none;
   -ms-overflow-style:none;
 }
@@ -791,11 +791,11 @@ function hideHint(){hint.classList.add('gone')}
 
 stage.addEventListener('pointerdown',e=>{
   if(e.button!==0)return;
-  e.preventDefault();                     /* no text selection, no image drag */
   const onBook=e.target.closest('.sb-zone');
+  if(!onBook||introOn)return;
+  e.preventDefault();                     /* no text selection, no image drag */
   stage.setPointerCapture(e.pointerId);
   hideHint();
-  if(!onBook||introOn)return;
   const r=bookRect();
   const dir=(e.clientX-r.left)/r.width>0.5?'next':'prev';
   startTurn(dir,0);
@@ -1067,23 +1067,110 @@ function startIntro(){
 
 var slider = document.getElementById('contentSlider');
 
-window.addEventListener('message', function(e) {
-  if (!e.data) return;
-  if (e.data.type === 'set-sketchbook-page') {
-    var targetIdx = Math.max(0, Math.min(M - 1, parseInt(e.data.index, 10) || 0));
-    if (targetIdx !== idx && !turn) {
-      goTo(targetIdx);
+var pendingSlideRatio = null;
+var pendingPageIndex = null;
+var messageRafId = null;
+
+function applyPendingMessages() {
+  messageRafId = null;
+  if (pendingPageIndex !== null) {
+    var pageToSet = pendingPageIndex;
+    pendingPageIndex = null;
+    if (pageToSet !== idx && !turn) {
+      goTo(pageToSet);
     }
-  } else if (e.data.type === 'set-sketchbook-slide') {
-    var ratio = Math.max(0, Math.min(1, parseFloat(e.data.ratio) || 0));
+  }
+  if (pendingSlideRatio !== null) {
+    var ratioToSet = pendingSlideRatio;
+    pendingSlideRatio = null;
     if (!slider) slider = document.getElementById('contentSlider');
     if (slider) {
       var maxSlide = Math.max(0, slider.scrollHeight - window.innerHeight);
-      var targetY = Math.round(ratio * maxSlide);
+      var targetY = Math.round(ratioToSet * maxSlide);
       slider.style.transform = 'translateY(' + (-targetY) + 'px)';
     }
   }
+}
+
+window.addEventListener('message', function(e) {
+  if (!e.data) return;
+  if (e.data.type === 'set-sketchbook-page') {
+    pendingPageIndex = Math.max(0, Math.min(M - 1, parseInt(e.data.index, 10) || 0));
+    if (messageRafId === null) {
+      messageRafId = requestAnimationFrame(applyPendingMessages);
+    }
+  } else if (e.data.type === 'set-sketchbook-slide') {
+    pendingSlideRatio = Math.max(0, Math.min(1, parseFloat(e.data.ratio) || 0));
+    if (messageRafId === null) {
+      messageRafId = requestAnimationFrame(applyPendingMessages);
+    }
+  }
 });
+
+/* Forward wheel and touchpad/touch scroll events to parent window using requestAnimationFrame batching */
+(function() {
+  var pendingDeltaY = 0;
+  var pendingDeltaX = 0;
+  var scrollRafId = null;
+
+  function flushScroll() {
+    scrollRafId = null;
+    if (pendingDeltaY !== 0 || pendingDeltaX !== 0) {
+      var dy = pendingDeltaY;
+      var dx = pendingDeltaX;
+      pendingDeltaY = 0;
+      pendingDeltaX = 0;
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.scrollBy({
+            top: dy,
+            left: dx,
+            behavior: 'auto'
+          });
+        }
+      } catch (err) {}
+    }
+  }
+
+  function scheduleScroll(deltaY, deltaX) {
+    pendingDeltaY += deltaY;
+    pendingDeltaX += deltaX;
+    if (scrollRafId === null) {
+      scrollRafId = requestAnimationFrame(flushScroll);
+    }
+  }
+
+  window.addEventListener('wheel', function(e) {
+    var deltaY = e.deltaY;
+    if (e.deltaMode === 1) deltaY *= 40;
+    else if (e.deltaMode === 2) deltaY *= window.innerHeight;
+
+    var deltaX = e.deltaX;
+    if (e.deltaMode === 1) deltaX *= 40;
+
+    scheduleScroll(deltaY, deltaX);
+  }, { passive: true });
+
+  var touchStartY = 0;
+  var isBookDrag = false;
+
+  window.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+      touchStartY = e.touches[0].clientY;
+      var target = e.target;
+      isBookDrag = !!(target && (target.closest('.sb-zone') || target.closest('#loupe')));
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', function(e) {
+    if (!isBookDrag && e.touches.length === 1) {
+      var currentY = e.touches[0].clientY;
+      var deltaY = touchStartY - currentY;
+      touchStartY = currentY;
+      scheduleScroll(deltaY, 0);
+    }
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
