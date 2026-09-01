@@ -53,7 +53,7 @@ export const ResearchSection: React.FC = () => {
               </span>
               <h2 className="text-4xl sm:text-5xl font-black text-[#F5F2EA] tracking-tight leading-tight font-display">
                 Driving Innovation <br />
-                <span className="text-gold-gradient font-serif italic">Creating Impact</span>
+                <span className="text-[#F5F2EA] font-serif">Creating Impact</span>
               </h2>
               <p className="text-sm text-[#F5F2EA]/80 font-light leading-relaxed">
                 Cutting-edge research, state-of-the-art labs, and specialized centers of excellence working on real-world challenges in AI, computing, and cybersecurity.

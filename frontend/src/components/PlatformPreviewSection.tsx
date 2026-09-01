@@ -31,14 +31,14 @@ export const PlatformPreviewSection: React.FC = () => {
         <div className="lg:col-span-5 space-y-7">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
             <span className="w-2 h-2 rounded-full bg-[#C99632]" />
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              ALL YOU NEED, ALL IN ONE PLACE
+            <span className="text-[11px] font-extrabold tracking-wider text-[#7A6437]">
+              All you need, all in one place
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.15] font-display">
             Designed Around You.<br />
-            <span className="text-[#C99632] font-serif-accent italic font-normal">Built for Your Success.</span>
+            <span className="text-[#10253A] font-serif-accent font-normal">Built for Your Success.</span>
           </h2>
 
           {/* Benefits Bullet List */}

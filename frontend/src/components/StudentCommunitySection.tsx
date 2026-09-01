@@ -71,15 +71,15 @@ export const StudentCommunitySection: React.FC<StudentCommunitySectionProps> = (
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
               <Users className="w-3.5 h-3.5 text-[#C99632]" />
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-                TOGETHER WE EXCEL
+              <span className="text-[11px] font-extrabold tracking-wider text-[#7A6437]">
+                Together we excel
               </span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#10253A] tracking-tight leading-[1.2] font-display">
               Be a part of a smarter,<br />
               stronger and more connected<br />
-              <span className="text-[#C99632] font-serif-accent italic font-normal">VIT community.</span>
+              <span className="text-[#10253A] font-serif-accent font-normal">VIT community.</span>
             </h2>
 
             {/* Button */}

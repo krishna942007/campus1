@@ -22,15 +22,15 @@ export const AcademicAttendanceSection: React.FC = () => {
         >
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
             <ShieldCheck className="w-3.5 h-3.5 text-[#159A72]" />
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              DATA INTEGRITY & TRUST ARCHITECTURE
+            <span className="text-[11px] font-extrabold tracking-wider text-[#7A6437]">
+              Data Integrity & Trust Architecture
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-            AUTHORITATIVE RECORDS <br />
-            <span className="text-[#C99632] font-serif-accent italic font-normal">
-              VS. AI GUIDANCE.
+            Authoritative records <br />
+            <span className="text-[#10253A] font-serif-accent font-normal">
+              vs. AI guidance.
             </span>
           </h2>
 

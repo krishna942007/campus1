@@ -26,8 +26,8 @@ export const MinimalNavbar: React.FC = () => {
         {/* Brand Mark */}
         <a href="#hero" className="flex items-center space-x-2.5 group">
           <div className="w-2.5 h-2.5 rounded-full bg-[#D6A84F] group-hover:scale-125 transition-transform" />
-          <span className="text-sm font-black tracking-widest text-[#F5F2EA] font-display uppercase">
-            VIT MUMBAI
+          <span className="text-sm font-bold tracking-wider text-[#F5F2EA] font-display">
+            Vit Mumbai
           </span>
         </a>
 
