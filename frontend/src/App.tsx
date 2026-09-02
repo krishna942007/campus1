@@ -10,7 +10,6 @@ import { StudentDashboardStory } from './components/StudentDashboardStory';
 import { AIAssistantSection } from './components/AIAssistantSection';
 import { LearningRoadmapSection } from './components/LearningRoadmapSection';
 import { SkillGapSection } from './components/SkillGapSection';
-import { ToastNotification, ToastMessage } from './components/ToastNotification';
 import { FloatingAIWidget } from './components/FloatingAIWidget';
 import { MentoringSection } from './components/MentoringSection';
 import { AcademicAttendanceSection } from './components/AcademicAttendanceSection';
@@ -27,7 +26,7 @@ export function App() {
   const [loginRole, setLoginRole] = useState<'STUDENT' | 'MENTOR' | 'ADMIN'>('STUDENT');
   const [activeView, setActiveView] = useState<'LANDING' | 'LOGIN' | 'STUDENT' | 'MENTOR' | 'ADMIN'>(() => {
     const path = window.location.pathname;
-    if (path.startsWith('/login')) return 'LOGIN';
+    if (path.startsWith('/login') || path.startsWith('/gateway')) return 'LOGIN';
     if (path.startsWith('/student')) return 'STUDENT';
     if (path.startsWith('/mentor')) return 'MENTOR';
     if (path.startsWith('/admin')) return 'ADMIN';
@@ -37,7 +36,7 @@ export function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-      if (path.startsWith('/login')) {
+      if (path.startsWith('/login') || path.startsWith('/gateway')) {
         setActiveView('LOGIN');
       } else if (path.startsWith('/student')) {
         setActiveView('STUDENT');
@@ -63,6 +62,7 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  // Open Login Page (with ThreeUI BestsellersBookShowcase)
   const handleOpenLogin = (role: 'STUDENT' | 'MENTOR' | 'ADMIN' = 'STUDENT') => {
     setLoginRole(role);
     if (window.location.pathname !== '/login') {
@@ -72,6 +72,7 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  // Authenticated Dashboard Navigation
   const handlePerformLogin = (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => {
     const route = role === 'STUDENT' ? '/student' : role === 'MENTOR' ? '/mentor' : '/admin';
     if (window.location.pathname !== route) {
@@ -84,6 +85,7 @@ export function App() {
   return (
     <div className="min-h-screen bg-[#F7F4EE] text-[#10253A] font-sans antialiased relative selection:bg-[#C99632] selection:text-white">
       <AnimatePresence mode="wait">
+        {/* LANDING PAGE (HOMEPAGE) */}
         {activeView === 'LANDING' && (
           <motion.div
             key="landing"
@@ -92,7 +94,7 @@ export function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Section 1: Sticky Glass Navigation Bar */}
+            {/* Sticky Glass Navigation Bar */}
             <CleanNavbar
               onSelectRole={handleOpenLogin}
               activeView={activeView}
@@ -101,66 +103,67 @@ export function App() {
 
             {/* Main Content Flow */}
             <main className="w-full space-y-0">
-              {/* Section 2: Hero Section with Architectural Background & Staggered Reveal */}
+              {/* Hero Section */}
               <CleanHero onSelectRole={handleOpenLogin} />
 
-              {/* Section 3: 5 Core Feature Cards ("Everything You Need to Grow") */}
+              {/* 5 Core Feature Cards */}
               <EverythingYouNeedSection />
 
-              {/* Section 4: Platform Preview & Dashboard Showcase */}
+              {/* Platform Preview & Dashboard Showcase */}
               <PlatformPreviewSection />
 
-              {/* Section 4.5: Meng To Sketchbook Interactive Portfolio */}
+              {/* Meng To Sketchbook Interactive Portfolio */}
               <div id="sketchbook">
                 <MengToSketchbookSection />
               </div>
 
-              {/* Section 5: Student Profile Story */}
+              {/* Student Profile Story */}
               <div id="dashboard">
                 <StudentDashboardStory />
               </div>
 
-              {/* Section 6: AI Assistant Second Brain */}
+              {/* AI Assistant Second Brain */}
               <div id="ai-assistant">
                 <AIAssistantSection />
               </div>
 
-              {/* Section 7: Learning Roadmap & Skill-Gap Analysis */}
+              {/* Learning Roadmap & Skill-Gap Analysis */}
               <div id="roadmap">
                 <LearningRoadmapSection />
                 <SkillGapSection />
               </div>
 
-              {/* Section 8: Faculty Mentoring */}
+              {/* Faculty Mentoring */}
               <div id="mentoring">
                 <MentoringSection />
               </div>
 
-              {/* Section 9: Academic ERP Trust Integrity */}
+              {/* Academic ERP Trust Integrity */}
               <div id="erp">
                 <AcademicAttendanceSection />
               </div>
 
-              {/* Section 10: Student Community */}
+              {/* Student Community */}
               <StudentCommunitySection onSelectRole={handleOpenLogin} />
 
-              {/* Section 11: VIT Institutional RAG Knowledge Base */}
+              {/* VIT Institutional RAG Knowledge Base */}
               <div id="rag">
                 <VITKnowledgeRAG />
               </div>
             </main>
 
-            {/* Section 12: Footer */}
+            {/* Footer */}
             <ProductFooter onSelectRole={handleOpenLogin} />
           </motion.div>
         )}
 
+        {/* LOGIN PAGE: ThreeUI BestsellersBookShowcase Showcase with intact Backend Authentication */}
         {activeView === 'LOGIN' && (
           <motion.div
             key="login"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             <LoginPage
@@ -171,6 +174,7 @@ export function App() {
           </motion.div>
         )}
 
+        {/* AUTHENTICATED DASHBOARDS */}
         {activeView === 'STUDENT' && (
           <motion.div
             key="student"
