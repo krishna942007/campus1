@@ -174,7 +174,7 @@ export function App() {
           </motion.div>
         )}
 
-        {/* AUTHENTICATED DASHBOARDS */}
+        {/* AUTHENTICATED DASHBOARDS (SCOPED TO AVANTT TYPOGRAPHY SYSTEM) */}
         {activeView === 'STUDENT' && (
           <motion.div
             key="student"
@@ -182,6 +182,7 @@ export function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.99 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="inner-app"
           >
             <StudentPortal onBackToLanding={handleNavigateToRoot} />
           </motion.div>
@@ -194,6 +195,7 @@ export function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.99 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="inner-app"
           >
             <MentorPortal onBackToLanding={handleNavigateToRoot} />
           </motion.div>
@@ -206,6 +208,7 @@ export function App() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.99 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="inner-app"
           >
             <AdminPortal onBackToLanding={handleNavigateToRoot} />
           </motion.div>

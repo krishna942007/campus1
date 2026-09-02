@@ -650,202 +650,106 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F0E8] text-[#17151D] font-sans antialiased flex flex-col lg:flex-row">
       
-      {/* 1. ADMIN SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
-        <div>
-          {/* Top Brand Header */}
-          <div className="p-6 border-b border-[#E2D7C6] flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">VIT</span>
-            </div>
-            <div>
-              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT MUMBAI</h2>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
-                INSTITUTIONAL ADMIN
-              </p>
-            </div>
-          </div>
-
-          {/* Grouped Navigation Links */}
-          <nav className="p-4 space-y-4 text-xs font-semibold overflow-y-auto max-h-[calc(100vh-210px)]">
+      {/* 1. PERSISTENT VERTICAL NAVIGATION RAIL (76px Desktop / Horizontal Compact Mobile) */}
+      <aside className="w-full lg:w-[76px] bg-[#FFFCF7]/95 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-[#E7E2D9] flex flex-row lg:flex-col justify-between items-center p-3 shrink-0 z-40 sticky top-0 lg:h-screen">
+        
+        {/* Top Brand Indicator */}
+        <div className="flex flex-col items-center gap-4">
+          <button
+            onClick={() => setActiveNav('Overview')}
+            className="w-11 h-11 rounded-[14px] bg-[#201A3D] text-white flex items-center justify-center font-bold text-xs shadow-xs border border-[#D6B982]/30 hover:scale-105 transition-all cursor-pointer group relative"
+            title="VIT Mumbai Institutional Administration"
+          >
+            <span className="text-[#D6B982] font-display font-extrabold text-xs">VIT</span>
             
-            {/* Group 1: Overview */}
-            <div className="space-y-1">
-              <button
-                onClick={() => setActiveNav('Overview')}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                  activeNav === 'Overview' ? 'bg-[#123B63] text-white shadow-sm font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                }`}
-              >
-                <div className="flex items-center space-x-3">
-                  <LayoutDashboard className={`w-4 h-4 ${activeNav === 'Overview' ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                  <span>Overview</span>
-                </div>
-              </button>
-            </div>
+            {/* Desktop Tooltip */}
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-semibold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Institutional Command Center
+            </span>
+          </button>
 
-            {/* Group 2: USER MANAGEMENT */}
-            <div className="space-y-1">
-              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#5A6E7F]">USER MANAGEMENT</p>
-              {[
-                { name: 'Users', icon: Users },
-                { name: 'Students', icon: GraduationCap },
-                { name: 'Faculty / Mentors', icon: UserCheck },
-                { name: 'Roles & Permissions', icon: ShieldCheck },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeNav === item.name;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => setActiveNav(item.name as any)}
-                    className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs transition-all ${
-                      isActive ? 'bg-[#123B63] text-white font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              })}
-            </div>
+          {/* Divider */}
+          <div className="hidden lg:block w-8 h-[1px] bg-[#E7E2D9]" />
 
-            {/* Group 3: ACADEMIC STRUCTURE */}
-            <div className="space-y-1">
-              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#5A6E7F]">ACADEMIC STRUCTURE</p>
-              {[
-                { name: 'Departments', icon: FolderTree },
-                { name: 'Programs', icon: Layers },
-                { name: 'Academic Structure', icon: Building },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeNav === item.name;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => setActiveNav(item.name as any)}
-                    className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs transition-all ${
-                      isActive ? 'bg-[#123B63] text-white font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              })}
-            </div>
+          {/* Navigation Icons Group */}
+          <nav className="flex flex-row lg:flex-col items-center gap-1.5 overflow-x-auto lg:overflow-visible py-1 no-scrollbar">
+            {[
+              { name: 'Overview', icon: LayoutDashboard },
+              { name: 'Users', icon: Users },
+              { name: 'Students', icon: GraduationCap },
+              { name: 'Faculty / Mentors', icon: UserCheck },
+              { name: 'Roles & Permissions', icon: ShieldCheck },
+              { name: 'Departments', icon: FolderTree },
+              { name: 'Programs', icon: Layers },
+              { name: 'Academic Structure', icon: Building },
+              { name: 'Mentor Assignments', icon: UserCheck },
+              { name: 'AI Configuration', icon: Cpu, badge: 'AI' },
+              { name: 'Knowledge Base', icon: Database },
+              { name: 'RAG Documents', icon: FileText },
+              { name: 'ERP / Data Sources', icon: LinkIcon },
+              { name: 'Integration Health', icon: Server, badge: '99%' },
+              { name: 'Audit Logs', icon: FileText },
+              { name: 'Security', icon: ShieldCheck },
+              { name: 'System Activity', icon: Activity },
+            ].map((item) => {
+              const Icon = item.icon;
+              const isActive = activeNav === item.name;
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => setActiveNav(item.name as any)}
+                  className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all cursor-pointer relative group ${
+                    isActive
+                      ? 'bg-[#201A3D] text-white shadow-xs font-semibold'
+                      : 'bg-transparent text-[#5D5965] hover:bg-[#EEE8DE]/70 hover:text-[#17151D]'
+                  }`}
+                  title={item.name}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#D6B982]' : 'text-[#5D5965] group-hover:text-[#17151D]'}`} />
+                  
+                  {/* Badge Indicator */}
+                  {item.badge && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#C9A86A] text-[#201A3D] text-[9px] font-bold flex items-center justify-center border border-[#FFFCF7]">
+                      {item.badge}
+                    </span>
+                  )}
 
-            {/* Group 4: MENTORING */}
-            <div className="space-y-1">
-              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#5A6E7F]">MENTORING</p>
-              <button
-                onClick={() => setActiveNav('Mentor Assignments')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs transition-all ${
-                  activeNav === 'Mentor Assignments' ? 'bg-[#123B63] text-white font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                }`}
-              >
-                <UserCheck className={`w-3.5 h-3.5 ${activeNav === 'Mentor Assignments' ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                <span>Mentor Assignments</span>
-              </button>
-            </div>
-
-            {/* Group 5: AI & KNOWLEDGE */}
-            <div className="space-y-1">
-              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#5A6E7F]">AI & KNOWLEDGE</p>
-              {[
-                { name: 'AI Configuration', icon: Cpu },
-                { name: 'Knowledge Base', icon: Database },
-                { name: 'RAG Documents', icon: FileText },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeNav === item.name;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => setActiveNav(item.name as any)}
-                    className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs transition-all ${
-                      isActive ? 'bg-[#123B63] text-white font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Group 6: INTEGRATIONS */}
-            <div className="space-y-1">
-              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#5A6E7F]">INTEGRATIONS</p>
-              {[
-                { name: 'ERP / Data Sources', icon: LinkIcon },
-                { name: 'Integration Health', icon: Server },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeNav === item.name;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => setActiveNav(item.name as any)}
-                    className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs transition-all ${
-                      isActive ? 'bg-[#123B63] text-white font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Group 7: SECURITY & GOVERNANCE */}
-            <div className="space-y-1">
-              <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#5A6E7F]">SECURITY & GOVERNANCE</p>
-              {[
-                { name: 'Audit Logs', icon: FileText },
-                { name: 'Security', icon: ShieldCheck },
-                { name: 'System Activity', icon: Activity },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeNav === item.name;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => setActiveNav(item.name as any)}
-                    className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-xs transition-all ${
-                      isActive ? 'bg-[#123B63] text-white font-bold' : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-
+                  {/* Desktop Hover Tooltip */}
+                  <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+                    {item.name}
+                  </span>
+                </button>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Sidebar Footer Support & Exit */}
-        <div className="p-4 border-t border-[#E2D7C6] space-y-2 text-xs">
+        {/* Sidebar Footer Rail Icons */}
+        <div className="flex flex-row lg:flex-col items-center gap-1.5 pt-2 border-t border-[#E7E2D9]/80">
           <button 
             onClick={() => setActiveNav('Settings')}
-            className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold ${
-              activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
+            className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all cursor-pointer relative group ${
+              activeNav === 'Settings' ? 'bg-[#201A3D] text-white' : 'text-[#5D5965] hover:bg-[#EEE8DE]/70 hover:text-[#17151D]'
             }`}
+            title="Settings & Preferences"
           >
-            <Settings className="w-4 h-4 text-[#1D4E73]" />
-            <span>Settings & Preferences</span>
+            <Settings className="w-4 h-4" />
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Settings & Preferences
+            </span>
           </button>
 
           <button
             onClick={onBackToLanding}
-            className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer"
+            className="w-11 h-11 rounded-[14px] bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#201A3D] flex items-center justify-center transition-colors cursor-pointer relative group"
+            title="Back to Landing Page"
           >
-            <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-            <span>Back to Portal Overview</span>
+            <ArrowLeft className="w-4 h-4 text-[#201A3D]" />
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Exit to Landing Page
+            </span>
           </button>
         </div>
       </aside>
@@ -853,273 +757,268 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
       {/* 2. MAIN DASHBOARD CONTENT AREA */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* TOP ADMIN IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+        {/* TOP ADMIN IDENTITY HEADER BAR */}
+        <header className="bg-[#FFFCF7]/90 backdrop-blur-md border-b border-[#E7E2D9] px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky top-0 z-30 shadow-[0_1px_3px_rgba(30,30,30,0.02)]">
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#123B63] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">AD</span>
+            <div className="w-10 h-10 rounded-xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xs shadow-xs border border-[#D6B982]/30 uppercase">
+              <span>AD</span>
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-lg font-extrabold text-[#102A43]">VIT Institutional Administration</h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold border border-[#E2D7C6]">
+                <h1 className="text-base font-bold text-[#17151D] tracking-tight">VIT Institutional Administration</h1>
+                <span className="px-2.5 py-0.5 rounded-full bg-[#EEE8DE] text-[#201A3D] text-[10px] font-medium border border-[#E7E2D9] uppercase">
                   Super Admin
                 </span>
               </div>
-              <p className="text-xs text-[#5A6E7F]">
+              <p className="text-xs text-[#5D5965]">
                 System configuration • Data governance • AI operations | VIT Wadala
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2.5">
             <button
               onClick={() => setActiveNav('AI Configuration')}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#F5C056]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#D6B982]" />
               <span>✦ Admin AI Assistant</span>
             </button>
 
             <button 
               onClick={() => setActiveNav('Audit Logs')}
-              className="p-2 rounded-full bg-[#F7F2E9] hover:bg-[#E9DDC9] text-[#102A43] border border-[#E2D7C6] relative cursor-pointer"
+              className="p-2 rounded-xl bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#201A3D] border border-[#E7E2D9] relative cursor-pointer"
               title="View Audit Notifications"
             >
               <Bell className="w-4 h-4" />
-              <span className="w-2 h-2 rounded-full bg-[#B91C1C] absolute top-1 right-1" />
+              <span className="w-2 h-2 rounded-full bg-[#991B1B] absolute top-1 right-1" />
             </button>
 
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-xs transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#FFFCF7] hover:bg-[#F4F0E8] text-[#17151D] text-xs font-medium border border-[#E7E2D9] shadow-xs transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-              <span>Back to Portal Overview</span>
+              <ArrowLeft className="w-3.5 h-3.5 text-[#201A3D]" />
+              <span>Back to Portal</span>
             </button>
           </div>
         </header>
 
-        {/* MAIN BODY WRAPPER */}
-        <main className="p-6 max-w-7xl mx-auto space-y-6 w-full flex-1">
+        {/* MAIN BODY WORKSPACE (Max 1600px, 12-Column Grid Layout) */}
+        <main className="p-5 lg:p-7 max-w-[1600px] mx-auto space-y-5 w-full flex-1">
           
-          {/* ========================================================================= */}
-          {/* VIEW 1: OVERVIEW */}
-          {/* ========================================================================= */}
+          {/* VIEW 1: OVERVIEW DASHBOARD */}
           {activeNav === 'Overview' && (
-            <div className="space-y-6">
-              <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-xl font-extrabold text-[#102A43]">Institution Overview</h2>
-                  <p className="text-xs text-[#5A6E7F]">Monitor users, academic data, mentoring operations and AI services.</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button 
-                    onClick={handleTriggerERPSync}
-                    disabled={isSyncingERP}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-bold shadow-xs cursor-pointer"
-                  >
-                    <RefreshCw className={`w-3.5 h-3.5 text-[#F5C056] ${isSyncingERP ? 'animate-spin' : ''}`} />
-                    <span>{isSyncingERP ? 'Syncing ERP...' : 'Sync with VIT ERP'}</span>
-                  </button>
-                  <span className="px-3 py-1.5 rounded-xl bg-[#E9DDC9] text-xs font-bold text-[#102A43]">
-                    CENTRAL PLATFORM CONTROL
-                  </span>
-                </div>
-              </div>
-
-              {/* 4 EXECUTIVE KPI STAT METRICS BENTO */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="space-y-5">
+              
+              {/* ASYMMETRIC DASHBOARD COMPOSITION (8 COLS MAIN WORKSPACE + 4 COLS RIGHT CONTEXT PANEL) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 
-                {/* Stat 1: Total Active Accounts */}
-                <div 
-                  onClick={() => setActiveNav('Users')} 
-                  className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4 cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] flex items-center justify-center text-[#4F46E5] shadow-2xs">
-                      <Users className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold tracking-wide">
-                      VERIFIED ACCOUNTS
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Total Active Accounts
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#10253A] font-display">
-                        4,360
-                      </span>
-                      <span className="text-xs font-bold text-[#159A72]">Users</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>Students + Faculty + Staff</span>
-                    <span className="font-bold text-[#10253A]">100% Active</span>
-                  </div>
-                </div>
-
-                {/* Stat 2: Enrolled Students */}
-                <div 
-                  onClick={() => setActiveNav('Students')} 
-                  className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4 cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#DCFCE7] border border-[#BBF7D0] flex items-center justify-center text-[#15803D] shadow-2xs">
-                      <GraduationCap className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold tracking-wide">
-                      ENROLLED
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Undergraduate Cohort
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#10253A] font-display">
-                        4,120
-                      </span>
-                      <span className="text-xs font-bold text-[#159A72]">Active</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>Across 5 Departments</span>
-                    <span className="font-bold text-[#10253A]">Autonomous</span>
-                  </div>
-                </div>
-
-                {/* Stat 3: Faculty Mentors */}
-                <div 
-                  onClick={() => setActiveNav('Faculty / Mentors')} 
-                  className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4 cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] shadow-2xs">
-                      <UserCheck className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-extrabold tracking-wide">
-                      FACULTY COUNCIL
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Assigned Faculty Mentors
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#10253A] font-display">
-                        214
-                      </span>
-                      <span className="text-xs font-bold text-[#0C2238]">Mentors</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>1:20 Mentoring Ratio</span>
-                    <span className="font-bold text-[#159A72]">Target Met</span>
-                  </div>
-                </div>
-
-                {/* Stat 4: System Uptime */}
-                <div 
-                  onClick={() => setActiveNav('Integration Health')} 
-                  className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4 cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#E0E7FF] border border-[#C7D2FE] flex items-center justify-center text-[#4338CA] shadow-2xs">
-                      <Server className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold tracking-wide">
-                      HIGH AVAILABILITY
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Core Infrastructure Uptime
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#15803D] font-display">
-                        99.98%
-                      </span>
-                      <span className="text-xs font-bold text-[#15803D]">Optimal</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>All 6 Microservices</span>
-                    <span className="font-bold text-[#15803D]">Zero Outage</span>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* SYSTEM HEALTH TELEMETRY */}
-              <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-[#0C2238]/08 shadow-xs space-y-4">
-                <div className="flex items-center justify-between border-b border-[#0C2238]/06 pb-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-9 h-9 rounded-xl bg-[#EFE7D8] flex items-center justify-center text-[#0C2238]">
-                      <Activity className="w-4.5 h-4.5 text-[#0C2238]" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-extrabold text-[#10253A] tracking-tight">Institutional System Telemetry</h3>
-                      <p className="text-[11px] text-[#627083]">Live health status across autonomous infrastructure</p>
-                    </div>
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-[#DCFCE7] text-[10px] font-black text-[#15803D] uppercase tracking-wider">
-                    ALL SYSTEMS HEALTHY
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-xs pt-1">
-                  {[
-                    { name: 'Authentication', status: 'Operational', ping: '12ms' },
-                    { name: 'Academic ERP', status: 'Operational', ping: '45ms' },
-                    { name: 'Gemini RAG API', status: 'Operational', ping: '88ms' },
-                    { name: 'pgvector Store', status: 'Operational', ping: '18ms' },
-                    { name: 'PostgreSQL DB', status: 'Operational', ping: '8ms' },
-                    { name: 'Notifications', status: 'Operational', ping: '15ms' },
-                  ].map((svc) => (
-                    <div key={svc.name} className="p-3.5 rounded-2xl bg-[#F7F4EE] border border-[#0C2238]/08 space-y-1 hover:border-[#C99632]/40 transition-colors">
-                      <div className="flex items-center space-x-1.5">
-                        <span className="w-2 h-2 rounded-full bg-[#159A72] animate-pulse" />
-                        <p className="font-extrabold text-[#10253A] truncate">{svc.name}</p>
+                {/* LEFT / MAIN WORKSPACE (8 COLS) */}
+                <div className="lg:col-span-8 space-y-5">
+                  
+                  {/* 1. EXECUTIVE KPI STAT METRICS GRID (4 COMPACT METRIC CARDS) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    {/* Stat 1: Total Active Accounts */}
+                    <div 
+                      onClick={() => setActiveNav('Users')}
+                      className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#EEEAF8] border border-[#D6D0EC] flex items-center justify-center text-[#352A63]">
+                          <Users className="w-4 h-4" />
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                          VERIFIED ACCOUNTS
+                        </span>
                       </div>
-                      <p className="text-[11px] font-bold text-[#159A72]">{svc.status}</p>
-                      <p className="text-[10px] text-[#627083]">Latency: {svc.ping}</p>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Total Active Accounts
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
+                            4,360
+                          </span>
+                          <span className="text-[11px] font-medium text-[#15803D]">Users</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>Students + Faculty + Staff</span>
+                        <span className="font-semibold text-[#17151D]">100% Active</span>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              {/* 2-COLUMN GRID */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-7 space-y-6">
-                  {/* USER ROSTER PREVIEW */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">Recent User Accounts</h3>
-                      <button onClick={() => setActiveNav('Users')} className="text-xs font-bold text-[#123B63] hover:underline">
-                        View All {usersList.length} →
+                    {/* Stat 2: Enrolled Students */}
+                    <div 
+                      onClick={() => setActiveNav('Students')}
+                      className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#BFE7D6]/40 border border-[#BFE7D6] flex items-center justify-center text-[#15803D]">
+                          <GraduationCap className="w-4 h-4" />
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                          ENROLLED
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Undergraduate Cohort
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
+                            4,120
+                          </span>
+                          <span className="text-[11px] font-medium text-[#15803D]">Active</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>Across 5 Departments</span>
+                        <span className="font-semibold text-[#17151D]">Autonomous</span>
+                      </div>
+                    </div>
+
+                    {/* Stat 3: Faculty Mentors */}
+                    <div 
+                      onClick={() => setActiveNav('Faculty / Mentors')}
+                      className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#F4D5AD]/40 border border-[#F4D5AD] flex items-center justify-center text-[#92400E]">
+                          <UserCheck className="w-4 h-4" />
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-[#F4D5AD] text-[#92400E] text-[9px] font-semibold">
+                          FACULTY COUNCIL
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Assigned Faculty Mentors
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
+                            214
+                          </span>
+                          <span className="text-[11px] font-medium text-[#201A3D]">Mentors</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>1:20 Mentoring Ratio</span>
+                        <span className="font-semibold text-[#15803D]">Target Met</span>
+                      </div>
+                    </div>
+
+                    {/* Stat 4: System Uptime */}
+                    <div 
+                      onClick={() => setActiveNav('Integration Health')}
+                      className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#EEEAF8] border border-[#D6D0EC] flex items-center justify-center text-[#352A63]">
+                          <Server className="w-4 h-4" />
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                          HIGH AVAILABILITY
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Infrastructure Uptime
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#15803D] font-display">
+                            99.98%
+                          </span>
+                          <span className="text-[11px] font-medium text-[#15803D]">Optimal</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>All 6 Microservices</span>
+                        <span className="font-semibold text-[#15803D]">Zero Outage</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* 2. INSTITUTIONAL SYSTEM TELEMETRY MATRIX */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[#201A3D] text-[#D6B982] flex items-center justify-center">
+                          <Activity className="w-3.5 h-3.5 text-[#D6B982]" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-[#17151D]">Institutional System Telemetry</h3>
+                          <p className="text-[11px] text-[#5D5965]">Live health status across autonomous campus infrastructure</p>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[10px] font-semibold">
+                        ALL SYSTEMS HEALTHY
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+                      {[
+                        { name: 'Authentication', status: 'Operational', ping: '12ms' },
+                        { name: 'Academic ERP', status: 'Operational', ping: '45ms' },
+                        { name: 'Gemini RAG API', status: 'Operational', ping: '88ms' },
+                        { name: 'pgvector Store', status: 'Operational', ping: '18ms' },
+                        { name: 'PostgreSQL DB', status: 'Operational', ping: '8ms' },
+                        { name: 'Notifications', status: 'Operational', ping: '15ms' },
+                      ].map((svc) => (
+                        <div key={svc.name} className="p-3 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] space-y-1 hover:border-[#C9A86A]/50 transition-colors">
+                          <div className="flex items-center space-x-1.5">
+                            <span className="w-2 h-2 rounded-full bg-[#15803D] animate-pulse" />
+                            <p className="font-semibold text-[#17151D] truncate text-[11px]">{svc.name}</p>
+                          </div>
+                          <p className="text-[10px] font-medium text-[#15803D]">{svc.status}</p>
+                          <p className="text-[10px] text-[#8B8792]">Latency: {svc.ping}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 3. RECENT USER ACCOUNTS DIRECTORY TABLE */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[#EEE8DE] flex items-center justify-center text-[#201A3D]">
+                          <Users className="w-3.5 h-3.5 text-[#201A3D]" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-[#17151D]">Recent User Directory Accounts</h3>
+                          <p className="text-[11px] text-[#5D5965]">Live user accounts across student, faculty, and administrative roles</p>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setActiveNav('Users')}
+                        className="text-xs font-semibold text-[#201A3D] hover:text-[#C9A86A] transition-colors flex items-center space-x-1"
+                      >
+                        <span>View All ({usersList.length})</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <div className="overflow-x-auto">
+
+                    <div className="overflow-x-auto rounded-xl border border-[#E7E2D9]">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="border-b border-[#E2D7C6] text-[#5A6E7F]">
-                            <th className="py-2.5 px-3 font-bold">NAME</th>
-                            <th className="py-2.5 px-3 font-bold">ROLE</th>
-                            <th className="py-2.5 px-3 font-bold">DEPARTMENT</th>
-                            <th className="py-2.5 px-3 font-bold">STATUS</th>
+                          <tr className="bg-[#F8F5EF] border-b border-[#E7E2D9] text-[#8B8792]">
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">NAME</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">ROLE</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">DEPARTMENT</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">STATUS</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#E2D7C6]">
+                        <tbody className="divide-y divide-[#E7E2D9] bg-white">
                           {usersList.slice(0, 4).map((u) => (
-                            <tr key={u.id} className="hover:bg-[#F7F2E9]/60">
-                              <td className="py-2.5 px-3 font-bold text-[#102A43]">{u.name}</td>
-                              <td className="py-2.5 px-3 font-semibold text-[#123B63]">{u.role}</td>
-                              <td className="py-2.5 px-3 text-[#5A6E7F]">{u.dept}</td>
+                            <tr key={u.id} className="hover:bg-[#F8F5EF]/80 transition-colors">
+                              <td className="py-2.5 px-3 font-semibold text-[#17151D]">{u.name}</td>
+                              <td className="py-2.5 px-3 font-medium text-[#201A3D]">{u.role}</td>
+                              <td className="py-2.5 px-3 text-[#5D5965]">{u.dept}</td>
                               <td className="py-2.5 px-3">
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#DCFCE7] text-[#15803D]">
+                                <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-[#BFE7D6] text-[#15803D] uppercase">
                                   {u.status}
                                 </span>
                               </td>
@@ -1130,99 +1029,167 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
                     </div>
                   </div>
 
-                  {/* KNOWLEDGE BASE CARD */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-base font-extrabold text-[#102A43]">RAG Knowledge Base</h3>
-                        <p className="text-xs text-[#5A6E7F]">Approved Institutional Regulations & Policies</p>
+                  {/* 4. RAG KNOWLEDGE BASE MANAGEMENT CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[#EEE8DE] flex items-center justify-center text-[#201A3D]">
+                          <Database className="w-3.5 h-3.5 text-[#201A3D]" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-[#17151D]">RAG Knowledge Base & Regulations</h3>
+                          <p className="text-[11px] text-[#5D5965]">Approved institutional regulations, ordinances & vector indices</p>
+                        </div>
                       </div>
                       <button
                         onClick={() => setShowUploadModal(true)}
-                        className="px-3.5 py-1.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-bold shadow-xs cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white text-xs font-medium shadow-xs cursor-pointer transition-all"
                       >
                         + Upload Document
                       </button>
                     </div>
+
                     <div className="space-y-2 text-xs">
                       {documents.slice(0, 3).map((doc) => (
-                        <div key={doc.id} className="p-3 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] flex items-center justify-between">
+                        <div key={doc.id} className="p-3 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] flex items-center justify-between hover:border-[#C9A86A]/50 transition-colors">
                           <div>
-                            <p className="font-bold text-[#102A43]">{doc.name}</p>
-                            <p className="text-[10px] text-[#5A6E7F]">{doc.category} • {doc.version} • {doc.vectors} chunks</p>
+                            <p className="font-semibold text-[#17151D] text-xs">{doc.name}</p>
+                            <p className="text-[10px] text-[#5D5965]">{doc.category} • {doc.version} • {doc.vectors} vector chunks</p>
                           </div>
-                          <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-bold">
+                          <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold uppercase">
                             {doc.status}
                           </span>
                         </div>
                       ))}
                     </div>
                   </div>
+
                 </div>
 
-                <div className="lg:col-span-5 space-y-6">
-                  {/* AI CONFIG */}
-                  <div className="bg-[#123B63] text-white rounded-2xl p-6 border border-[#C49A52]/40 shadow-md space-y-4">
+                {/* RIGHT / CONTEXT PANEL (4 COLS) */}
+                <div className="lg:col-span-4 space-y-5">
+                  
+                  {/* 1. ADMIN IDENTITY & PROFILE SUMMARY CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4 text-center">
+                    <div className="flex flex-col items-center space-y-2">
+                      <div className="w-16 h-16 rounded-2xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xl shadow-xs border-2 border-[#D6B982]/40 font-display">
+                        <span>AD</span>
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-[#17151D]">Super Administrator</h3>
+                        <p className="text-xs text-[#5D5965]">Central IT & Data Governance</p>
+                        <p className="text-[11px] text-[#8B8792]">VIT Wadala Autonomous Campus</p>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#E7E2D9] grid grid-cols-2 gap-2 text-center text-xs">
+                      <div className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9]">
+                        <span className="text-[10px] uppercase text-[#8B8792] font-medium block">ROLE SCOPE</span>
+                        <span className="font-semibold text-[#17151D] text-[10px]">Super Admin</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9]">
+                        <span className="text-[10px] uppercase text-[#8B8792] font-medium block">AUTH PROVIDER</span>
+                        <span className="font-semibold text-[#201A3D] text-[10px]">OAuth2 / SAML</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. OPERATIONAL ERP SYNC QUICK CONTROL CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2">
+                        <LinkIcon className="w-4 h-4 text-[#201A3D]" />
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Academic ERP Sync</h3>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                        CONNECTED
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#5D5965]">
+                      Bidirectional data pipeline with VIT Academic ERP feed (4,120 student profiles & attendance telemetry).
+                    </p>
+
+                    <button 
+                      onClick={handleTriggerERPSync}
+                      disabled={isSyncingERP}
+                      className="w-full py-2.5 px-3.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs flex items-center justify-center space-x-2 shadow-xs transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 text-[#D6B982] ${isSyncingERP ? 'animate-spin' : ''}`} />
+                      <span>{isSyncingERP ? 'Syncing ERP Feeds...' : 'Sync with VIT ERP'}</span>
+                    </button>
+                  </div>
+
+                  {/* 3. AI ENGINE & TOKEN QUOTA ADVISORY CARD */}
+                  <div className="bg-[#EEEAF8] rounded-[24px] p-5 border border-[#D6D0EC] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Cpu className="w-5 h-5 text-[#F5C056]" />
-                        <h3 className="text-base font-extrabold text-white">AI Engine & Quota</h3>
+                        <div className="w-6 h-6 rounded-md bg-[#201A3D] text-[#D6B982] flex items-center justify-center">
+                          <Cpu className="w-3.5 h-3.5 text-[#D6B982]" />
+                        </div>
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#352A63]">AI Engine & Quota</h3>
                       </div>
-                      <span className="px-2.5 py-1 rounded-full bg-[#C49A52]/30 text-[9px] font-extrabold text-[#F5C056]">
+                      <span className="px-2 py-0.5 rounded-full bg-[#FFFCF7] text-[#201A3D] text-[9px] font-semibold border border-[#D6D0EC]">
                         ACTIVE
                       </span>
                     </div>
 
-                    <div className="space-y-2 text-xs">
+                    <div className="space-y-1.5 text-xs bg-[#FFFCF7] p-3 rounded-xl border border-[#D6D0EC]">
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-300">Model Provider:</span>
-                        <span className="font-bold text-[#F5C056]">{aiProvider}</span>
+                        <span className="text-[#5D5965]">Provider:</span>
+                        <span className="font-semibold text-[#201A3D]">{aiProvider}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-300">Vector Store:</span>
-                        <span className="font-bold text-white">pgvector (Cosine 1536d)</span>
+                        <span className="text-[#5D5965]">Vector Index:</span>
+                        <span className="font-semibold text-[#17151D]">pgvector (Cosine 1536d)</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-300">Monthly Usage:</span>
-                        <span className="font-bold text-[#F5C056]">72% Used (3.6M tokens)</span>
+                        <span className="text-[#5D5965]">Monthly Usage:</span>
+                        <span className="font-bold text-[#15803D]">72% (3.6M / 5.0M tokens)</span>
                       </div>
-                    </div>
 
-                    <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#F5C056]" style={{ width: '72%' }} />
+                      <div className="w-full h-1.5 bg-[#EEEAF8] rounded-full overflow-hidden mt-1">
+                        <div className="h-full bg-[#201A3D]" style={{ width: '72%' }} />
+                      </div>
                     </div>
 
                     <button 
                       onClick={() => addToast('API Secret Rotated', 'AI provider secret rotated and encrypted in institutional vault.', 'success')}
-                      className="w-full py-2 rounded-xl bg-[#F5C056] text-[#102A43] font-bold text-xs hover:bg-[#E5B046]"
+                      className="w-full py-2 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs shadow-xs transition-all cursor-pointer"
                     >
                       Rotate API Key Secret
                     </button>
                   </div>
 
-                  {/* RECENT AUDIT LOGS */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">Audit Log Stream</h3>
-                      <button onClick={() => setActiveNav('Audit Logs')} className="text-xs font-bold text-[#123B63] hover:underline">
+                  {/* 4. REAL-TIME AUDIT LOG STREAM CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2">
+                        <FileText className="w-4 h-4 text-[#201A3D]" />
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Audit Log Stream</h3>
+                      </div>
+                      <button onClick={() => setActiveNav('Audit Logs')} className="text-xs font-semibold text-[#201A3D] hover:text-[#C9A86A]">
                         All Logs →
                       </button>
                     </div>
-                    <div className="space-y-2 text-xs">
+
+                    <div className="space-y-2 text-xs pt-1">
                       {auditLogs.slice(0, 3).map((log) => (
-                        <div key={log.id} className="p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] flex items-center justify-between">
-                          <div>
-                            <span className="font-mono font-bold text-[#123B63] mr-2">{log.time}</span>
-                            <span className="font-bold text-[#102A43]">{log.action}</span>
+                        <div key={log.id} className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] flex items-center justify-between hover:border-[#C9A86A]/50 transition-colors">
+                          <div className="truncate mr-2">
+                            <span className="font-mono font-semibold text-[#201A3D] mr-1.5 text-[10px]">{log.time}</span>
+                            <span className="font-medium text-[#17151D] text-[11px] truncate">{log.action}</span>
                           </div>
-                          <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-bold">
+                          <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold uppercase shrink-0">
                             {log.status}
                           </span>
                         </div>
                       ))}
                     </div>
                   </div>
+
                 </div>
+
               </div>
             </div>
           )}

@@ -288,7 +288,7 @@ export const ChatGPTAIWorkspace: React.FC<ChatGPTAIWorkspaceProps> = ({
   };
 
   return (
-    <div className="flex h-[calc(100vh-140px)] w-full rounded-3xl bg-[#FFFDF8] border border-[#E2D7C6] shadow-xl overflow-hidden text-[#102A43]">
+    <div className="inner-app flex h-[calc(100vh-140px)] w-full rounded-3xl bg-[#FFFDF8] border border-[#E2D7C6] shadow-xl overflow-hidden text-[#102A43]">
       
       {/* 1. CHATGPT-STYLE SIDEBAR (HISTORY) */}
       <AnimatePresence initial={false}>

@@ -627,37 +627,42 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
   const pendingRequestsCount = storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').length;
 
   return (
-    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F0E8] text-[#17151D] font-sans antialiased flex flex-col lg:flex-row">
       
-      {/* 1. SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
-        <div>
-          {/* Top Brand Header */}
-          <div className="p-6 border-b border-[#E2D7C6] flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">VIT</span>
-            </div>
-            <div>
-              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT MUMBAI</h2>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
-                FACULTY MENTOR CENTER
-              </p>
-            </div>
-          </div>
+      {/* 1. PERSISTENT VERTICAL NAVIGATION RAIL (76px Desktop / Horizontal Compact Mobile) */}
+      <aside className="w-full lg:w-[76px] bg-[#FFFCF7]/95 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-[#E7E2D9] flex flex-row lg:flex-col justify-between items-center p-3 shrink-0 z-40 sticky top-0 lg:h-screen">
+        
+        {/* Top Brand Indicator */}
+        <div className="flex flex-col items-center gap-4">
+          <button
+            onClick={() => setActiveNav('Overview')}
+            className="w-11 h-11 rounded-[14px] bg-[#201A3D] text-white flex items-center justify-center font-bold text-xs shadow-xs border border-[#D6B982]/30 hover:scale-105 transition-all cursor-pointer group relative"
+            title="VIT Mumbai Faculty Mentor Center"
+          >
+            <span className="text-[#D6B982] font-display font-extrabold text-xs">VIT</span>
+            
+            {/* Desktop Tooltip */}
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-semibold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Faculty Command Center
+            </span>
+          </button>
 
-          {/* Navigation Links */}
-          <nav className="p-4 space-y-1 text-xs font-semibold">
+          {/* Divider */}
+          <div className="hidden lg:block w-8 h-[1px] bg-[#E7E2D9]" />
+
+          {/* Navigation Icons Group */}
+          <nav className="flex flex-row lg:flex-col items-center gap-1.5 overflow-x-auto lg:overflow-visible py-1 no-scrollbar">
             {[
               { name: 'Overview', icon: LayoutDashboard },
               { name: 'Mentor Requests', icon: UserCheck, badge: pendingRequestsCount > 0 ? `${pendingRequestsCount}` : undefined },
               { name: 'My Students', icon: Users, badge: `${allMentees.length}` },
               { name: 'Assignments', icon: CheckSquare, badge: `${storeState.assignments.length}` },
-              { name: 'Online Course Explorer', icon: BookOpen, badge: 'Curriculum' },
+              { name: 'Online Course Explorer', icon: BookOpen },
               { name: 'Attention & Risk', icon: AlertTriangle, badge: '1' },
               { name: 'Meetings', icon: Calendar },
               { name: 'Feedback & Goals', icon: Target },
               { name: 'Progress Analytics', icon: TrendingUp },
-              { name: 'AI Mentor Assistant', icon: Sparkles, badge: 'Copilot' },
+              { name: 'AI Mentor Assistant', icon: Sparkles, badge: 'AI' },
               { name: 'Notifications', icon: Bell, badge: `${storeState.facultyNotifications.filter((n: any) => !n.read).length}` },
             ].map((item) => {
               const Icon = item.icon;
@@ -665,50 +670,57 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
               return (
                 <button
                   key={item.name}
-                  onClick={() => {
-                    setActiveNav(item.name as any);
-                  }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all cursor-pointer ${
+                  onClick={() => setActiveNav(item.name as any)}
+                  className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all cursor-pointer relative group ${
                     isActive
-                      ? 'bg-[#123B63] text-white shadow-sm font-bold'
-                      : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
+                      ? 'bg-[#201A3D] text-white shadow-xs font-semibold'
+                      : 'bg-transparent text-[#5D5965] hover:bg-[#EEE8DE]/70 hover:text-[#17151D]'
                   }`}
+                  title={item.name}
                 >
-                  <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </div>
-                  {item.badge && (
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                      isActive ? 'bg-[#C49A52] text-[#102A43]' : 'bg-[#E9DDC9] text-[#102A43]'
-                    }`}>
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#D6B982]' : 'text-[#5D5965] group-hover:text-[#17151D]'}`} />
+                  
+                  {/* Badge Indicator */}
+                  {item.badge && item.badge !== '0' && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#C9A86A] text-[#201A3D] text-[9px] font-bold flex items-center justify-center border border-[#FFFCF7]">
                       {item.badge}
                     </span>
                   )}
+
+                  {/* Desktop Hover Tooltip */}
+                  <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+                    {item.name}
+                  </span>
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* Sidebar Footer Support & Exit */}
-        <div className="p-4 border-t border-[#E2D7C6] space-y-2 text-xs">
+        {/* Sidebar Footer Rail Icons */}
+        <div className="flex flex-row lg:flex-col items-center gap-1.5 pt-2 border-t border-[#E7E2D9]/80">
           <button 
             onClick={() => setActiveNav('Settings')}
-            className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold ${
-              activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
+            className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all cursor-pointer relative group ${
+              activeNav === 'Settings' ? 'bg-[#201A3D] text-white' : 'text-[#5D5965] hover:bg-[#EEE8DE]/70 hover:text-[#17151D]'
             }`}
+            title="Settings & Preferences"
           >
-            <Settings className="w-4 h-4 text-[#1D4E73]" />
-            <span>Settings & Preferences</span>
+            <Settings className="w-4 h-4" />
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Settings & Preferences
+            </span>
           </button>
 
           <button
             onClick={onBackToLanding}
-            className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer"
+            className="w-11 h-11 rounded-[14px] bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#201A3D] flex items-center justify-center transition-colors cursor-pointer relative group"
+            title="Back to Landing Page"
           >
-            <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-            <span>Back to Portal Overview</span>
+            <ArrowLeft className="w-4 h-4 text-[#201A3D]" />
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Exit to Landing Page
+            </span>
           </button>
         </div>
       </aside>
@@ -716,259 +728,365 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
       {/* 2. MAIN DASHBOARD CONTENT AREA */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* TOP FACULTY IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+        {/* TOP FACULTY IDENTITY HEADER BAR */}
+        <header className="bg-[#FFFCF7]/90 backdrop-blur-md border-b border-[#E7E2D9] px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky top-0 z-30 shadow-[0_1px_3px_rgba(30,30,30,0.02)]">
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#123B63] text-[#F5C056] flex items-center justify-center font-extrabold text-sm shadow-sm border border-[#C49A52]/40 uppercase">
+            <div className="w-10 h-10 rounded-xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xs shadow-xs border border-[#D6B982]/30 uppercase">
               {teacherProfile.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'FM'}
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-lg font-extrabold text-[#102A43]">{teacherProfile.name}</h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold border border-[#E2D7C6] uppercase">
+                <h1 className="text-base font-bold text-[#17151D] tracking-tight">{teacherProfile.name}</h1>
+                <span className="px-2.5 py-0.5 rounded-full bg-[#EEE8DE] text-[#201A3D] text-[10px] font-medium border border-[#E7E2D9] uppercase">
                   {teacherProfile.designation}
                 </span>
               </div>
-              <p className="text-xs text-[#5A6E7F]">
-                Department of {teacherProfile.department} • {teacherProfile.location} | Teaching: <strong>{teacherProfile.semestersTaught.join(', ')}</strong> | Mentees: <strong className="text-[#123B63]">{allMentees.length} Active</strong>
+              <p className="text-xs text-[#5D5965]">
+                Department of {teacherProfile.department} • {teacherProfile.location} | Mentees: <strong className="text-[#201A3D]">{allMentees.length} Active</strong>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2.5">
             <button
               onClick={() => setShowCreateAssignmentModal(true)}
-              className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#17151D] text-xs font-medium transition-all cursor-pointer border border-[#E7E2D9]"
             >
-              <Plus className="w-3.5 h-3.5 text-[#123B63]" />
+              <Plus className="w-3.5 h-3.5 text-[#201A3D]" />
               <span>Post New Assignment</span>
             </button>
 
             <button
               onClick={() => setAiDrawerOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#F5C056]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#D6B982]" />
               <span>✦ AI Faculty Assistant</span>
             </button>
 
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-xs transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#FFFCF7] hover:bg-[#F4F0E8] text-[#17151D] text-xs font-medium border border-[#E7E2D9] shadow-xs transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-              <span>Back to Portal Overview</span>
+              <ArrowLeft className="w-3.5 h-3.5 text-[#201A3D]" />
+              <span>Back to Portal</span>
             </button>
           </div>
         </header>
 
-        {/* MAIN BODY WRAPPER */}
-        <main className="p-6 max-w-7xl mx-auto space-y-6 w-full flex-1">
+        {/* MAIN BODY WORKSPACE (Max 1600px, 12-Column Grid Layout) */}
+        <main className="p-5 lg:p-7 max-w-[1600px] mx-auto space-y-5 w-full flex-1">
           
-          {/* VIEW 1: OVERVIEW */}
+          {/* VIEW 1: OVERVIEW DASHBOARD */}
           {activeNav === 'Overview' && (
-            <div className="space-y-6">
+            <div className="space-y-5">
               
-              {/* EXECUTIVE KPI STAT METRICS BENTO */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {/* ASYMMETRIC DASHBOARD COMPOSITION (8 COLS MAIN WORKSPACE + 4 COLS RIGHT CONTEXT PANEL) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 
-                {/* Stat 1: Assigned Mentees */}
-                <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] flex items-center justify-center text-[#4F46E5] shadow-2xs">
-                      <Users className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold tracking-wide">
-                      ACTIVE COHORT
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Assigned Mentees
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#10253A] font-display">
-                        {allMentees.length}
-                      </span>
-                      <span className="text-xs font-bold text-[#159A72]">Students</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>CSE & AI/ML Stream</span>
-                    <span className="font-bold text-[#10253A]">Cap: 20</span>
-                  </div>
-                </div>
-
-                {/* Stat 2: Pending Requests */}
-                <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] shadow-2xs">
-                      <UserCheck className="w-5 h-5" />
-                    </div>
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide ${
-                      pendingRequestsCount > 0 ? 'bg-[#FEF3C7] text-[#D97706]' : 'bg-[#EFE7D8] text-[#627083]'
-                    }`}>
-                      {pendingRequestsCount > 0 ? 'ACTION NEEDED' : 'CLEAR'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Pending Requests
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#10253A] font-display">
-                        {pendingRequestsCount}
-                      </span>
-                      <span className="text-xs font-bold text-[#D97706]">Awaiting Review</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>Deterministic RAG</span>
-                    <span className="font-bold text-[#159A72]">96% Match Avg</span>
-                  </div>
-                </div>
-
-                {/* Stat 3: Attention Flagged */}
-                <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#FEE2E2] border border-[#FECACA] flex items-center justify-center text-[#B91C1C] shadow-2xs">
-                      <AlertTriangle className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#FEE2E2] text-[#B91C1C] text-[10px] font-extrabold tracking-wide">
-                      HIGH RISK
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Attention Flagged
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#B91C1C] font-display">
-                        1
-                      </span>
-                      <span className="text-xs font-bold text-[#B91C1C]">Critical</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span className="truncate">Aarav Sharma</span>
-                    <span className="font-bold text-[#B91C1C]">Attn: 68.0%</span>
-                  </div>
-                </div>
-
-                {/* Stat 4: Avg Batch CGPA */}
-                <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-2xl bg-[#DCFCE7] border border-[#BBF7D0] flex items-center justify-center text-[#15803D] shadow-2xs">
-                      <TrendingUp className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-extrabold tracking-wide">
-                      TOP 5% BATCH
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#627083] block mb-1">
-                      Avg Batch CGPA
-                    </span>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl sm:text-4xl font-extrabold text-[#10253A] font-display">
-                        8.42
-                      </span>
-                      <span className="text-xs font-bold text-[#15803D]">Top Tier</span>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[11px] text-[#627083]">
-                    <span>Batch Attendance</span>
-                    <span className="font-bold text-[#10253A]">91.2% Avg</span>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* MAIN 2-COLUMN STRUCTURED BENTO LAYOUT */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
-                {/* LEFT COLUMN (7 COLS): INCOMING REQUESTS & DETAILED MENTEE ROSTER */}
-                <div className="lg:col-span-7 space-y-6">
+                {/* LEFT / MAIN WORKSPACE (8 COLS) */}
+                <div className="lg:col-span-8 space-y-5">
                   
-                  {/* INCOMING MENTOR REQUESTS CARD */}
-                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-[#0C2238]/08 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-[#0C2238]/06 pb-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#EFE7D8] flex items-center justify-center text-[#0C2238]">
-                          <UserCheck className="w-4.5 h-4.5 text-[#0C2238]" />
+                  {/* 1. EXECUTIVE KPI STAT METRICS GRID (4 COMPACT METRIC CARDS) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    {/* Stat 1: Assigned Mentees */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#EEEAF8] border border-[#D6D0EC] flex items-center justify-center text-[#352A63]">
+                          <Users className="w-4 h-4" />
                         </div>
-                        <div>
-                          <h3 className="text-base font-extrabold text-[#10253A] tracking-tight">Incoming Mentorship Applications</h3>
-                          <p className="text-[11px] text-[#627083]">Matched deterministically against research domain and curriculum</p>
+                        <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                          ACTIVE COHORT
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Assigned Mentees
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
+                            {allMentees.length}
+                          </span>
+                          <span className="text-[11px] font-medium text-[#15803D]">Students</span>
                         </div>
                       </div>
-                      <span className="px-3 py-1 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-black uppercase tracking-wider">
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>CSE & AI Stream</span>
+                        <span className="font-semibold text-[#17151D]">Capacity: 25</span>
+                      </div>
+                    </div>
+
+                    {/* Stat 2: Pending Requests */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#F4D5AD]/40 border border-[#F4D5AD] flex items-center justify-center text-[#92400E]">
+                          <UserCheck className="w-4 h-4" />
+                        </div>
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold ${
+                          pendingRequestsCount > 0 ? 'bg-[#F4D5AD] text-[#92400E]' : 'bg-[#EEE8DE] text-[#5D5965]'
+                        }`}>
+                          {pendingRequestsCount > 0 ? 'ACTION NEEDED' : 'CLEAR'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Pending Requests
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
+                            {pendingRequestsCount}
+                          </span>
+                          <span className="text-[11px] font-medium text-[#92400E]">Awaiting</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>Deterministic AI</span>
+                        <span className="font-semibold text-[#15803D]">96% Match Avg</span>
+                      </div>
+                    </div>
+
+                    {/* Stat 3: Attention Flagged */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#F3C1C2]/40 border border-[#F3C1C2] flex items-center justify-center text-[#991B1B]">
+                          <AlertTriangle className="w-4 h-4" />
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-[#F3C1C2] text-[#991B1B] text-[9px] font-semibold">
+                          HIGH RISK
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Attention Flagged
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#991B1B] font-display">
+                            1
+                          </span>
+                          <span className="text-[11px] font-medium text-[#991B1B]">Critical</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span className="truncate">Aarav Sharma</span>
+                        <span className="font-semibold text-[#991B1B]">Attn: 68.0%</span>
+                      </div>
+                    </div>
+
+                    {/* Stat 4: Avg Batch CGPA */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-xl bg-[#BFE7D6]/40 border border-[#BFE7D6] flex items-center justify-center text-[#15803D]">
+                          <TrendingUp className="w-4 h-4" />
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                          TOP 5% BATCH
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Avg Batch CGPA
+                        </span>
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
+                            8.42
+                          </span>
+                          <span className="text-[11px] font-medium text-[#15803D]">Top Tier</span>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>Batch Attendance</span>
+                        <span className="font-semibold text-[#17151D]">91.2% Avg</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* 2. ATTENTION RADAR MATRIX (4 SEMANTIC STATUS STATES) */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-7 h-7 rounded-lg bg-[#201A3D] text-[#D6B982] flex items-center justify-center">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-[#17151D]">Mentee Attention & Intervention Radar</h3>
+                          <p className="text-[11px] text-[#5D5965]">Continuous academic risk monitoring & disengagement alerts</p>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#EEE8DE] text-[#17151D] text-[10px] font-semibold">
+                        LIVE TELEMETRY
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                      
+                      {/* State 1: Immediate Attention */}
+                      <div className="p-3.5 rounded-[18px] bg-[#F3C1C2]/30 border border-[#F3C1C2] space-y-2 flex flex-col justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-semibold text-[#991B1B] uppercase tracking-wider">
+                              Immediate Attention
+                            </span>
+                            <span className="w-5 h-5 rounded-full bg-[#F3C1C2] text-[#991B1B] text-[10px] font-bold flex items-center justify-center">
+                              1
+                            </span>
+                          </div>
+                          <p className="text-xs font-semibold text-[#17151D]">Aarav Sharma</p>
+                          <p className="text-[10px] text-[#5D5965]">Attendance 68.0% • CGPA 5.80 (Discrete Math risk)</p>
+                        </div>
+                        <button
+                          onClick={() => setActiveNav('Attention & Risk')}
+                          className="w-full py-1.5 rounded-lg bg-[#991B1B] text-white font-medium text-[11px] hover:bg-[#7F1D1D] transition-colors cursor-pointer"
+                        >
+                          Intervene Now →
+                        </button>
+                      </div>
+
+                      {/* State 2: Monitor */}
+                      <div className="p-3.5 rounded-[18px] bg-[#F4D5AD]/30 border border-[#F4D5AD] space-y-2 flex flex-col justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-semibold text-[#92400E] uppercase tracking-wider">
+                              Monitor State
+                            </span>
+                            <span className="w-5 h-5 rounded-full bg-[#F4D5AD] text-[#92400E] text-[10px] font-bold flex items-center justify-center">
+                              2
+                            </span>
+                          </div>
+                          <p className="text-xs font-semibold text-[#17151D]">Dev Patel & 1 Other</p>
+                          <p className="text-[10px] text-[#5D5965]">Attendance 74.2% • Missed lab submission CS503</p>
+                        </div>
+                        <button
+                          onClick={() => setActiveNav('My Students')}
+                          className="w-full py-1.5 rounded-lg bg-[#92400E] text-white font-medium text-[11px] hover:bg-[#78350F] transition-colors cursor-pointer"
+                        >
+                          Inspect Mentees →
+                        </button>
+                      </div>
+
+                      {/* State 3: On Track */}
+                      <div className="p-3.5 rounded-[18px] bg-[#BFE7D6]/30 border border-[#BFE7D6] space-y-2 flex flex-col justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-semibold text-[#15803D] uppercase tracking-wider">
+                              On Track
+                            </span>
+                            <span className="w-5 h-5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[10px] font-bold flex items-center justify-center">
+                              19
+                            </span>
+                          </div>
+                          <p className="text-xs font-semibold text-[#17151D]">Ananya Rane & 18 Others</p>
+                          <p className="text-[10px] text-[#5D5965]">Attendance 88%+ • Meeting curriculum goals</p>
+                        </div>
+                        <button
+                          onClick={() => setActiveNav('My Students')}
+                          className="w-full py-1.5 rounded-lg bg-[#15803D] text-white font-medium text-[11px] hover:bg-[#166534] transition-colors cursor-pointer"
+                        >
+                          View Cohort →
+                        </button>
+                      </div>
+
+                      {/* State 4: High Potential */}
+                      <div className="p-3.5 rounded-[18px] bg-[#D5D0F5]/30 border border-[#D5D0F5] space-y-2 flex flex-col justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-semibold text-[#352A63] uppercase tracking-wider">
+                              High Potential
+                            </span>
+                            <span className="w-5 h-5 rounded-full bg-[#D5D0F5] text-[#352A63] text-[10px] font-bold flex items-center justify-center">
+                              2
+                            </span>
+                          </div>
+                          <p className="text-xs font-semibold text-[#17151D]">Krishna Singh & 1 Other</p>
+                          <p className="text-[10px] text-[#5D5965]">CGPA 8.92+ • IEEE paper drafts & capstone ready</p>
+                        </div>
+                        <button
+                          onClick={() => setActiveNav('Feedback & Goals')}
+                          className="w-full py-1.5 rounded-lg bg-[#352A63] text-white font-medium text-[11px] hover:bg-[#29204E] transition-colors cursor-pointer"
+                        >
+                          Review Research →
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* 3. INCOMING MENTORSHIP APPLICATIONS CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[#EEE8DE] flex items-center justify-center text-[#201A3D]">
+                          <UserCheck className="w-3.5 h-3.5 text-[#201A3D]" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-[#17151D]">Incoming Mentorship Applications</h3>
+                          <p className="text-[11px] text-[#5D5965]">Deterministic AI matching based on domain expertise & curriculum</p>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#F4D5AD] text-[#92400E] text-[10px] font-semibold">
                         {pendingRequestsCount} PENDING
                       </span>
                     </div>
 
                     {storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').length === 0 ? (
-                      <div className="p-6 bg-[#F7F4EE]/70 rounded-2xl border border-dashed border-[#0C2238]/10 text-center space-y-1">
-                        <CheckCircle2 className="w-6 h-6 text-[#159A72] mx-auto mb-1" />
-                        <p className="text-xs font-bold text-[#10253A]">All Applications Processed</p>
-                        <p className="text-[11px] text-[#627083]">No pending student mentorship requests in queue.</p>
+                      <div className="p-5 bg-[#F8F5EF] rounded-xl border border-dashed border-[#E7E2D9] text-center space-y-1">
+                        <CheckCircle2 className="w-5 h-5 text-[#15803D] mx-auto mb-1" />
+                        <p className="text-xs font-semibold text-[#17151D]">All Applications Processed</p>
+                        <p className="text-[11px] text-[#5D5965]">No pending student mentorship requests in queue.</p>
                       </div>
                     ) : (
                       storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').map((req: MentorRequest) => (
-                        <div key={req.id} className="p-5 rounded-2xl bg-[#F7F4EE] border border-[#0C2238]/08 space-y-3.5 hover:border-[#C99632]/40 transition-colors">
-                          {/* CHANGE REQUEST BADGER */}
+                        <div key={req.id} className="p-4 rounded-[18px] bg-[#F8F5EF] border border-[#E7E2D9] space-y-3 hover:border-[#C9A86A]/50 transition-colors">
                           {req.status === 'CHANGE_PENDING' && (
-                            <div className="px-3 py-1.5 rounded-xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-between text-xs text-[#854D0E] font-extrabold">
-                              <span className="flex items-center space-x-1.5">
-                                <span>🔄 MENTOR CHANGE REQUEST</span>
-                              </span>
-                              <span className="text-[11px] text-[#A16207]">
-                                Previous: {req.previousMentorName || 'Prof. S. Kulkarni'} ➔ Requested: {req.requestedMentorName || 'You'}
+                            <div className="px-3 py-1 rounded-lg bg-[#F4D5AD]/50 border border-[#F4D5AD] flex items-center justify-between text-xs text-[#92400E] font-medium">
+                              <span>🔄 MENTOR CHANGE REQUEST</span>
+                              <span className="text-[11px]">
+                                From: {req.previousMentorName || 'Prof. S. Kulkarni'} ➔ Requested: {req.requestedMentorName || 'You'}
                               </span>
                             </div>
                           )}
 
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-3">
-                              <div className="w-10 h-10 rounded-xl bg-[#0C2238] text-[#E8C56B] flex items-center justify-center font-bold text-xs shadow-xs">
+                              <div className="w-9 h-9 rounded-xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xs shadow-xs">
                                 {req.studentName.split(' ').map((n: string) => n[0]).join('')}
                               </div>
                               <div>
-                                <p className="font-extrabold text-[#10253A] text-sm">{req.studentName}</p>
-                                <p className="text-[11px] text-[#627083]">ID: {req.studentId} • {req.branch} ({req.semester})</p>
+                                <p className="font-semibold text-[#17151D] text-xs">{req.studentName}</p>
+                                <p className="text-[11px] text-[#5D5965]">PRN: {req.studentId} • {req.branch} ({req.semester})</p>
                               </div>
                             </div>
-                            <span className="text-xs font-extrabold text-[#15803D] bg-[#DCFCE7] px-3 py-1 rounded-full border border-[#BBF7D0]">
+                            <span className="text-xs font-bold text-[#15803D] bg-[#BFE7D6] px-2.5 py-0.5 rounded-full border border-[#BFE7D6]">
                               {req.matchScore}% Match
                             </span>
                           </div>
 
-                          <div className="p-3.5 rounded-xl bg-[#FFFCF7] border border-[#0C2238]/06 text-xs space-y-1.5">
-                            <p className="font-bold text-[#10253A] flex items-center space-x-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#C99632]" />
-                              <span>Goal: {req.goal}</span>
+                          <div className="p-3 rounded-xl bg-[#FFFCF7] border border-[#E7E2D9] text-xs space-y-1">
+                            <p className="font-medium text-[#17151D]">
+                              <strong>Goal:</strong> {req.goal}
                             </p>
-                            <p className="text-[#627083] font-medium pl-3">{req.matchReason}</p>
+                            <p className="text-[#5D5965] text-[11px]">{req.matchReason}</p>
                             {req.note && (
-                              <p className="text-[#627083] italic pt-1.5 border-t border-[#0C2238]/06 pl-3">
+                              <p className="text-[#5D5965] italic text-[11px] pt-1 border-t border-[#E7E2D9]">
                                 "{req.note}"
                               </p>
                             )}
                           </div>
 
-                          <div className="flex justify-end space-x-2.5 pt-1">
+                          <div className="flex justify-end space-x-2 pt-0.5">
                             <button
                               onClick={() => setDeclineModal(req)}
-                              className="px-4 py-2 rounded-xl bg-[#EFE7D8] hover:bg-[#E2D7C6] text-[#10253A] font-extrabold text-xs cursor-pointer transition-colors"
+                              className="px-3.5 py-1.5 rounded-xl bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#17151D] font-medium text-xs cursor-pointer transition-colors"
                             >
                               {req.status === 'CHANGE_PENDING' ? 'Decline Change' : 'Decline'}
                             </button>
                             <button
                               onClick={() => setAcceptConfirmModal(req)}
-                              className="px-5 py-2 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center space-x-1.5"
+                              className="px-4 py-1.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs shadow-xs transition-all cursor-pointer flex items-center space-x-1"
                             >
                               <span>{req.status === 'CHANGE_PENDING' ? 'Accept Mentor Change' : 'Accept Mentee'}</span>
-                              <ChevronRight className="w-3.5 h-3.5 text-[#E8C56B]" />
+                              <ChevronRight className="w-3.5 h-3.5 text-[#D6B982]" />
                             </button>
                           </div>
                         </div>
@@ -976,77 +1094,77 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
                     )}
                   </div>
 
-                  {/* MENTEE ROSTER OVERVIEW TABLE */}
-                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-[#0C2238]/08 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-[#0C2238]/06 pb-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#EFE7D8] flex items-center justify-center text-[#0C2238]">
-                          <GraduationCap className="w-4.5 h-4.5 text-[#0C2238]" />
+                  {/* 4. ASSIGNED MENTEE COHORT ROSTER TABLE */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-[#EEE8DE] flex items-center justify-center text-[#201A3D]">
+                          <GraduationCap className="w-3.5 h-3.5 text-[#201A3D]" />
                         </div>
                         <div>
-                          <h3 className="text-base font-extrabold text-[#10253A] tracking-tight">Assigned Mentee Cohort Roster</h3>
-                          <p className="text-[11px] text-[#627083]">Live attendance telemetry and academic performance</p>
+                          <h3 className="text-sm font-semibold text-[#17151D]">Assigned Mentee Roster</h3>
+                          <p className="text-[11px] text-[#5D5965]">Live attendance & academic performance telemetry</p>
                         </div>
                       </div>
                       <button 
                         onClick={() => setActiveNav('My Students')}
-                        className="text-xs font-extrabold text-[#0C2238] hover:text-[#C99632] transition-colors flex items-center space-x-1"
+                        className="text-xs font-semibold text-[#201A3D] hover:text-[#C9A86A] transition-colors flex items-center space-x-1"
                       >
                         <span>View All ({allMentees.length})</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
 
-                    <div className="overflow-x-auto rounded-2xl border border-[#0C2238]/08">
+                    <div className="overflow-x-auto rounded-xl border border-[#E7E2D9]">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="bg-[#F7F4EE] border-b border-[#0C2238]/08 text-[#627083]">
-                            <th className="py-3 px-4 font-black uppercase text-[10px] tracking-wider">STUDENT</th>
-                            <th className="py-3 px-3 font-black uppercase text-[10px] tracking-wider">CGPA</th>
-                            <th className="py-3 px-3 font-black uppercase text-[10px] tracking-wider">ATTENDANCE</th>
-                            <th className="py-3 px-3 font-black uppercase text-[10px] tracking-wider">STATUS</th>
-                            <th className="py-3 px-4 font-black uppercase text-[10px] tracking-wider text-right">ACTION</th>
+                          <tr className="bg-[#F8F5EF] border-b border-[#E7E2D9] text-[#8B8792]">
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">STUDENT</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">CGPA</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">ATTENDANCE</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px]">STATUS</th>
+                            <th className="py-2.5 px-3 font-semibold uppercase text-[10px] text-right">ACTION</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#0C2238]/06 bg-white/60">
+                        <tbody className="divide-y divide-[#E7E2D9] bg-white">
                           {allMentees.map((m) => (
-                            <tr key={m.id} className="hover:bg-[#F7F4EE]/70 transition-colors">
-                              <td className="py-3.5 px-4">
+                            <tr key={m.id} className="hover:bg-[#F8F5EF]/80 transition-colors">
+                              <td className="py-3 px-3">
                                 <div className="flex items-center space-x-2.5">
-                                  <div className="w-8 h-8 rounded-xl bg-[#EFE7D8] text-[#0C2238] flex items-center justify-center font-bold text-xs shrink-0">
+                                  <div className="w-7 h-7 rounded-lg bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-[11px] shrink-0">
                                     {m.name.split(' ').map((n: string) => n[0]).join('')}
                                   </div>
                                   <div>
-                                    <p className="font-extrabold text-[#10253A]">{m.name}</p>
-                                    <p className="text-[10px] text-[#627083]">{m.roll} • {m.branch}</p>
+                                    <p className="font-semibold text-[#17151D] text-xs">{m.name}</p>
+                                    <p className="text-[10px] text-[#5D5965]">{m.roll} • {m.branch}</p>
                                   </div>
                                 </div>
                               </td>
-                              <td className="py-3.5 px-3 font-extrabold text-[#10253A]">
+                              <td className="py-3 px-3 font-bold text-[#17151D]">
                                 {m.cgpa.toFixed(2)}
                               </td>
-                              <td className="py-3.5 px-3 font-extrabold">
-                                <span className={m.attendance < 75 ? 'text-[#B91C1C]' : 'text-[#15803D]'}>
+                              <td className="py-3 px-3 font-bold">
+                                <span className={m.attendance < 75 ? 'text-[#991B1B]' : 'text-[#15803D]'}>
                                   {m.attendance.toFixed(1)}%
                                 </span>
                               </td>
-                              <td className="py-3.5 px-3">
-                                <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                              <td className="py-3 px-3">
+                                <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase ${
                                   m.severity === 'CRITICAL' 
-                                    ? 'bg-[#FEE2E2] text-[#B91C1C]' 
+                                    ? 'bg-[#F3C1C2] text-[#991B1B]' 
                                     : m.severity === 'WARNING'
-                                    ? 'bg-[#FEF3C7] text-[#D97706]'
-                                    : 'bg-[#DCFCE7] text-[#15803D]'
+                                    ? 'bg-[#F4D5AD] text-[#92400E]'
+                                    : 'bg-[#BFE7D6] text-[#15803D]'
                                 }`}>
                                   {m.status}
                                 </span>
                               </td>
-                              <td className="py-3.5 px-4 text-right">
+                              <td className="py-3 px-3 text-right">
                                 <button
                                   onClick={() => setSelectedStudent(m)}
-                                  className="px-3 py-1.5 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-[11px] shadow-xs hover:shadow-md transition-all cursor-pointer"
+                                  className="px-3 py-1 rounded-lg bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-[11px] transition-all cursor-pointer"
                                 >
-                                  View Dossier →
+                                  Dossier →
                                 </button>
                               </td>
                             </tr>
@@ -1058,111 +1176,121 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
 
                 </div>
 
-                {/* RIGHT COLUMN (5 COLS): MENTORING WORKSPACE & UPCOMING MEETINGS */}
-                <div className="lg:col-span-5 space-y-6">
+                {/* RIGHT / CONTEXT PANEL (4 COLS) */}
+                <div className="lg:col-span-4 space-y-5">
                   
-                  {/* LOG SESSION FEEDBACK BUTTON & ACTION CARD */}
-                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-[#0C2238]/08 shadow-xs space-y-4">
-                    <div className="flex items-center space-x-3 border-b border-[#0C2238]/06 pb-3">
-                      <div className="w-9 h-9 rounded-xl bg-[#EFE7D8] flex items-center justify-center text-[#0C2238]">
-                        <Sliders className="w-4.5 h-4.5 text-[#0C2238]" />
+                  {/* 1. TEACHER IDENTITY & PROFILE SUMMARY CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4 text-center">
+                    <div className="flex flex-col items-center space-y-2">
+                      <div className="w-16 h-16 rounded-2xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xl shadow-xs border-2 border-[#D6B982]/40 font-display">
+                        {teacherProfile.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'FM'}
                       </div>
                       <div>
-                        <h3 className="text-base font-extrabold text-[#10253A] tracking-tight">Mentoring Workspace Actions</h3>
-                        <p className="text-[11px] text-[#627083]">Log continuous feedback or schedule sessions</p>
+                        <h3 className="text-base font-bold text-[#17151D]">{teacherProfile.name}</h3>
+                        <p className="text-xs text-[#5D5965]">{teacherProfile.designation}</p>
+                        <p className="text-[11px] text-[#8B8792]">Dept of {teacherProfile.department}</p>
                       </div>
                     </div>
+
+                    <div className="pt-3 border-t border-[#E7E2D9] grid grid-cols-2 gap-2 text-center text-xs">
+                      <div className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9]">
+                        <span className="text-[10px] uppercase text-[#8B8792] font-medium block">OFFICE HOURS</span>
+                        <span className="font-semibold text-[#17151D] text-[10px]">{teacherProfile.officeHours.split('•')[0]}</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9]">
+                        <span className="text-[10px] uppercase text-[#8B8792] font-medium block">LOCATION</span>
+                        <span className="font-semibold text-[#201A3D] text-[10px]">Room M-304</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. MENTORING WORKSPACE ACTIONS CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
+                    <div className="flex items-center space-x-2 border-b border-[#E7E2D9] pb-3">
+                      <Sliders className="w-4 h-4 text-[#201A3D]" />
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Mentoring Actions</h3>
+                    </div>
                     
-                    <div className="space-y-2.5 pt-1">
+                    <div className="space-y-2 pt-1">
                       <button
                         onClick={() => {
                           setSessionMentee(allMentees[0]);
                           setShowSessionModal(true);
                         }}
-                        className="w-full py-3 px-4 rounded-2xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs flex items-center justify-between shadow-md hover:shadow-lg transition-all cursor-pointer group"
+                        className="w-full py-2.5 px-3.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs flex items-center justify-between shadow-xs transition-all cursor-pointer group"
                       >
-                        <div className="flex items-center space-x-2.5">
-                          <FileText className="w-4 h-4 text-[#E8C56B]" />
-                          <span>Log 1-on-1 Mentoring Session</span>
+                        <div className="flex items-center space-x-2">
+                          <FileText className="w-4 h-4 text-[#D6B982]" />
+                          <span>Log 1-on-1 Session</span>
                         </div>
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </button>
 
                       <button
                         onClick={() => setShowScheduleMeetingModal(true)}
-                        className="w-full py-3 px-4 rounded-2xl bg-[#EFE7D8]/90 hover:bg-[#E2D7C6] text-[#10253A] font-extrabold text-xs flex items-center justify-between border border-[#0C2238]/08 transition-all cursor-pointer group"
+                        className="w-full py-2.5 px-3.5 rounded-xl bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#17151D] font-medium text-xs flex items-center justify-between border border-[#E7E2D9] transition-all cursor-pointer group"
                       >
-                        <div className="flex items-center space-x-2.5">
-                          <Calendar className="w-4 h-4 text-[#0C2238]" />
-                          <span>Schedule 1-on-1 Check-in Meeting</span>
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="w-4 h-4 text-[#201A3D]" />
+                          <span>Schedule Check-in Meeting</span>
                         </div>
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </button>
                     </div>
                   </div>
 
-                  {/* SCHEDULED MEETINGS & AGENDA */}
-                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-[#0C2238]/08 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-[#0C2238]/06 pb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#EFE7D8] flex items-center justify-center text-[#0C2238]">
-                          <Calendar className="w-4.5 h-4.5 text-[#0C2238]" />
-                        </div>
-                        <div>
-                          <h3 className="text-base font-extrabold text-[#10253A] tracking-tight">Scheduled Mentoring Sessions</h3>
-                          <p className="text-[11px] text-[#627083]">Calendar sync & student review agenda</p>
-                        </div>
+                  {/* 3. SCHEDULED MEETINGS CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#E7E2D9] pb-3">
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="w-4 h-4 text-[#201A3D]" />
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Upcoming Meetings</h3>
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#EFE7D8] text-[#10253A] text-[10px] font-extrabold">
+                      <span className="px-2 py-0.5 rounded-full bg-[#EEE8DE] text-[#17151D] text-[9px] font-medium">
                         CALENDAR
                       </span>
                     </div>
 
-                    <div className="space-y-3 pt-1">
+                    <div className="space-y-2.5 pt-1">
                       {storeState.meetings.map((mtg: MentoringMeeting) => (
-                        <div key={mtg.id} className="p-4 rounded-2xl bg-[#F7F4EE] border border-[#0C2238]/08 space-y-2 text-xs hover:border-[#C99632]/40 transition-colors">
-                          <div className="flex items-center justify-between font-bold">
-                            <span className="text-[#10253A] font-extrabold text-sm">{mtg.studentName}</span>
-                            <span className="px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-black uppercase">
+                        <div key={mtg.id} className="p-3.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] space-y-1.5 text-xs hover:border-[#C9A86A]/50 transition-colors">
+                          <div className="flex items-center justify-between font-semibold">
+                            <span className="text-[#17151D] font-bold">{mtg.studentName}</span>
+                            <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
                               {mtg.status}
                             </span>
                           </div>
-                          <p className="text-[#0C2238] font-bold">{mtg.title}</p>
-                          <div className="flex items-center justify-between text-[11px] text-[#627083] pt-1 border-t border-[#0C2238]/06">
+                          <p className="text-[#201A3D] font-medium text-[11px]">{mtg.title}</p>
+                          <div className="flex items-center justify-between text-[10px] text-[#5D5965] pt-1 border-t border-[#E7E2D9]">
                             <span>{mtg.date}</span>
-                            <span className="text-[#C99632] font-extrabold">Room M-304</span>
+                            <span className="text-[#C9A86A] font-semibold">Room M-304</span>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* AI MENTOR ADVISORY INSIGHT CARD */}
-                  <div className="bg-gradient-to-br from-[#0C2238] via-[#123B63] to-[#07182A] text-white rounded-3xl p-6 sm:p-7 border border-[#C99632]/40 shadow-xl space-y-4 relative overflow-hidden">
-                    <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-[#C99632]/15 rounded-full blur-2xl pointer-events-none" />
-                    
+                  {/* 4. AI MENTOR ADVISORY INSIGHT CARD */}
+                  <div className="bg-[#EEEAF8] rounded-[24px] p-5 border border-[#D6D0EC] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center border border-[#C99632]/40">
-                          <Sparkles className="w-4 h-4 text-[#E8C56B]" />
+                      <div className="flex items-center space-x-2">
+                        <div className="w-6 h-6 rounded-md bg-[#201A3D] text-[#D6B982] flex items-center justify-center">
+                          <Sparkles className="w-3.5 h-3.5 text-[#D6B982]" />
                         </div>
-                        <div>
-                          <h3 className="text-sm font-black text-white tracking-tight">✦ AI Mentoring Advisory</h3>
-                          <p className="text-[10px] text-slate-300">Continuous Curriculum Analysis</p>
-                        </div>
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#352A63]">✦ AI Advisory RAG</h3>
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#C99632]/30 text-[9px] font-black text-[#E8C56B] uppercase tracking-wider">
-                        RAG INSIGHT
+                      <span className="px-2 py-0.5 rounded-full bg-[#FFFCF7] text-[#201A3D] text-[9px] font-semibold border border-[#D6D0EC]">
+                        AUTOMATED
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-200 leading-relaxed bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                    <p className="text-xs text-[#17151D] leading-relaxed bg-[#FFFCF7] p-3 rounded-xl border border-[#D6D0EC]">
                       "Prof. Kulkarni, Krishna Singh has a 96% match score and requested mentorship for AI/ML and PostgreSQL RAG capstone guidance. Accepting this request directly supports CS503 curriculum goals."
                     </p>
 
                     <button
                       onClick={() => setActiveNav('AI Mentor Assistant')}
-                      className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#C99632] to-[#E8C56B] text-[#0C2238] font-extrabold text-xs hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+                      className="w-full py-2 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs shadow-xs transition-all cursor-pointer"
                     >
                       Open Full ChatGPT AI Assistant →
                     </button>

@@ -860,322 +860,339 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F0E8] text-[#17151D] font-sans antialiased flex flex-col lg:flex-row">
       
-      {/* 1. SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
-        <div>
-          {/* Top Brand Header */}
-          <div className="p-6 border-b border-[#E2D7C6] flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">VIT</span>
-            </div>
-            <div>
-              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT MUMBAI</h2>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
-                STUDENT COMMAND CENTER
-              </p>
-            </div>
-          </div>
+      {/* 1. PERSISTENT VERTICAL NAVIGATION RAIL (76px Desktop / Horizontal Compact Mobile) */}
+      <aside className="w-full lg:w-[76px] bg-[#FFFCF7]/95 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-[#E7E2D9] flex flex-row lg:flex-col justify-between items-center p-3 shrink-0 z-40 sticky top-0 lg:h-screen">
+        
+        {/* Top Brand Indicator */}
+        <div className="flex flex-col items-center gap-4">
+          <button
+            onClick={() => setActiveNav('Overview')}
+            className="w-11 h-11 rounded-[14px] bg-[#201A3D] text-white flex items-center justify-center font-bold text-xs shadow-xs border border-[#D6B982]/30 hover:scale-105 transition-all cursor-pointer group relative"
+            title="VIT Mumbai Student Command Center"
+          >
+            <span className="text-[#D6B982] font-display font-extrabold text-xs">VIT</span>
+            
+            {/* Desktop Tooltip */}
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-semibold rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              VIT Command Center
+            </span>
+          </button>
 
-          {/* Navigation Links */}
-          <nav className="p-4 space-y-1 text-xs font-semibold">
+          {/* Divider */}
+          <div className="hidden lg:block w-8 h-[1px] bg-[#E7E2D9]" />
+
+          {/* Navigation Icons Group */}
+          <nav className="flex flex-row lg:flex-col items-center gap-1.5 overflow-x-auto lg:overflow-visible py-1 no-scrollbar">
             {[
-              { name: 'Overview', icon: LayoutDashboard },
-              { name: 'Academics', icon: GraduationCap },
-              { name: 'Attendance', icon: Clock },
-              { name: 'Assignments & Coursework', icon: CheckSquare, badge: '1 Active' },
-              { name: 'AI Recommended Courses', icon: Globe, badge: 'Real' },
-              { name: 'Skills & Development', icon: Brain },
-              { name: 'Projects', icon: Cpu },
-              { name: 'Certifications', icon: Award },
-              { name: 'Goals & Roadmap', icon: Target },
-              { name: 'Mentoring', icon: UserCheck },
-              { name: 'My Profile', icon: User },
-              { name: 'AI Assistant', icon: Sparkles, badge: 'Copilot' },
-              { name: 'Notifications', icon: Bell, badge: `${storeState.studentNotifications.filter((n: any) => !n.read).length}` },
+              { name: 'Overview', icon: LayoutDashboard, category: 'Primary' },
+              { name: 'Academics', icon: GraduationCap, category: 'Primary' },
+              { name: 'Attendance', icon: Clock, category: 'Primary' },
+              { name: 'Assignments & Coursework', icon: CheckSquare, badge: '1', category: 'Work' },
+              { name: 'AI Recommended Courses', icon: Globe, category: 'Work' },
+              { name: 'Skills & Development', icon: Brain, category: 'Work' },
+              { name: 'Projects', icon: Cpu, category: 'Work' },
+              { name: 'Certifications', icon: Award, category: 'Work' },
+              { name: 'Goals & Roadmap', icon: Target, category: 'Work' },
+              { name: 'Mentoring', icon: UserCheck, category: 'Work' },
+              { name: 'My Profile', icon: User, category: 'System' },
+              { name: 'AI Assistant', icon: Sparkles, badge: 'AI', category: 'System' },
+              { name: 'Notifications', icon: Bell, badge: `${storeState.studentNotifications.filter((n: any) => !n.read).length}`, category: 'System' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.name;
               return (
                 <button
                   key={item.name}
-                  onClick={() => {
-                    setActiveNav(item.name as any);
-                  }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all cursor-pointer ${
+                  onClick={() => setActiveNav(item.name as any)}
+                  className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all cursor-pointer relative group ${
                     isActive
-                      ? 'bg-[#123B63] text-white shadow-sm font-bold'
-                      : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
+                      ? 'bg-[#201A3D] text-white shadow-xs font-semibold'
+                      : 'bg-transparent text-[#5D5965] hover:bg-[#EEE8DE]/70 hover:text-[#17151D]'
                   }`}
+                  title={item.name}
                 >
-                  <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
-                  </div>
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#D6B982]' : 'text-[#5D5965] group-hover:text-[#17151D]'}`} />
+                  
+                  {/* Badge Indicator */}
                   {item.badge && item.badge !== '0' && (
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                      isActive ? 'bg-[#C49A52] text-[#102A43]' : 'bg-[#E9DDC9] text-[#102A43]'
-                    }`}>
+                    <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#C9A86A] text-[#201A3D] text-[9px] font-bold flex items-center justify-center border border-[#FFFCF7]">
                       {item.badge}
                     </span>
                   )}
+
+                  {/* Hover Floating Label for Desktop Navigation Rail */}
+                  <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+                    {item.name}
+                  </span>
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* Sidebar Footer Support & Exit */}
-        <div className="p-4 border-t border-[#E2D7C6] space-y-2 text-xs">
+        {/* Sidebar Footer Rail Icons */}
+        <div className="flex flex-row lg:flex-col items-center gap-1.5 pt-2 border-t border-[#E7E2D9]/80">
           <button 
             onClick={() => setActiveNav('Settings')}
-            className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold ${
-              activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
+            className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all cursor-pointer relative group ${
+              activeNav === 'Settings' ? 'bg-[#201A3D] text-white' : 'text-[#5D5965] hover:bg-[#EEE8DE]/70 hover:text-[#17151D]'
             }`}
+            title="Settings & Preferences"
           >
-            <Settings className="w-4 h-4 text-[#1D4E73]" />
-            <span>Settings & Preferences</span>
+            <Settings className="w-4 h-4" />
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Settings & Preferences
+            </span>
           </button>
 
           <button
             onClick={onBackToLanding}
-            className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer"
+            className="w-11 h-11 rounded-[14px] bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#201A3D] flex items-center justify-center transition-colors cursor-pointer relative group"
+            title="Back to Landing Page"
           >
-            <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-            <span>Back to Portal Overview</span>
+            <ArrowLeft className="w-4 h-4 text-[#201A3D]" />
+            <span className="absolute left-14 px-2.5 py-1 bg-[#201A3D] text-white text-[11px] font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden lg:block">
+              Exit to Landing Page
+            </span>
           </button>
         </div>
       </aside>
 
-      {/* 2. MAIN DASHBOARD CONTENT AREA */}
+      {/* 2. MAIN DASHBOARD CONTENT CONTAINER */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* TOP STUDENT IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+        {/* TOP EDITORIAL HEADER BAR */}
+        <header className="bg-[#FFFCF7]/90 backdrop-blur-md border-b border-[#E7E2D9] px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky top-0 z-30 shadow-[0_1px_3px_rgba(30,30,30,0.02)]">
+          
           <div className="flex items-center space-x-3.5">
             <button 
               onClick={() => setActiveNav('My Profile')}
-              className="w-11 h-11 rounded-2xl bg-[#123B63] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-[#C49A52]/40 hover:scale-105 transition-transform cursor-pointer uppercase"
+              className="w-10 h-10 rounded-xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xs shadow-xs border border-[#D6B982]/30 hover:scale-105 transition-all cursor-pointer uppercase"
             >
-              <span className="text-[#F5C056]">
+              <span>
                 {profileData.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'ST'}
               </span>
             </button>
+            
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-lg font-extrabold text-[#102A43]">{profileData.name}</h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold border border-[#E2D7C6]">
-                  ID: {profileData.studentId}
+                <h1 className="text-base font-bold text-[#17151D] tracking-tight">{profileData.name}</h1>
+                <span className="px-2 py-0.5 rounded-full bg-[#EEE8DE] text-[#201A3D] text-[10px] font-medium border border-[#E7E2D9]">
+                  PRN: {profileData.studentId}
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[10px] font-semibold">
                   OFFICIAL RECORD
                 </span>
               </div>
-              <p className="text-xs text-[#5A6E7F]">
+              <p className="text-xs text-[#5D5965]">
                 {profileData.branch} • {profileData.semester} | Mentor:{' '}
-                <span className="font-bold text-[#123B63]">
+                <span className="font-semibold text-[#201A3D]">
                   {latestRequest?.mentorName || (mentorStatus === 'NONE' ? 'Unassigned' : 'Prof. S. Kulkarni')}
                 </span>{' '}
-                <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                <span className={`px-1.5 py-0.5 rounded-md text-[9px] font-semibold ${
                   mentorStatus === 'ACCEPTED' 
-                    ? 'bg-[#DCFCE7] text-[#15803D]' 
+                    ? 'bg-[#BFE7D6] text-[#15803D]' 
                     : mentorStatus === 'DECLINED'
-                    ? 'bg-[#FEE2E2] text-[#B91C1C]'
+                    ? 'bg-[#F3C1C2] text-[#991B1B]'
                     : mentorStatus === 'NONE'
-                    ? 'bg-[#E2D7C6] text-[#5A6E7F]'
-                    : 'bg-[#FEF3C7] text-[#D97706]'
+                    ? 'bg-[#EEE8DE] text-[#5D5965]'
+                    : 'bg-[#F4D5AD] text-[#92400E]'
                 }`}>
-                  ({mentorStatus === 'ACCEPTED' ? 'ACTIVE' : mentorStatus === 'NONE' ? 'NOT REQUESTED' : mentorStatus})
+                  ({mentorStatus === 'ACCEPTED' ? 'ACTIVE' : mentorStatus === 'NONE' ? 'NOT ASSIGNED' : mentorStatus})
                 </span>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          {/* Top Quick Actions */}
+          <div className="flex items-center space-x-2.5">
             <button
               onClick={() => {
                 setOnboardingStep(1);
                 setShowOnboardingModal(true);
               }}
-              className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#17151D] text-xs font-medium transition-all cursor-pointer border border-[#E7E2D9]"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#123B63]" />
-              <span>Update Goals & Find Mentor</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#C9A86A]" />
+              <span>Update Goals & Mentor</span>
             </button>
 
             <button
               onClick={() => setAiDrawerOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white text-xs font-medium shadow-xs transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#F5C056]" />
-              <span>✦ AI Assistant</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#D6B982]" />
+              <span>✦ AI Copilot</span>
             </button>
 
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-xs transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-[#FFFCF7] hover:bg-[#F4F0E8] text-[#17151D] text-xs font-medium border border-[#E7E2D9] shadow-xs transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-              <span>Back to Portal Overview</span>
+              <ArrowLeft className="w-3.5 h-3.5 text-[#201A3D]" />
+              <span>Back to Portal</span>
             </button>
           </div>
         </header>
 
-        {/* MAIN BODY WRAPPER */}
-        <main className="p-6 max-w-7xl mx-auto space-y-6 w-full flex-1">
+        {/* MAIN BODY WORKSPACE (Max 1600px, 12-Column Grid Layout) */}
+        <main className="p-5 lg:p-7 max-w-[1600px] mx-auto space-y-5 w-full flex-1">
           
-          {/* RETURNING LOGIN PROFILE COMPLETION BANNER */}
+          {/* PROFILE COMPLETION NOTIFICATION BANNER (When < 100%) */}
           {profileCompletionPct < 100 && (
-            <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#E2D7C6] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="bg-[#FFFCF7] rounded-[20px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div className="flex items-center space-x-3">
-                <Compass className="w-5 h-5 text-[#C49A52]" />
+                <div className="w-9 h-9 rounded-xl bg-[#EEE8DE] text-[#C9A86A] flex items-center justify-center shrink-0">
+                  <Compass className="w-4 h-4" />
+                </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-[#102A43]">
-                    Your Development Profile is {profileCompletionPct}% Complete
+                  <h4 className="text-xs font-semibold text-[#17151D]">
+                    Development Profile is {profileCompletionPct}% Complete
                   </h4>
-                  <p className="text-[11px] text-[#5A6E7F]">
-                    Complete your goal & mentor preferences to receive precision AI placement recommendations.
+                  <p className="text-[11px] text-[#5D5965]">
+                    Populate your career vision & preferred mentor domains to receive precision AI recommendations.
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setActiveNav('My Profile')}
-                className="px-4 py-1.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-bold whitespace-nowrap cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white text-xs font-medium whitespace-nowrap transition-all cursor-pointer shrink-0"
               >
                 Complete Profile →
               </button>
             </div>
           )}
 
-          {/* VIEW 1: OVERVIEW */}
+          {/* VIEW 1: OVERVIEW DASHBOARD */}
           {activeNav === 'Overview' && (
-            <div className="space-y-6">
+            <div className="space-y-5">
               
-              {/* TOP EXECUTIVE OVERVIEW: 2x2 COMPACT SUMMARY CARDS + MY DIRECTION + MENTOR (LEFT) + GOAL PROGRESS FLOW (RIGHT) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* ASYMMETRIC DASHBOARD COMPOSITION (8 COLS MAIN WORKSPACE + 4 COLS RIGHT CONTEXT PANEL) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 
-                {/* LEFT SIDE (4 COLS): 2x2 SUMMARY CARDS + MY DIRECTION + MENTOR */}
-                <div className="lg:col-span-4 space-y-5">
+                {/* LEFT / MAIN WORKSPACE (8 COLS) */}
+                <div className="lg:col-span-8 space-y-5">
                   
-                  {/* 2x2 COMPACT SUMMARY CARDS GRID */}
+                  {/* 1. EXECUTIVE METRICS GRID (2x2 COMPACT CARDS) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     
-                    {/* Stat 1: Current CGPA */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    {/* Stat 1: CGPA */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#DCFCE7] border border-[#BBF7D0] flex items-center justify-center text-[#15803D] shadow-2xs">
+                        <div className="w-8 h-8 rounded-xl bg-[#BFE7D6]/40 border border-[#BFE7D6] flex items-center justify-center text-[#15803D]">
                           <GraduationCap className="w-4 h-4" />
                         </div>
-                        <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[9px] font-extrabold tracking-wide">
-                          OFFICIAL RECORD
+                        <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                          OFFICIAL ERP RECORD
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
-                          Current CGPA
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Academic CGPA
                         </span>
                         <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
                             {currentStudentCgpa.toFixed(2)}
                           </span>
-                          <span className="text-[11px] font-bold text-[#159A72]">
+                          <span className="text-[11px] font-medium text-[#15803D]">
                             {currentStudentCgpa >= 9.0 ? 'Top 3%' : currentStudentCgpa >= 8.5 ? 'Top 10%' : currentStudentCgpa >= 7.5 ? 'Above Avg' : 'Need Focus'}
                           </span>
                         </div>
                       </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
                         <span>Weighted Credits</span>
-                        <span className="font-bold text-[#10253A]">{profileData.semester.includes('VI') ? '132' : '84'} Earned</span>
+                        <span className="font-semibold text-[#17151D]">{profileData.semester.includes('VI') ? '132' : '84'} Earned</span>
                       </div>
                     </div>
 
-                    {/* Stat 2: Attendance % */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    {/* Stat 2: Attendance Rate */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] flex items-center justify-center text-[#4F46E5] shadow-2xs">
+                        <div className="w-8 h-8 rounded-xl bg-[#EEEAF8] border border-[#D6D0EC] flex items-center justify-center text-[#352A63]">
                           <Clock className="w-4 h-4" />
                         </div>
-                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wide ${
-                          currentAttPct >= 75 ? 'bg-[#DCFCE7] text-[#15803D]' : 'bg-[#FEE2E2] text-[#B91C1C]'
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold ${
+                          currentAttPct >= 75 ? 'bg-[#BFE7D6] text-[#15803D]' : 'bg-[#F3C1C2] text-[#991B1B]'
                         }`}>
                           {currentAttPct >= 75 ? 'ELIGIBLE (75%+)' : 'ATTENTION (<75%)'}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
                           Attendance Rate
                         </span>
                         <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
                             {currentAttPct.toFixed(1)}%
                           </span>
-                          <span className={`text-[11px] font-bold ${currentAttPct >= 75 ? 'text-[#159A72]' : 'text-[#B91C1C]'}`}>
+                          <span className={`text-[11px] font-medium ${currentAttPct >= 75 ? 'text-[#15803D]' : 'text-[#991B1B]'}`}>
                             {currentAttPct >= 85 ? 'Safe' : currentAttPct >= 75 ? 'Acceptable' : 'Critical'}
                           </span>
                         </div>
                       </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
                         <span>Classes Attended</span>
-                        <span className="font-bold text-[#10253A]">
+                        <span className="font-semibold text-[#17151D]">
                           {Math.round((currentAttPct / 100) * 126)} / 126
                         </span>
                       </div>
                     </div>
 
                     {/* Stat 3: Academic Stage */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] shadow-2xs">
+                        <div className="w-8 h-8 rounded-xl bg-[#F4D5AD]/40 border border-[#F4D5AD] flex items-center justify-center text-[#92400E]">
                           <BookOpen className="w-4 h-4" />
                         </div>
-                        <span className="px-2 py-0.5 rounded-full bg-[#EFE7D8] text-[#10253A] text-[9px] font-extrabold tracking-wide">
+                        <span className="px-2 py-0.5 rounded-full bg-[#EEE8DE] text-[#17151D] text-[9px] font-semibold">
                           {profileData.semester.includes('VI') ? 'YEAR 3' : 'YEAR 2'}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
                           Academic Stage
                         </span>
                         <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
                             {profileData.semester.replace('Semester ', 'Sem ')}
                           </span>
-                          <span className="text-[11px] font-bold text-[#0C2238]">{profileData.division}</span>
+                          <span className="text-[11px] font-medium text-[#5D5965]">{profileData.division}</span>
                         </div>
                       </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
                         <span>Graduation Batch</span>
-                        <span className="font-bold text-[#10253A]">{profileData.batch}</span>
+                        <span className="font-semibold text-[#17151D]">{profileData.batch}</span>
                       </div>
                     </div>
 
-                    {/* Stat 4: Dev Progress */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    {/* Stat 4: Roadmap Completion */}
+                    <div className="bg-[#FFFCF7] rounded-[18px] p-4 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.035)] hover:border-[#C9A86A]/50 transition-all flex flex-col justify-between space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#E0E7FF] border border-[#C7D2FE] flex items-center justify-center text-[#4338CA] shadow-2xs">
+                        <div className="w-8 h-8 rounded-xl bg-[#EEEAF8] border border-[#D6D0EC] flex items-center justify-center text-[#201A3D]">
                           <Target className="w-4 h-4" />
                         </div>
-                        <span className="px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[9px] font-extrabold tracking-wide">
+                        <span className="px-2 py-0.5 rounded-full bg-[#F4D5AD] text-[#92400E] text-[9px] font-semibold">
                           ON TRACK
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
-                          Roadmap Completion
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-[#8B8792] block mb-0.5">
+                          Roadmap Progress
                         </span>
                         <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          <span className="text-2xl font-bold text-[#17151D] font-display">
                             {Math.round((roadmapMilestones.filter((m: any) => m.done).length / (roadmapMilestones.length || 1)) * 100)}%
                           </span>
-                          <span className="text-[11px] font-bold text-[#D97706]">
+                          <span className="text-[11px] font-medium text-[#92400E]">
                             {roadmapMilestones.filter((m: any) => m.done).length} / {roadmapMilestones.length} Done
                           </span>
                         </div>
                       </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
-                        <span>Career Milestone</span>
-                        <span className="font-bold text-[#159A72]">
+                      <div className="pt-2 border-t border-[#E7E2D9]/80 flex items-center justify-between text-[11px] text-[#5D5965]">
+                        <span>Next Milestone</span>
+                        <span className="font-semibold text-[#201A3D]">
                           {roadmapMilestones.find((m: any) => !m.done)?.title.split(' ')[0] || 'Capstone'}
                         </span>
                       </div>
@@ -1183,213 +1200,274 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
 
                   </div>
 
-                  {/* FEATURE 3: "UPCOMING" */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs space-y-3">
+                  {/* 2. TODAY'S PRIORITY & NEXT BEST ACTIONS (Low-Saturation Pastel Highlight Card) */}
+                  <div className="bg-[#EEEAF8]/60 rounded-[20px] p-5 border border-[#D6D0EC] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4 text-[#123B63]" />
-                        <h3 className="text-sm font-extrabold text-[#102A43]">Upcoming</h3>
+                        <div className="w-7 h-7 rounded-lg bg-[#201A3D] text-white flex items-center justify-center">
+                          <Target className="w-3.5 h-3.5 text-[#D6B982]" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-[#17151D]">Today's High Priority Actions</h3>
                       </div>
-                      <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[9px] font-bold">
-                        VERIFIED EVENTS
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#FFFCF7] text-[#201A3D] text-[10px] font-semibold border border-[#D6D0EC]">
+                        AI REAL-DATA DRIVEN
                       </span>
                     </div>
 
-                    <div className="space-y-2.5">
-                      {upcomingEvents.map((evt: any, idx: number) => (
-                        <div key={idx} className="p-3 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] flex items-center justify-between text-xs">
-                          <div className="flex items-center space-x-3 min-w-0">
-                            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex flex-col items-center justify-center font-bold shrink-0">
-                              <span className="text-[9px] uppercase text-[#F5C056]">{evt.date.split(' ')[0]}</span>
-                              <span className="text-xs leading-none">{evt.date.split(' ')[1]}</span>
-                            </div>
-                            <div className="min-w-0">
-                              <h4 className="font-bold text-[#102A43] truncate">{evt.title}</h4>
-                              <p className="text-[10px] text-[#5A6E7F] truncate">{evt.type} • {evt.status}</p>
-                            </div>
+                    <div className="space-y-3">
+                      {nextBestActions.map((action) => (
+                        <div key={action.id} className="p-3.5 rounded-xl bg-[#FFFCF7] border border-[#E7E2D9] space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold text-[#17151D] text-xs flex items-center space-x-1.5 min-w-0">
+                              <span className="shrink-0">🎯</span>
+                              <span className="truncate">{action.title}</span>
+                            </h4>
+                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase shrink-0 ${
+                              action.priority === 'URGENT' 
+                                ? 'bg-[#F3C1C2] text-[#991B1B]' 
+                                : action.priority === 'HIGH'
+                                ? 'bg-[#F4D5AD] text-[#92400E]'
+                                : 'bg-[#BFE7D6] text-[#15803D]'
+                            }`}>
+                              {action.priority}
+                            </span>
                           </div>
-                          <button
-                            onClick={() => setActiveNav(evt.navTarget as any)}
-                            className="px-2.5 py-1 rounded-lg bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] font-bold text-[10px] cursor-pointer shrink-0 ml-2"
-                          >
-                            View →
-                          </button>
+
+                          <p className="text-[11px] text-[#5D5965] leading-relaxed">
+                            <strong className="text-[#17151D]">Reason:</strong> {action.reason}
+                          </p>
+
+                          <div className="pt-1.5 flex items-center justify-between border-t border-[#E7E2D9]">
+                            {action.deadline ? (
+                              <span className="text-[10px] font-medium text-[#C9A86A]">
+                                Deadline: {action.deadline}
+                              </span>
+                            ) : <div />}
+                            <button
+                              onClick={() => setActiveNav(action.navTarget as any)}
+                              className="px-3 py-1 rounded-lg bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs transition-colors cursor-pointer ml-auto"
+                            >
+                              {action.ctaText} →
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* ASSIGNED MENTOR STATUS CARD */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-extrabold text-[#102A43]">Assigned Faculty Mentor</h3>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
-                        mentorStatus === 'ACCEPTED'
-                          ? 'bg-[#DCFCE7] text-[#15803D]'
-                          : mentorStatus === 'DECLINED'
-                          ? 'bg-[#FEE2E2] text-[#B91C1C]'
-                          : mentorStatus === 'NONE'
-                          ? 'bg-[#E2D7C6] text-[#5A6E7F]'
-                          : 'bg-[#FEF3C7] text-[#D97706]'
-                      }`}>
-                        {mentorStatus === 'ACCEPTED' ? 'ACTIVE' : mentorStatus === 'NONE' ? 'NOT ASSIGNED' : mentorStatus}
-                      </span>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1.5 text-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="font-extrabold text-[#102A43] text-xs">
-                          {latestRequest?.mentorName || (mentorStatus === 'NONE' ? 'AI Mentor Match Available' : 'Prof. S. Kulkarni')}
-                        </span>
-                        <span className="font-bold text-[#123B63] text-[11px]">96% Match</span>
-                      </div>
-                      <p className="text-[#5A6E7F] text-[11px]">
-                        {latestRequest?.mentorDept || 'Department of Computer Engineering & AI'}
-                      </p>
-                      <p className="text-[10px] text-[#C49A52] font-semibold">
-                        Specialty: {selectedField} & Career Placement Track
-                      </p>
-                    </div>
-
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setActiveNav('Mentoring')}
-                        className="flex-1 py-2 rounded-xl bg-[#123B63] text-white font-bold text-xs hover:bg-[#1D4E73] transition-colors"
-                      >
-                        {mentorStatus === 'NONE' ? 'Find Faculty Mentor →' : 'View Mentoring Logs →'}
-                      </button>
-                      {mentorStatus !== 'NONE' && (
-                        <button
-                          onClick={() => setShowChangeMentorModal(true)}
-                          className="px-3 py-2 rounded-xl bg-[#E9DDC9] text-[#102A43] font-bold text-xs hover:bg-[#E2D7C6]"
-                        >
-                          Change Mentor
-                        </button>
-                      )}
-                    </div>
+                  {/* 3. CAREER GOAL PROGRESS ENGINE */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)]">
+                    <GoalProgressSection />
                   </div>
 
-                </div>
-
-                {/* RIGHT SIDE (8 COLS): GOAL PROGRESS ENGINE */}
-                <div className="lg:col-span-8">
-                  <GoalProgressSection />
-                </div>
-
-              </div>
-
-              {/* MAIN 2-COLUMN STRUCTURED BENTO LAYOUT */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
-                {/* LEFT COLUMN (7 COLS): CGPA TREND */}
-                <div className="lg:col-span-7 space-y-6">
-                  
-                  {/* CGPA LINE CHART */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
+                  {/* 4. CGPA & SGPA ACADEMIC TRAJECTORY CHART */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-base font-extrabold text-[#102A43]">CGPA / SGPA Academic Trajectory</h3>
-                        <p className="text-xs text-[#5A6E7F]">Real semester-wise performance curve synced from VIT ERP</p>
+                        <h3 className="text-sm font-semibold text-[#17151D]">CGPA / SGPA Academic Trajectory</h3>
+                        <p className="text-xs text-[#5D5965]">Semester-wise performance curve synced from VIT ERP</p>
                       </div>
-                      <span className="text-xs font-bold text-[#15803D] bg-[#DCFCE7] px-2.5 py-1 rounded-full">
+                      <span className="text-[10px] font-semibold text-[#15803D] bg-[#BFE7D6] px-2.5 py-1 rounded-full border border-[#BFE7D6]">
                         OFFICIAL RECORD
                       </span>
                     </div>
 
-                    <div className="h-64 w-full">
+                    <div className="h-60 w-full pt-2">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={cgpaTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#E2D7C6" />
-                          <XAxis dataKey="semester" stroke="#5A6E7F" fontSize={11} />
-                          <YAxis domain={[7.5, 10.0]} stroke="#5A6E7F" fontSize={11} />
+                          <CartesianGrid strokeDasharray="3 3" stroke="#E7E2D9" />
+                          <XAxis dataKey="semester" stroke="#8B8792" fontSize={11} />
+                          <YAxis domain={[7.5, 10.0]} stroke="#8B8792" fontSize={11} />
                           <Tooltip 
-                            contentStyle={{ backgroundColor: '#FFFDF8', borderColor: '#E2D7C6', borderRadius: '12px', fontSize: '12px' }} 
+                            contentStyle={{ backgroundColor: '#FFFCF7', borderColor: '#E7E2D9', borderRadius: '12px', fontSize: '12px', boxShadow: '0 2px 8px rgba(30,30,30,0.05)' }} 
                           />
-                          <Line type="monotone" dataKey="sgpa" stroke="#C49A52" strokeWidth={2} name="SGPA" />
-                          <Line type="monotone" dataKey="cgpa" stroke="#123B63" strokeWidth={3} activeDot={{ r: 6 }} name="CGPA" />
+                          <Line type="monotone" dataKey="sgpa" stroke="#C9A86A" strokeWidth={2} name="SGPA" />
+                          <Line type="monotone" dataKey="cgpa" stroke="#201A3D" strokeWidth={3} activeDot={{ r: 6 }} name="CGPA" />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
 
+                  {/* 5. SUBJECT ATTENDANCE COMPLIANCE BREAKDOWN */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-[#17151D]">Subject Attendance Compliance</h3>
+                      <span className="text-[10px] font-semibold text-[#17151D] bg-[#EEE8DE] px-2.5 py-1 rounded-full border border-[#E7E2D9]">
+                        SYNCED FROM VIT
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {attendanceSubjects.map((sub) => (
+                        <div key={sub.code} className="p-3.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] space-y-2">
+                          <div className="flex items-center justify-between text-xs font-medium">
+                            <span className="text-[#17151D] font-semibold truncate">{sub.code}: {sub.name}</span>
+                            <span className={`shrink-0 ml-2 font-bold ${sub.pct < 75 ? 'text-[#991B1B]' : 'text-[#15803D]'}`}>
+                              {sub.attended}/{sub.total} ({sub.pct}%)
+                            </span>
+                          </div>
+
+                          <div className="w-full h-2 bg-[#E7E2D9] rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full ${sub.pct < 75 ? 'bg-[#F3C1C2]' : 'bg-[#15803D]'}`} 
+                              style={{ width: `${sub.pct}%` }} 
+                            />
+                          </div>
+
+                          {sub.neededFor75 && (
+                            <p className="text-[10px] font-medium text-[#991B1B] flex items-center space-x-1">
+                              <AlertTriangle className="w-3 h-3 inline mr-1 shrink-0" />
+                              <span>Requires {sub.neededFor75} consecutive classes for 75%.</span>
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
 
-                {/* RIGHT COLUMN (5 COLS): MY DIRECTION & PROFILE COMPLETION */}
-                <div className="lg:col-span-5 space-y-6">
+                {/* RIGHT / CONTEXT PANEL (4 COLS) */}
+                <div className="lg:col-span-4 space-y-5">
 
-                  {/* "MY DIRECTION" PROFILE SECTION */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
+                  {/* 1. STUDENT IDENTITY & PROFILE SUMMARY CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-4 text-center">
+                    <div className="flex flex-col items-center space-y-2">
+                      <div className="w-16 h-16 rounded-2xl bg-[#201A3D] text-[#D6B982] flex items-center justify-center font-bold text-xl shadow-xs border-2 border-[#D6B982]/40 font-display">
+                        {profileData.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'ST'}
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-[#17151D]">{profileData.name}</h3>
+                        <p className="text-xs text-[#5D5965]">{profileData.branch}</p>
+                        <p className="text-[11px] text-[#8B8792]">{profileData.semester} | Batch {profileData.batch}</p>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#E7E2D9] grid grid-cols-2 gap-2 text-center text-xs">
+                      <div className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9]">
+                        <span className="text-[10px] uppercase text-[#8B8792] font-medium block">DEPT RANK</span>
+                        <span className="font-bold text-[#201A3D]">#4 in CSE</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9]">
+                        <span className="text-[10px] uppercase text-[#8B8792] font-medium block">STATUS</span>
+                        <span className="font-bold text-[#15803D]">VERIFIED</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. ASSIGNED FACULTY MENTOR CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">My Direction</h3>
-                      <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[10px] font-bold text-[#102A43]">
-                        STUDENT PROVIDED
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Faculty Mentor</h3>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold ${
+                        mentorStatus === 'ACCEPTED'
+                          ? 'bg-[#BFE7D6] text-[#15803D]'
+                          : mentorStatus === 'DECLINED'
+                          ? 'bg-[#F3C1C2] text-[#991B1B]'
+                          : mentorStatus === 'NONE'
+                          ? 'bg-[#EEE8DE] text-[#5D5965]'
+                          : 'bg-[#F4D5AD] text-[#92400E]'
+                      }`}>
+                        {mentorStatus === 'ACCEPTED' ? 'ACTIVE' : mentorStatus === 'NONE' ? 'NOT ASSIGNED' : mentorStatus}
+                      </span>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] space-y-1 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-[#17151D]">
+                          {latestRequest?.mentorName || (mentorStatus === 'NONE' ? 'AI Mentor Match Available' : 'Prof. S. Kulkarni')}
+                        </span>
+                        <span className="font-semibold text-[#201A3D] text-[11px]">96% Match</span>
+                      </div>
+                      <p className="text-[#5D5965] text-[11px]">
+                        {latestRequest?.mentorDept || 'Dept of Computer Engineering & AI'}
+                      </p>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setActiveNav('Mentoring')}
+                        className="flex-1 py-2 rounded-xl bg-[#201A3D] text-white font-medium text-xs hover:bg-[#29204E] transition-colors cursor-pointer"
+                      >
+                        {mentorStatus === 'NONE' ? 'Find Mentor →' : 'View Mentoring →'}
+                      </button>
+                      {mentorStatus !== 'NONE' && (
+                        <button
+                          onClick={() => setShowChangeMentorModal(true)}
+                          className="px-3 py-2 rounded-xl bg-[#EEE8DE] text-[#17151D] font-medium text-xs hover:bg-[#E4CFA7] cursor-pointer"
+                        >
+                          Change
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 3. MY DIRECTION & CAREER VISION CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">My Direction</h3>
+                      <span className="px-2 py-0.5 rounded-full bg-[#EEE8DE] text-[9px] font-medium text-[#17151D]">
+                        STUDENT INPUT
                       </span>
                     </div>
 
                     {isConfused ? (
-                      <div className="p-4 rounded-xl bg-[#FEF3C7]/40 border border-[#D97706]/40 space-y-2">
-                        <span className="px-2 py-0.5 rounded-full bg-[#D97706] text-white font-bold text-[10px]">
-                          CAREER DIRECTION: STILL EXPLORING
+                      <div className="p-3.5 rounded-xl bg-[#F4D5AD]/30 border border-[#F4D5AD] space-y-2">
+                        <span className="px-2 py-0.5 rounded-full bg-[#92400E] text-white font-semibold text-[9px]">
+                          CAREER DIRECTION: EXPLORING
                         </span>
-                        <h4 className="font-extrabold text-[#102A43] text-xs">Let's figure it out together!</h4>
-                        <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
-                          You noted you're still exploring options. Explore career tracks, take our interest assessment, or talk to our AI Assistant to discover your best fit.
+                        <h4 className="font-semibold text-[#17151D] text-xs">Let's figure it out together!</h4>
+                        <p className="text-[11px] text-[#5D5965] leading-relaxed">
+                          Explore career tracks, take our interest assessment, or talk to our AI Copilot.
                         </p>
                         <button
                           onClick={() => {
                             setOnboardingStep(2);
                             setShowOnboardingModal(true);
                           }}
-                          className="px-3.5 py-1.5 rounded-xl bg-[#123B63] text-white font-bold text-xs cursor-pointer"
+                          className="px-3 py-1.5 rounded-xl bg-[#201A3D] text-white font-medium text-xs cursor-pointer"
                         >
                           Explore Career Paths →
                         </button>
                       </div>
                     ) : (
-                      <div className="space-y-3 text-xs">
-                        <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
-                          <span className="text-[#5A6E7F]">Current Interest:</span>
-                          <span className="font-bold text-[#102A43]">{selectedField}</span>
+                      <div className="space-y-2.5 text-xs">
+                        <div className="flex justify-between border-b border-[#E7E2D9] pb-2">
+                          <span className="text-[#5D5965]">Target Track:</span>
+                          <span className="font-semibold text-[#17151D]">{selectedField}</span>
                         </div>
-                        <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
-                          <span className="text-[#5A6E7F]">Primary Goals:</span>
-                          <span className="font-bold text-[#123B63]">{selectedGoals.join(', ')}</span>
+                        <div className="flex justify-between border-b border-[#E7E2D9] pb-2">
+                          <span className="text-[#5D5965]">Primary Goals:</span>
+                          <span className="font-semibold text-[#201A3D]">{selectedGoals.join(', ')}</span>
                         </div>
-                        <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
-                          <span className="text-[#5A6E7F]">Learning Style:</span>
-                          <span className="font-bold text-[#102A43]">{learningPreference}</span>
+                        <div className="flex justify-between border-b border-[#E7E2D9] pb-2">
+                          <span className="text-[#5D5965]">Learning Style:</span>
+                          <span className="font-semibold text-[#17151D]">{learningPreference}</span>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  {/* FEATURE 4: "DEVELOPMENT PROFILE / PROFILE COMPLETION" */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-3">
+                  {/* 4. DEVELOPMENT PROFILE COMPLETION CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">Development Profile</h3>
-                      <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-bold">
-                        DETERMINISTIC FORMULA
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Development Profile</h3>
+                      <span className="px-2 py-0.5 rounded-full bg-[#BFE7D6] text-[#15803D] text-[9px] font-semibold">
+                        {profileCompletionPct}% COMPLETE
                       </span>
                     </div>
 
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-2xl font-extrabold text-[#123B63]">{profileCompletionPct}% Complete</span>
-                      <span className="text-xs text-[#5A6E7F]">
-                        {profileFieldsList.filter(f => Boolean(f.value)).length} / {profileFieldsList.length} Fields Populated
-                      </span>
-                    </div>
-
-                    <div className="w-full h-2.5 bg-[#E2D7C6] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#123B63]" style={{ width: `${profileCompletionPct}%` }} />
+                    <div className="w-full h-2 bg-[#E7E2D9] rounded-full overflow-hidden">
+                      <div className="h-full bg-[#201A3D]" style={{ width: `${profileCompletionPct}%` }} />
                     </div>
 
                     {missingProfileFields.length > 0 && (
                       <div className="text-xs space-y-1">
-                        <p className="font-bold text-[#102A43]">Missing Fields:</p>
-                        <ul className="text-[11px] text-[#5A6E7F] space-y-0.5">
+                        <p className="font-medium text-[#17151D]">Pending Details:</p>
+                        <ul className="text-[11px] text-[#5D5965] space-y-0.5">
                           {missingProfileFields.map((f, i) => (
                             <li key={i} className="flex items-center space-x-1">
-                              <span className="text-[#C49A52]">•</span>
+                              <span className="text-[#C9A86A]">•</span>
                               <span>Add {f.label}</span>
                             </li>
                           ))}
@@ -1399,111 +1477,48 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
 
                     <button
                       onClick={() => setActiveNav('My Profile')}
-                      className="w-full py-2.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold text-xs transition-colors cursor-pointer"
+                      className="w-full py-2 rounded-xl bg-[#201A3D] hover:bg-[#29204E] text-white font-medium text-xs transition-colors cursor-pointer"
                     >
                       Complete Profile →
                     </button>
                   </div>
 
-                </div>
-
-              </div>
-
-              {/* FULL-WIDTH STANDALONE HORIZONTAL ROW: NEXT BEST ACTIONS & SUBJECT ATTENDANCE BREAKDOWN */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                
-                {/* FEATURE 1: "YOUR NEXT BEST ACTIONS" */}
-                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4 flex flex-col justify-between">
-                  <div className="space-y-4">
+                  {/* 5. UPCOMING VERIFIED EVENTS CARD */}
+                  <div className="bg-[#FFFCF7] rounded-[24px] p-5 border border-[#E7E2D9] shadow-[0_1px_3px_rgba(30,30,30,0.04)] space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Target className="w-5 h-5 text-[#123B63]" />
-                        <h3 className="text-base font-extrabold text-[#102A43]">Your Next Best Actions</h3>
+                        <Calendar className="w-4 h-4 text-[#201A3D]" />
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B8792]">Upcoming Events</h3>
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold shrink-0">
-                        REAL DATA DRIVEN
+                      <span className="px-2 py-0.5 rounded-full bg-[#EEE8DE] text-[#17151D] text-[9px] font-medium">
+                        VERIFIED
                       </span>
                     </div>
 
-                    <div className="space-y-3">
-                      {nextBestActions.map((action) => (
-                        <div key={action.id} className="p-4 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-extrabold text-[#102A43] text-xs flex items-center space-x-1.5 min-w-0">
-                              <span className="shrink-0">🎯</span>
-                              <span className="truncate">{action.title}</span>
-                            </h4>
-                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase shrink-0 ${
-                              action.priority === 'URGENT' 
-                                ? 'bg-[#FEE2E2] text-[#B91C1C]' 
-                                : action.priority === 'HIGH'
-                                ? 'bg-[#FEF3C7] text-[#D97706]'
-                                : 'bg-[#DCFCE7] text-[#15803D]'
-                            }`}>
-                              {action.priority}
-                            </span>
+                    <div className="space-y-2">
+                      {upcomingEvents.map((evt: any, idx: number) => (
+                        <div key={idx} className="p-3 rounded-xl bg-[#F8F5EF] border border-[#E7E2D9] flex items-center justify-between text-xs">
+                          <div className="flex items-center space-x-3 min-w-0">
+                            <div className="w-8 h-8 rounded-xl bg-[#201A3D] text-white flex flex-col items-center justify-center font-bold shrink-0">
+                              <span className="text-[8px] uppercase text-[#D6B982]">{evt.date.split(' ')[0]}</span>
+                              <span className="text-[11px] leading-none">{evt.date.split(' ')[1]}</span>
+                            </div>
+                            <div className="min-w-0">
+                              <h4 className="font-semibold text-[#17151D] truncate">{evt.title}</h4>
+                              <p className="text-[10px] text-[#5D5965] truncate">{evt.type} • {evt.status}</p>
+                            </div>
                           </div>
-
-                          <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
-                            <strong className="text-[#102A43]">Reason:</strong> {action.reason}
-                          </p>
-
-                          <div className="pt-1 flex items-center justify-between border-t border-[#E2D7C6]">
-                            {action.deadline && (
-                              <span className="text-[10px] font-bold text-[#C49A52]">
-                                Deadline: {action.deadline}
-                              </span>
-                            )}
-                            <button
-                              onClick={() => setActiveNav(action.navTarget as any)}
-                              className="px-3.5 py-1.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold text-xs cursor-pointer ml-auto"
-                            >
-                              {action.ctaText}
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => setActiveNav(evt.navTarget as any)}
+                            className="px-2.5 py-1 rounded-lg bg-[#EEE8DE] hover:bg-[#E4CFA7] text-[#17151D] font-medium text-[10px] cursor-pointer shrink-0 ml-2"
+                          >
+                            View →
+                          </button>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
 
-                {/* ATTENDANCE MONITOR */}
-                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">Subject Attendance Breakdown</h3>
-                      <span className="text-xs font-bold text-[#102A43] bg-[#E9DDC9] px-2.5 py-1 rounded-full shrink-0">
-                        SYNCED FROM VIT
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      {attendanceSubjects.map((sub) => (
-                        <div key={sub.code} className="p-3.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1.5">
-                          <div className="flex items-center justify-between text-xs font-bold">
-                            <span className="text-[#102A43] truncate">{sub.code}: {sub.name}</span>
-                            <span className={`shrink-0 ml-2 ${sub.pct < 75 ? 'text-[#B91C1C]' : 'text-[#15803D]'}`}>
-                              {sub.attended}/{sub.total} ({sub.pct}%)
-                            </span>
-                          </div>
-
-                          <div className="w-full h-2 bg-[#E2D7C6] rounded-full overflow-hidden">
-                            <div 
-                              className={`h-full ${sub.pct < 75 ? 'bg-[#B91C1C]' : 'bg-[#15803D]'}`} 
-                              style={{ width: `${sub.pct}%` }} 
-                            />
-                          </div>
-
-                          {sub.neededFor75 && (
-                            <p className="text-[10px] font-bold text-[#B91C1C] flex items-center space-x-1">
-                              <AlertTriangle className="w-3 h-3 inline mr-1 shrink-0" />
-                              <span>Requires {sub.neededFor75} consecutive attended classes for 75%.</span>
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
               </div>
