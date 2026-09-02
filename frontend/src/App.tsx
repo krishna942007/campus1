@@ -144,9 +144,9 @@ export function App() {
                 <MengToSketchbookSection />
               </div>
 
-              {/* Section 4.6: Field Manuals Bestsellers Book Showcase */}
+              {/* Section 4.6: Campus Portals 3D Book Showcase */}
               <div id="bestsellers-showcase">
-                <BestsellersBookShowcaseSection />
+                <BestsellersBookShowcaseSection onSelectRole={handleOpenLogin} />
               </div>
 
               {/* Section 4.8: Flagship Student Digital Twin Visualization */}

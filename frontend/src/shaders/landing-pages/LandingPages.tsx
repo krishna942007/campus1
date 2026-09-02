@@ -77,7 +77,7 @@ export function CompleteShelfLandingPage(props: LandingPageProps & PageTypograph
 export function BestsellersBookShowcase(props: LandingPageProps & PageTypographyProps) {
   const [type, frame] = splitTypographyProps(props);
   const customization = usePageTypography(BESTSELLERS_TYPOGRAPHY, type);
-  return <LandingPageFrame {...frame} customization={customization} title="Field Manuals — Tools for Thought" sourceUrl="/landing-pages/bestsellers-book-showcase.html" />;
+  return <LandingPageFrame {...frame} customization={customization} title="Campus Portals — Faculty, Students & Admin" sourceUrl="/landing-pages/bestsellers-book-showcase.html" />;
 }
 
 export function InkboundRiverStory(props: LandingPageProps & PageTypographyProps) {

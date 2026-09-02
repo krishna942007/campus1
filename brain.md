@@ -224,6 +224,17 @@ c:\Users\HP\Desktop\project1
 
 ---
 
+### 5. 📚 Campus Portals & 3D Interactive Showcase (`BestsellersBookShowcaseSection.tsx`, `bestsellers-book-showcase.html`)
+* **Pointer Parallax & 3D Perspective**: Interactive 3D books simulating physical depth, tilt, spine shadows, and realistic perspective shifts.
+* **Three Dedicated Institutional Workflows**:
+  1. **Faculty Portal** (`data-book="claude"`): Research mentorship, PhD candidate tracking, thesis advisory, grant management, and autonomous course approval.
+  2. **Student Portal** (`data-book="codex"`): Academic credit tracking, 75% attendance radar, AI skill-gap analyzer, career roadmap, and Stanford/MIT online course assignments.
+  3. **Admin Portal** (`data-book="cursor"`): Real-time system telemetry, ERP database bidirectional synchronization, AI LLM model orchestration, and security audit logs.
+* **Real-Time Interactive Modal**: Clicking any book opens a detailed editorial dossier with direct single-click navigation links (`/mentor`, `/student`, `/admin`).
+* **Standalone Responsive View**: Available in-app at `#bestsellers-showcase` and standalone at `/landing-pages/bestsellers-book-showcase.html`.
+
+---
+
 ## 🔗 7. Interconnectivity Matrix ("What connects to what & how")
 
 | Action Origin | Destination Component | Connection Mechanism | Result / Effect |
@@ -301,6 +312,10 @@ The project is fully build-ready and pre-configured for one-click deployment acr
 17. **AI Time-Allocation & Weekly Plan Engine**: Created [`frontend/src/components/WeeklyPlanSection.tsx`](file:///c:/Users/HP/Desktop/project1/frontend/src/components/WeeklyPlanSection.tsx). Features "YOUR WEEK — Where should your limited study time go?", 3h-20+h/wk study time selector, AI time allocation breakdown per subject with "Why" explanations, tradeoff warnings ("Reducing DSA time may slow DSA maintenance"), day-by-day weekly schedule generation, and direct task export to the shared student dashboard state.
 18. **Flagship Student Digital Twin Visualization**: Built the central platform visualization in [`frontend/src/components/StudentDigitalTwinSection.tsx`](file:///c:/Users/HP/Desktop/project1/frontend/src/components/StudentDigitalTwinSection.tsx). Features a central student state node (Krishna Singh, AI Research Engineer, 74% readiness), 7 surrounding connected dimension nodes (Academics, Skills, Attendance, Roadmap, Mentoring, Experience, Opportunities) with animated SVG lines, clickable dimension inspector, `[ SIMULATE FUTURE ]` ghost state integration (`CURRENT: 74%` vs `PROJECTED (SIMULATION): 86%`), `WHAT CHANGED?` timeline summary, `NEXT BEST ACTION` banner, and product architecture data pipeline diagram (`ERP DATA + STUDENT ACTIVITY + SKILLS + MENTOR FEEDBACK + AI ANALYSIS → STUDENT STATE → NEXT BEST ACTION`).
 19. **Three-Book Gateway & Interactive Login UI**: Synchronized latest GitHub updates featuring ThreeUI Bestsellers Book Showcase adaptation for the authentication gateway ([`ThreeBookLoginGateway.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/components/ThreeBookLoginGateway.tsx)), role-based routing (Teacher / Faculty, Student, Admin), postMessage bridge, and dual login pathways (3D interactive book click + credential modal).
+20. **3D Showcase & Gateway Visual Optimization (Pixel-Accurate Reference Calibration)**: Perfectly matched the 3D book showcase layout and aesthetic ([`bestsellers-book-showcase.html`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/public/landing-pages/bestsellers-book-showcase.html) & [`ThreeBookLoginGateway.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/components/ThreeBookLoginGateway.tsx)) to the authentic reference design:
+    - Restored the ambient background typography "*Agents*" in authentic Instrument Serif / Garamond italic styling with subtle warm champagne luminescence (`#dfd1be`, `opacity: 0.94`, `letter-spacing: -0.03em`, smooth blur-out on detail transition).
+    - Calibrated book card dimensions and layout for dramatic presence: center book (`--w: min(32vw, 455px, 73vh * 0.672)`, `--y: 28px`, `--r: 0.5deg`), left book (`--w: min(30vw, 425px, 69vh * 0.672)`, `--x: calc(50% - min(21.5vw, 290px))`, `--y: 42px`, `--r: -6.8deg`, `--yaw: -5.5deg`), and right book (`--w: min(30vw, 425px, 69vh * 0.672)`, `--x: calc(50% + min(21.5vw, 290px))`, `--y: 42px`, `--r: 6.8deg`, `--yaw: 5.5deg`).
+    - Verified smooth interactive hover lift (`-22px`), natural multi-layer drop shadows, interactive 3D inspection, and postMessage event bridge connecting the 3D volumes directly with the login authentication flow.
 
 ---
 *Document maintained automatically. Updated for Campus 1 release on GitHub.*

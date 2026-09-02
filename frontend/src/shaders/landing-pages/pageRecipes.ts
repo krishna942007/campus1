@@ -1367,7 +1367,7 @@ body { font-family: ${type.body}; font-weight: ${type.bodyWeight}; }
   font-weight: ${type.headingWeight};
 }
 .hero-word {
-  font-size: clamp(184px, 22vw, ${px(type.headingSize)});
+  font-size: clamp(140px, 20vw, ${px(type.headingSize)});
   letter-spacing: ${type.headingLetterSpacing}em;
 }
 .detail-title {

@@ -42,6 +42,33 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   const { login, isLoggingIn } = useAuth();
   const setUser = useAuthStore((state) => state.setUser);
 
+  useEffect(() => {
+    if (initialRole) {
+      setSelectedRole(initialRole);
+      if (initialRole === 'STUDENT') setEmailInput('2023CSE001');
+      else if (initialRole === 'MENTOR') setEmailInput('s.kulkarni@vit.edu.in');
+      else if (initialRole === 'ADMIN') setEmailInput('admin@vit.edu.in');
+    }
+  }, [initialRole]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get('role')?.toUpperCase();
+    const openModalParam = params.get('openModal');
+
+    if (roleParam === 'MENTOR' || roleParam === 'STUDENT' || roleParam === 'ADMIN') {
+      const targetRole = roleParam as 'STUDENT' | 'MENTOR' | 'ADMIN';
+      setSelectedRole(targetRole);
+      if (targetRole === 'STUDENT') setEmailInput('2023CSE001');
+      else if (targetRole === 'MENTOR') setEmailInput('s.kulkarni@vit.edu.in');
+      else if (targetRole === 'ADMIN') setEmailInput('admin@vit.edu.in');
+
+      if (openModalParam === 'true') {
+        setShowCredentialModal(true);
+      }
+    }
+  }, []);
+
   const handleRoleTabChange = (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => {
     setSelectedRole(role);
     if (role === 'STUDENT') {
@@ -112,7 +139,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         if (role === 'LANDING') {
           onBackToLanding();
         } else if (role === 'STUDENT' || role === 'MENTOR' || role === 'ADMIN') {
-          handleRoleLogin(role);
+          handleRoleTabChange(role);
+          setShowCredentialModal(true);
         }
       }
     };
@@ -168,9 +196,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         {/* LEFT ROLE: TEACHER */}
         <button
           type="button"
-          disabled={isLoggingIn}
-          onClick={() => handleRoleLogin('MENTOR')}
-          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1B365D] text-[#F7F4EE] text-xs font-bold border border-white/10 transition-all cursor-pointer shadow-md hover:-translate-y-0.5 disabled:opacity-50"
+          onClick={() => {
+            handleRoleTabChange('MENTOR');
+            setShowCredentialModal(true);
+          }}
+          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1B365D] text-[#F7F4EE] text-xs font-bold border border-white/10 transition-all cursor-pointer shadow-md hover:-translate-y-0.5"
         >
           <UserCheck className="w-3.5 h-3.5 text-[#E8C56B]" />
           <span>Teacher</span>
@@ -179,9 +209,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         {/* CENTER ROLE: STUDENT (PRIMARY) */}
         <button
           type="button"
-          disabled={isLoggingIn}
-          onClick={() => handleRoleLogin('STUDENT')}
-          className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#C99632] hover:bg-[#E8C56B] text-[#0C2238] text-xs font-black shadow-lg transition-all cursor-pointer scale-105 hover:scale-110 disabled:opacity-50"
+          onClick={() => {
+            handleRoleTabChange('STUDENT');
+            setShowCredentialModal(true);
+          }}
+          className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#C99632] hover:bg-[#E8C56B] text-[#0C2238] text-xs font-black shadow-lg transition-all cursor-pointer scale-105 hover:scale-110"
         >
           <GraduationCap className="w-4 h-4 text-[#0C2238]" />
           <span>Student Login ★</span>
@@ -190,9 +222,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         {/* RIGHT ROLE: ADMIN */}
         <button
           type="button"
-          disabled={isLoggingIn}
-          onClick={() => handleRoleLogin('ADMIN')}
-          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1B365D] hover:bg-[#123B63] text-[#F7F4EE] text-xs font-bold border border-white/10 transition-all cursor-pointer shadow-md hover:-translate-y-0.5 disabled:opacity-50"
+          onClick={() => {
+            handleRoleTabChange('ADMIN');
+            setShowCredentialModal(true);
+          }}
+          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1B365D] hover:bg-[#123B63] text-[#F7F4EE] text-xs font-bold border border-white/10 transition-all cursor-pointer shadow-md hover:-translate-y-0.5"
         >
           <ShieldCheck className="w-3.5 h-3.5 text-[#E8C56B]" />
           <span>Admin</span>

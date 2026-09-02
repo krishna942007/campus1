@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Sparkles, Compass, BookmarkCheck, ExternalLink } from 'lucide-react';
 import { BestsellersBookShowcase } from '../shaders/landing-pages/LandingPages';
 import '../shaders/threeui.css';
 
-export function BestsellersBookShowcaseSection() {
+interface BestsellersBookShowcaseSectionProps {
+  onSelectRole?: (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => void;
+}
+
+export function BestsellersBookShowcaseSection({ onSelectRole }: BestsellersBookShowcaseSectionProps) {
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'campus1-role-select') {
+        const role = event.data.role;
+        if ((role === 'STUDENT' || role === 'MENTOR' || role === 'ADMIN') && onSelectRole) {
+          onSelectRole(role);
+        }
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [onSelectRole]);
+
   return (
     <section id="bestsellers-books" className="py-20 sm:py-28 bg-[#F7F4EE] border-t border-[#0C2238]/08 relative overflow-hidden">
       {/* Subtle Background Radial Glow */}
@@ -22,7 +39,7 @@ export function BestsellersBookShowcaseSection() {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0C2238]/06 border border-[#0C2238]/12 text-xs font-semibold text-[#0C2238] uppercase tracking-wider shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
-            <span>Curated Academic &amp; Engineering Library</span>
+            <span>Curated Campus Ecosystem &amp; Portals</span>
           </motion.div>
 
           <motion.h2
@@ -32,9 +49,9 @@ export function BestsellersBookShowcaseSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.15] font-display"
           >
-            Field Manuals &amp;{' '}
+            Campus Portals &amp;{' '}
             <span className="font-serif-accent italic font-normal text-[#C99632]">
-              Tools for Thought.
+              Interactive Showcase.
             </span>
           </motion.h2>
 
@@ -45,7 +62,7 @@ export function BestsellersBookShowcaseSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base sm:text-lg text-[#10253A]/70 font-normal leading-relaxed"
           >
-            An earth-toned interactive showcase preserving authored motion, video covers, and editorial field notes for AI, systems architecture, and product design.
+            An interactive 3D portal showcase exploring our specialized workflows and live dashboards for Faculty &amp; Research, Students &amp; Academics, and Institutional Administrators.
           </motion.p>
 
           {/* Feature Highlights Pill Badges */}
@@ -58,15 +75,15 @@ export function BestsellersBookShowcaseSection() {
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 border border-[#0C2238]/08 text-xs font-medium text-[#10253A] shadow-sm">
               <BookOpen className="w-3.5 h-3.5 text-[#C99632]" />
-              <span>Interactive Book Covers</span>
+              <span>Interactive 3D Books</span>
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 border border-[#0C2238]/08 text-xs font-medium text-[#10253A] shadow-sm">
               <Compass className="w-3.5 h-3.5 text-[#244F7D]" />
-              <span>Cursor Parallax Motion</span>
+              <span>Pointer Parallax Motion</span>
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 border border-[#0C2238]/08 text-xs font-medium text-[#10253A] shadow-sm">
               <BookmarkCheck className="w-3.5 h-3.5 text-[#5f684f]" />
-              <span>Editorial Field Notes</span>
+              <span>Dedicated Portal Dossiers</span>
             </div>
           </motion.div>
         </div>
@@ -99,10 +116,10 @@ export function BestsellersBookShowcaseSection() {
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#c3a47b] animate-ping" />
               <span className="font-medium text-[#eee2ca]">Interactive 3D Stage:</span>
-              <span>Move pointer for depth parallax • Click any book to inspect authored field notes</span>
+              <span>Move pointer for depth parallax • Click any book to open role login &amp; portal access</span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-[#c3a47b]/90 font-serif italic">Edition: Field Manuals v2.0</span>
+              <span className="text-[#c3a47b]/90 font-serif italic">Edition: Campus Ecosystem v2.0</span>
               <a
                 href="/landing-pages/bestsellers-book-showcase.html"
                 target="_blank"
@@ -122,3 +139,4 @@ export function BestsellersBookShowcaseSection() {
 }
 
 export default BestsellersBookShowcaseSection;
+
