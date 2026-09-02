@@ -251,7 +251,7 @@ export function App() {
       </AnimatePresence>
 
       {/* Global Movable Floating AI Circle Widget */}
-      <FloatingAIWidget />
+      {activeView !== 'LOGIN' && <FloatingAIWidget />}
 
       {/* Global Toast Notification Container */}
       <ToastNotification toasts={toasts} onDismiss={dismissToast} />

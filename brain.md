@@ -1,4 +1,4 @@
-# 🧠 Campus 1 / VIT Mumbai Platform — Comprehensive Project Brain (`brain.md`)
+# 🧠 Campus 1 / VIT Mumbai Platform — Comprehensive Project Brain (`brain.md`)
 
 > **Master Technical Knowledge Base & Architectural Blueprint**
 > 
@@ -30,6 +30,7 @@ Campus 1 unifies:
 | **Framework & Runtime** | [React 18.3.1](https://react.dev/), [TypeScript 5.7.2](https://www.typescriptlang.org/), [Vite 6.0.5](https://vitejs.dev/) |
 | **Styling & Design** | [Tailwind CSS 3.4.17](https://tailwindcss.com/), Custom CSS tokens, Glassmorphism, PostCSS |
 | **Animations & Transitions** | [Framer Motion 11.15.0](https://www.framer.com/motion/), [Lenis 1.3.26](https://lenis.darkroom.engineering/) (Smooth Scroll), [Canvas Confetti](https://www.npmjs.com/package/canvas-confetti) |
+| **Showcase & Portals** | 3D Interactive Leather Books (`bestsellers-book-showcase.html`) with embedded vintage botanical login card supporting dynamic role switching: Teacher Book (`codex` ➔ MENTOR / `/mentor`), Student Book (`claude` ➔ STUDENT / `/student`), and Admin Book (`cursor` ➔ ADMIN / `/admin`) with seamless postMessage auth bridge |
 | **Icons & Visuals** | [Lucide React 0.469.0](https://lucide.dev/) |
 | **Charts & Analytics** | [Recharts 2.15.0](https://recharts.org/) (ResponsiveContainer, LineChart, BarChart, etc.) |
 
@@ -45,7 +46,7 @@ All styles conform strictly to the bespoke VIT Mumbai brand palette defined in [
 * **Surfaces**: Ultra-transparent glass surfaces `.glass-panel`, `.glass-card` (`bg-[#FFFFFF]/10 backdrop-blur-[5px] border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05`).
 
 ### 💎 Glassmorphism Design System & Skill
-All UI cards and interactive panels follow the **Glassmorphism Design System Skill** stored in [`.agents/skills/glassmorphism/SKILL.md`](file:///c:/Users/HP/Desktop/project1/.agents/skills/glassmorphism/SKILL.md).
+All UI cards and interactive panels follow the **Glassmorphism Design System Skill** stored in [`.agents/skills/glassmorphism/SKILL.md`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/.agents/skills/glassmorphism/SKILL.md).
 * **Core Philosophy**: Transparency first, blurred second, decorative last (`transparent → subtle 5px blur → clean 8% border → soft depth shadow → crisp typography`).
 * **Production Spec**: `bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05`.
 * **Rules**: Ultra-transparent 10% white fill, 5px backdrop blur, subtle 8% navy rim borders (`border-[#0C2238]/08`), and soft depth shadows.
@@ -312,10 +313,18 @@ The project is fully build-ready and pre-configured for one-click deployment acr
 17. **AI Time-Allocation & Weekly Plan Engine**: Created [`frontend/src/components/WeeklyPlanSection.tsx`](file:///c:/Users/HP/Desktop/project1/frontend/src/components/WeeklyPlanSection.tsx). Features "YOUR WEEK — Where should your limited study time go?", 3h-20+h/wk study time selector, AI time allocation breakdown per subject with "Why" explanations, tradeoff warnings ("Reducing DSA time may slow DSA maintenance"), day-by-day weekly schedule generation, and direct task export to the shared student dashboard state.
 18. **Flagship Student Digital Twin Visualization**: Built the central platform visualization in [`frontend/src/components/StudentDigitalTwinSection.tsx`](file:///c:/Users/HP/Desktop/project1/frontend/src/components/StudentDigitalTwinSection.tsx). Features a central student state node (Krishna Singh, AI Research Engineer, 74% readiness), 7 surrounding connected dimension nodes (Academics, Skills, Attendance, Roadmap, Mentoring, Experience, Opportunities) with animated SVG lines, clickable dimension inspector, `[ SIMULATE FUTURE ]` ghost state integration (`CURRENT: 74%` vs `PROJECTED (SIMULATION): 86%`), `WHAT CHANGED?` timeline summary, `NEXT BEST ACTION` banner, and product architecture data pipeline diagram (`ERP DATA + STUDENT ACTIVITY + SKILLS + MENTOR FEEDBACK + AI ANALYSIS → STUDENT STATE → NEXT BEST ACTION`).
 19. **Three-Book Gateway & Interactive Login UI**: Synchronized latest GitHub updates featuring ThreeUI Bestsellers Book Showcase adaptation for the authentication gateway ([`ThreeBookLoginGateway.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/components/ThreeBookLoginGateway.tsx)), role-based routing (Teacher / Faculty, Student, Admin), postMessage bridge, and dual login pathways (3D interactive book click + credential modal).
-20. **3D Showcase & Gateway Visual Optimization (Pixel-Accurate Reference Calibration)**: Perfectly matched the 3D book showcase layout and aesthetic ([`bestsellers-book-showcase.html`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/public/landing-pages/bestsellers-book-showcase.html) & [`ThreeBookLoginGateway.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/components/ThreeBookLoginGateway.tsx)) to the authentic reference design:
-    - Restored the ambient background typography "*Agents*" in authentic Instrument Serif / Garamond italic styling with subtle warm champagne luminescence (`#dfd1be`, `opacity: 0.94`, `letter-spacing: -0.03em`, smooth blur-out on detail transition).
-    - Calibrated book card dimensions and layout for dramatic presence: center book (`--w: min(32vw, 455px, 73vh * 0.672)`, `--y: 28px`, `--r: 0.5deg`), left book (`--w: min(30vw, 425px, 69vh * 0.672)`, `--x: calc(50% - min(21.5vw, 290px))`, `--y: 42px`, `--r: -6.8deg`, `--yaw: -5.5deg`), and right book (`--w: min(30vw, 425px, 69vh * 0.672)`, `--x: calc(50% + min(21.5vw, 290px))`, `--y: 42px`, `--r: 6.8deg`, `--yaw: 5.5deg`).
-    - Verified smooth interactive hover lift (`-22px`), natural multi-layer drop shadows, interactive 3D inspection, and postMessage event bridge connecting the 3D volumes directly with the login authentication flow.
+21. **Dedicated Role Book Login Flows & Direct Dashboard Access**: Upgraded the 3D book gateway and authentication subsystem ([`bestsellers-book-showcase.html`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/public/landing-pages/bestsellers-book-showcase.html), [`LoginPage.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/components/LoginPage.tsx), [`BestsellersBookShowcaseSection.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/components/BestsellersBookShowcaseSection.tsx), [`App.tsx`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/src/App.tsx)):
+    - **Teacher & Faculty Book (`data-book="codex"`)**: Opening the Teacher book triggers the dedicated Teacher Login Page pre-configured with the `MENTOR` role, faculty identifier (`s.kulkarni@vit.edu.in` / `T101`), password input, unlocked dashboard feature preview, and direct sign-in routing straight to the **Teacher / Faculty Dashboard (`/mentor`)**.
+    - **Student & Academic Book (`data-book="claude"`)**: Opening the Student book launches the dedicated Student Login Page pre-configured with the `STUDENT` role, roll number (`2023CSE001` / `101`), password input, unlocked feature highlights (75% attendance radar, AI career roadmap, future simulator), and single-click authentication to the **Student Dashboard (`/student`)**.
+    - **Admin & Institutional Book (`data-book="cursor"`)**: Opening the Admin book opens the dedicated Admin Login Page pre-configured with the `ADMIN` role, institutional email (`admin@vit.edu.in`), and direct routing to the **Admin Dashboard & Institutional Suite (`/admin`)**.
+    - Connected dynamic primary buttons (`Sign In as Teacher & Open Dashboard →`, `Sign In as Student & Open Dashboard →`, `Sign In as Admin & Open Dashboard →`), responsive postMessage bridges, quick-fill test account chips, and toast confirmation alerts upon login.
+22. **Book Showcase Aesthetic Refinement & Palette Unification**: Polished [`bestsellers-book-showcase.html`](file:///c:/Users/Krishna%20Singh/Desktop/VIT/project%202..0/frontend/public/landing-pages/bestsellers-book-showcase.html) to perfectly match the Campus 1 brand design system:
+    - Set uniform warm parchment cream canvas (`#F5EFE6` / `#FAF7F0`) with refined subtle radial ambient glow.
+    - Removed distracting background watermark text behind the books for a clean, ultra-premium editorial presentation.
+    - Styled interactive controls, pill buttons, and close buttons in deep institutional navy (`#1E1B4B`) and warm gold (`#C9A674`) with smooth transitions.
+    - Verified responsive 3D book physics, cover-opening animations, and embedded vintage portal login card across all viewports.
+    - Removed automatic DOMContentLoaded book opening; books now strictly remain closed in the 3D gallery view until explicitly clicked by the user.
+    - Removed overlay controls from the 3D book gateway view (Direct Access pill bar, redundant top back button, and floating AI widget on /login) for a clean, distraction-free visual experience.
 
 ---
 *Document maintained automatically. Updated for Campus 1 release on GitHub.*
