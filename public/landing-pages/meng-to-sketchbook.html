@@ -29,9 +29,16 @@
 html,body{
   margin:0;padding:0;
   overflow-x:hidden;
-  overflow-y:auto;
+  overflow-y:hidden;
   scrollbar-width:none;
   -ms-overflow-style:none;
+  pointer-events:none;
+}
+.page,.wash,.hero,.sb-wrap,.sb-stage,.sb-3d,.sb-captions,.about,.plates,.foot{
+  pointer-events:none;
+}
+.top nav a,.top .icon-btn,.sb-zone,.loupe .ring,.loupe .grip,.tool,.sb-arrow,.plate,.hero-down,.bio-link,button,a{
+  pointer-events:auto;
 }
 html::-webkit-scrollbar,body::-webkit-scrollbar{
   display:none;width:0;height:0;
@@ -47,12 +54,12 @@ button{font:inherit}
 /* the painted ground the whole page sits on */
 .wash{
   position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:url(meng-to-sketchbook/bg-wash.jpg) center top / cover no-repeat;
-  opacity:.85;
+  background:radial-gradient(circle at 50% 35%, #f4efe4 0%, #ece7dc 70%, #e4dfd3 100%);
+  opacity:1;
 }
 .wash:after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(236,231,220,.25) 0%,rgba(236,231,220,.72) 58%,var(--paper) 88%);
+  background:linear-gradient(180deg,rgba(236,231,220,.1) 0%,rgba(236,231,220,.4) 58%,var(--paper) 88%);
 }
 
 /* ---------------- top bar ---------------- */
@@ -102,13 +109,7 @@ button{font:inherit}
   padding:clamp(64px,7.5vh,85px) clamp(16px,2vw,32px) clamp(16px,2vh,28px);
   overflow:hidden;
 }
-.botany{
-  position:absolute;bottom:0;width:clamp(120px,15vw,250px);opacity:.5;
-  pointer-events:none;user-select:none;z-index:0;
-}
-.botany.l{left:clamp(-40px,-1vw,0px);bottom:2%}
-.botany.r{right:clamp(-30px,0vw,10px);bottom:-2%;width:clamp(100px,12vw,200px)}
-@media (max-width:900px){.botany{display:none}}
+
 
 .hero-kicker{
   font-size:12px;font-weight:400;letter-spacing:var(--track-caps);text-align:center;
@@ -410,17 +411,12 @@ button{font:inherit}
 .about{
   position:relative;max-width:1080px;margin:0 auto;
   padding:0 clamp(20px,5vw,48px);
-  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,60px);align-items:start;
+  display:block;
 }
-.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:56ch}
+.bio{font-size:clamp(17px,1.7vw,20px);line-height:1.74;letter-spacing:.005em;margin:0;font-weight:300;max-width:68ch}
 .bio-link{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(43,39,33,.28);
   text-underline-offset:4px;transition:text-decoration-color .2s}
 .bio-link:hover{text-decoration-color:var(--ink)}
-.bloom{width:clamp(150px,17vw,260px);opacity:.9;user-select:none;align-self:center}
-@media (max-width:760px){
-  .about{grid-template-columns:1fr}
-  .bloom{width:170px;justify-self:center}
-}
 
 .plates{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
 .plate-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline)}
@@ -461,8 +457,6 @@ button{font:inherit}
 
   <div id="contentSlider" style="will-change:transform;">
     <section id="sketchbook" class="hero">
-      <img class="botany l" src="meng-to-sketchbook/botany-left.png" alt="" aria-hidden="true">
-      <img class="botany r" src="meng-to-sketchbook/botany-right.png" alt="" aria-hidden="true">
 
       <p class="hero-kicker">AI Academic & Career Acceleration Platform / Vidyalankar Institute of Technology @ Wadala, Mumbai</p>
 
@@ -515,7 +509,6 @@ button{font:inherit}
         <p class="section-label">About VITARA</p>
         <p class="bio">VITARA (Vidyalankar Institute of Technology Academic & Career Acceleration Platform) is a unified, next-generation AI-powered institutional ecosystem built for <a class="bio-link" href="#">VIT Mumbai</a>. It unifies live attendance tracking with safe-to-miss lecture calculators, an automated student-mentor compatibility matching engine, grounded Gemini 2.0 RAG search over autonomous college regulations, and milestone-based technical career roadmaps.</p>
       </div>
-      <img class="bloom" src="meng-to-sketchbook/bloom.png" alt="" aria-hidden="true">
     </section>
 
     <div class="rule short" aria-hidden="true"></div>
@@ -791,11 +784,11 @@ function hideHint(){hint.classList.add('gone')}
 
 stage.addEventListener('pointerdown',e=>{
   if(e.button!==0)return;
-  e.preventDefault();                     /* no text selection, no image drag */
   const onBook=e.target.closest('.sb-zone');
+  if(!onBook||introOn)return;
+  e.preventDefault();                     /* no text selection, no image drag */
   stage.setPointerCapture(e.pointerId);
   hideHint();
-  if(!onBook||introOn)return;
   const r=bookRect();
   const dir=(e.clientX-r.left)/r.width>0.5?'next':'prev';
   startTurn(dir,0);
@@ -1067,23 +1060,110 @@ function startIntro(){
 
 var slider = document.getElementById('contentSlider');
 
-window.addEventListener('message', function(e) {
-  if (!e.data) return;
-  if (e.data.type === 'set-sketchbook-page') {
-    var targetIdx = Math.max(0, Math.min(M - 1, parseInt(e.data.index, 10) || 0));
-    if (targetIdx !== idx && !turn) {
-      goTo(targetIdx);
+var pendingSlideRatio = null;
+var pendingPageIndex = null;
+var messageRafId = null;
+
+function applyPendingMessages() {
+  messageRafId = null;
+  if (pendingPageIndex !== null) {
+    var pageToSet = pendingPageIndex;
+    pendingPageIndex = null;
+    if (pageToSet !== idx && !turn) {
+      goTo(pageToSet);
     }
-  } else if (e.data.type === 'set-sketchbook-slide') {
-    var ratio = Math.max(0, Math.min(1, parseFloat(e.data.ratio) || 0));
+  }
+  if (pendingSlideRatio !== null) {
+    var ratioToSet = pendingSlideRatio;
+    pendingSlideRatio = null;
     if (!slider) slider = document.getElementById('contentSlider');
     if (slider) {
       var maxSlide = Math.max(0, slider.scrollHeight - window.innerHeight);
-      var targetY = Math.round(ratio * maxSlide);
+      var targetY = Math.round(ratioToSet * maxSlide);
       slider.style.transform = 'translateY(' + (-targetY) + 'px)';
     }
   }
+}
+
+window.addEventListener('message', function(e) {
+  if (!e.data) return;
+  if (e.data.type === 'set-sketchbook-page') {
+    pendingPageIndex = Math.max(0, Math.min(M - 1, parseInt(e.data.index, 10) || 0));
+    if (messageRafId === null) {
+      messageRafId = requestAnimationFrame(applyPendingMessages);
+    }
+  } else if (e.data.type === 'set-sketchbook-slide') {
+    pendingSlideRatio = Math.max(0, Math.min(1, parseFloat(e.data.ratio) || 0));
+    if (messageRafId === null) {
+      messageRafId = requestAnimationFrame(applyPendingMessages);
+    }
+  }
 });
+
+/* Forward wheel and touchpad/touch scroll events to parent window using requestAnimationFrame batching */
+(function() {
+  var pendingDeltaY = 0;
+  var pendingDeltaX = 0;
+  var scrollRafId = null;
+
+  function flushScroll() {
+    scrollRafId = null;
+    if (pendingDeltaY !== 0 || pendingDeltaX !== 0) {
+      var dy = pendingDeltaY;
+      var dx = pendingDeltaX;
+      pendingDeltaY = 0;
+      pendingDeltaX = 0;
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.scrollBy({
+            top: dy,
+            left: dx,
+            behavior: 'auto'
+          });
+        }
+      } catch (err) {}
+    }
+  }
+
+  function scheduleScroll(deltaY, deltaX) {
+    pendingDeltaY += deltaY;
+    pendingDeltaX += deltaX;
+    if (scrollRafId === null) {
+      scrollRafId = requestAnimationFrame(flushScroll);
+    }
+  }
+
+  window.addEventListener('wheel', function(e) {
+    var deltaY = e.deltaY;
+    if (e.deltaMode === 1) deltaY *= 40;
+    else if (e.deltaMode === 2) deltaY *= window.innerHeight;
+
+    var deltaX = e.deltaX;
+    if (e.deltaMode === 1) deltaX *= 40;
+
+    scheduleScroll(deltaY, deltaX);
+  }, { passive: true });
+
+  var touchStartY = 0;
+  var isBookDrag = false;
+
+  window.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+      touchStartY = e.touches[0].clientY;
+      var target = e.target;
+      isBookDrag = !!(target && (target.closest('.sb-zone') || target.closest('#loupe')));
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', function(e) {
+    if (!isBookDrag && e.touches.length === 1) {
+      var currentY = e.touches[0].clientY;
+      var deltaY = touchStartY - currentY;
+      touchStartY = currentY;
+      scheduleScroll(deltaY, 0);
+    }
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>

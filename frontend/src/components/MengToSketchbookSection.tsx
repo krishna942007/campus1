@@ -45,7 +45,15 @@ export function MengToSketchbookSection() {
   };
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on('change', (latest) => {
+    let rafId: number | null = null;
+    let pendingLatest: number | null = null;
+
+    const processScrollChange = () => {
+      rafId = null;
+      if (pendingLatest === null) return;
+      const latest = pendingLatest;
+      pendingLatest = null;
+
       if (!iframeRef.current) {
         iframeRef.current = document.querySelector<HTMLIFrameElement>('#sketchbook iframe');
       }
@@ -78,9 +86,19 @@ export function MengToSketchbookSection() {
         sendPageMessage(win, 8);
         sendSlideMessage(win, 1);
       }
+    };
+
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      pendingLatest = latest;
+      if (rafId === null) {
+        rafId = requestAnimationFrame(processScrollChange);
+      }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, [scrollYProgress]);
 
   return (

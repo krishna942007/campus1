@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
   UserCheck,
@@ -9,11 +9,13 @@ import {
   Mail,
   Sparkles,
   ArrowRight,
-  Shield,
   Key,
-  CheckCircle2
+  X
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useAuthStore } from '../store/useAuthStore';
+import { BestsellersBookShowcase } from '../shaders/landing-pages/LandingPages';
+import '../shaders/threeui.css';
 
 interface LoginPageProps {
   onLogin: (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => void;
@@ -27,8 +29,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   initialRole = 'STUDENT'
 }) => {
   const [selectedRole, setSelectedRole] = useState<'STUDENT' | 'MENTOR' | 'ADMIN'>(initialRole);
-  
-  // Input fields for demo
+  const [showCredentialModal, setShowCredentialModal] = useState(false);
+
+  // Input fields for custom credential login
   const [emailInput, setEmailInput] = useState(() => {
     if (initialRole === 'MENTOR') return 's.kulkarni@vit.edu.in';
     if (initialRole === 'ADMIN') return 'admin@vit.edu.in';
@@ -37,6 +40,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   const [passwordInput, setPasswordInput] = useState('password123');
 
   const { login, isLoggingIn } = useAuth();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleRoleTabChange = (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => {
     setSelectedRole(role);
@@ -49,211 +53,256 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRoleLogin = async (role: 'STUDENT' | 'MENTOR' | 'ADMIN', customEmail?: string, customPass?: string) => {
+    let email = customEmail;
+    let rollNo: string | undefined;
+    const password = customPass || 'password123';
+
+    if (!email) {
+      if (role === 'STUDENT') {
+        rollNo = '2023CSE001';
+      } else if (role === 'MENTOR') {
+        email = 's.kulkarni@vit.edu.in';
+      } else {
+        email = 'admin@vit.edu.in';
+      }
+    } else {
+      if (!email.includes('@')) {
+        rollNo = email;
+        email = undefined;
+      }
+    }
+
     try {
       await login({
-        email: emailInput.includes('@') ? emailInput : undefined,
-        rollNo: !emailInput.includes('@') ? emailInput : undefined,
-        password: passwordInput,
-        role: selectedRole,
+        email,
+        rollNo,
+        password,
+        role,
       });
     } catch (err) {
-      // Fallback for offline/demo mode
+      // Offline/demo fallback
     }
-    onLogin(selectedRole);
+
+    // Set user profile in state store
+    setUser({
+      _id: role === 'STUDENT' ? 'std_01' : role === 'MENTOR' ? 'men_01' : 'adm_01',
+      name: role === 'STUDENT' ? 'Krishna Singh' : role === 'MENTOR' ? 'Prof. S. Kulkarni' : 'Institutional Admin',
+      email: email || (role === 'STUDENT' ? '2023cse001@vit.edu.in' : role === 'MENTOR' ? 's.kulkarni@vit.edu.in' : 'admin@vit.edu.in'),
+      role: role,
+      department: 'Computer Engineering',
+      rollNo: role === 'STUDENT' ? '2023CSE001' : undefined,
+      cgpa: 9.42,
+      attendancePercentage: 88.5,
+    });
+
+    onLogin(role);
   };
 
-  return (
-    <div className="min-h-screen bg-[#F7F4EE] text-[#10253A] font-sans antialiased flex flex-col justify-between p-4 md:p-8">
-      
-      {/* Top Header Bar */}
-      <header className="max-w-5xl mx-auto w-full flex items-center justify-between py-4 border-b border-[#0C2238]/10">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-[#0C2238] text-white flex items-center justify-center font-bold text-xs shadow-md border border-[#C99632]/40">
-            <span className="text-[#E8C56B]">VIT</span>
-          </div>
-          <div>
-            <h1 className="text-sm font-extrabold text-[#10253A] tracking-tight">VIT Mumbai</h1>
-            <p className="text-[10px] font-extrabold tracking-wider text-[#C99632]">
-              Unified Authentication Gateway
-            </p>
-          </div>
-        </div>
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleRoleLogin(selectedRole, emailInput, passwordInput);
+  };
 
+  // Listen for iframe role selection messages from BestsellersBookShowcase
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'campus1-role-select') {
+        const role = event.data.role;
+        if (role === 'LANDING') {
+          onBackToLanding();
+        } else if (role === 'STUDENT' || role === 'MENTOR' || role === 'ADMIN') {
+          handleRoleLogin(role);
+        }
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [onLogin, onBackToLanding]);
+
+  return (
+    <div className="shader-frame relative w-full h-screen overflow-hidden bg-[#0C2238] select-none flex flex-col justify-between">
+      
+      {/* Exact Configured ThreeUI BestsellersBookShowcase Implementation */}
+      <BestsellersBookShowcase
+        headingFont="iowan-old-style"
+        bodyFont="iowan-old-style"
+        headingWeight="500"
+        bodyWeight="400"
+        primaryColor="#c3a47b"
+        headingSize={325}
+        bodySize={17}
+        headingLetterSpacing={-0.085}
+        style={{ width: '100vw', height: '100vh', border: 0 }}
+      />
+
+      {/* Top Navigation Bar */}
+      <header className="absolute top-4 left-4 right-4 z-50 flex items-center justify-between pointer-events-auto max-w-7xl mx-auto px-4">
         <button
+          type="button"
           onClick={onBackToLanding}
-          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#FFFCF7] hover:bg-[#EFE7D8] text-[#10253A] text-xs font-bold border border-[#0C2238]/10 shadow-xs hover:-translate-y-0.5 transition-all cursor-pointer"
+          className="flex items-center space-x-2 px-4 py-2.5 rounded-full bg-[#0C2238]/90 hover:bg-[#10253A] text-[#F7F4EE] text-xs font-bold border border-[#C99632]/40 shadow-xl backdrop-blur-md transition-all cursor-pointer hover:-translate-y-0.5"
         >
-          <ArrowLeft className="w-4 h-4 text-[#0C2238]" />
-          <span>Back to Portal Overview</span>
+          <ArrowLeft className="w-4 h-4 text-[#E8C56B]" />
+          <span>← Back to Campus1</span>
         </button>
+
+        <div className="flex items-center space-x-3">
+          <button
+            type="button"
+            onClick={() => setShowCredentialModal(true)}
+            className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#10253A]/90 hover:bg-[#123B63] text-[#F7F4EE] text-xs font-bold border border-[#C99632]/40 backdrop-blur-md shadow-lg transition-all cursor-pointer"
+          >
+            <Key className="w-3.5 h-3.5 text-[#E8C56B]" />
+            <span>Enter Credentials</span>
+          </button>
+        </div>
       </header>
 
-      {/* Main Login Card Container */}
-      <main className="max-w-2xl mx-auto w-full my-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-[#0C2238]/10 shadow-2xl space-y-8 relative overflow-hidden"
+      {/* Floating Bottom Quick Login Action Bar */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center space-x-3 bg-[#0C2238]/95 backdrop-blur-2xl p-2 px-5 rounded-full border border-[#C99632]/40 shadow-2xl pointer-events-auto">
+        <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#C99632] mr-1 hidden md:inline">
+          Sign In:
+        </span>
+
+        {/* LEFT ROLE: TEACHER */}
+        <button
+          type="button"
+          disabled={isLoggingIn}
+          onClick={() => handleRoleLogin('MENTOR')}
+          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1B365D] text-[#F7F4EE] text-xs font-bold border border-white/10 transition-all cursor-pointer shadow-md hover:-translate-y-0.5 disabled:opacity-50"
         >
-          
-          {/* Card Header */}
-          <div className="text-center space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
-              <span className="w-2 h-2 rounded-full bg-[#C99632]" />
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-                SELECT INSTITUTIONAL ROLE
-              </span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
-              Sign In to VIT Mumbai Platform
-            </h2>
-            <p className="text-xs text-[#627083]">
-              Select your role below to access your personalized command center.
-            </p>
-          </div>
+          <UserCheck className="w-3.5 h-3.5 text-[#E8C56B]" />
+          <span>Teacher</span>
+        </button>
 
-          {/* 3 Role Selection Cards */}
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              {
-                id: 'STUDENT',
-                title: 'Student',
-                desc: 'Academics & AI Growth',
-                icon: GraduationCap,
-              },
-              {
-                id: 'MENTOR',
-                title: 'Faculty / Mentor',
-                desc: 'Mentees & Courses',
-                icon: UserCheck,
-              },
-              {
-                id: 'ADMIN',
-                title: 'Admin',
-                desc: 'System & Analytics',
-                icon: ShieldCheck,
-              },
-            ].map((roleObj) => {
-              const IconComp = roleObj.icon;
-              const isSelected = selectedRole === roleObj.id;
-              return (
-                <button
-                  key={roleObj.id}
-                  type="button"
-                  onClick={() => handleRoleTabChange(roleObj.id as any)}
-                  className={`p-4 rounded-2xl border text-center flex flex-col items-center justify-center space-y-2 transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-lg -translate-y-1 scale-[1.02]'
-                      : 'bg-[#F7F4EE]/80 text-[#10253A] border-[#0C2238]/10 hover:bg-[#EFE7D8]/80 hover:border-[#C99632]/40'
-                  }`}
-                >
-                  <IconComp className={`w-5 h-5 ${isSelected ? 'text-[#E8C56B]' : 'text-[#0C2238]'}`} />
-                  <div>
-                    <p className="font-extrabold text-xs leading-tight">{roleObj.title}</p>
-                    <p className={`text-[10px] ${isSelected ? 'text-slate-300' : 'text-[#627083]'}`}>{roleObj.desc}</p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+        {/* CENTER ROLE: STUDENT (PRIMARY) */}
+        <button
+          type="button"
+          disabled={isLoggingIn}
+          onClick={() => handleRoleLogin('STUDENT')}
+          className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#C99632] hover:bg-[#E8C56B] text-[#0C2238] text-xs font-black shadow-lg transition-all cursor-pointer scale-105 hover:scale-110 disabled:opacity-50"
+        >
+          <GraduationCap className="w-4 h-4 text-[#0C2238]" />
+          <span>Student Login ★</span>
+        </button>
 
-          {/* Role Description Banner */}
-          <div className="p-4 rounded-2xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1 text-xs">
-            <div className="flex items-center space-x-2">
-              <Sparkles className="w-4 h-4 text-[#C49A52]" />
-              <span className="font-extrabold text-[#102A43]">
-                {selectedRole === 'STUDENT' && 'Student Portal Access'}
-                {selectedRole === 'MENTOR' && 'Faculty Mentoring Portal Access'}
-                {selectedRole === 'ADMIN' && 'Developer & Admin Console Access'}
-              </span>
-            </div>
-            <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
-              {selectedRole === 'STUDENT' && 'Access your academic performance trends, CGPA history, attendance monitor, and AI career roadmap.'}
-              {selectedRole === 'MENTOR' && 'Access assigned mentee roster, attendance warning alerts, 1-on-1 meeting logs, and AI mentor advisory.'}
-              {selectedRole === 'ADMIN' && 'Access central system health telemetry, user accounts management, RBAC matrix, and RAG vector store indexer.'}
-            </p>
-          </div>
+        {/* RIGHT ROLE: ADMIN */}
+        <button
+          type="button"
+          disabled={isLoggingIn}
+          onClick={() => handleRoleLogin('ADMIN')}
+          className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1B365D] hover:bg-[#123B63] text-[#F7F4EE] text-xs font-bold border border-white/10 transition-all cursor-pointer shadow-md hover:-translate-y-0.5 disabled:opacity-50"
+        >
+          <ShieldCheck className="w-3.5 h-3.5 text-[#E8C56B]" />
+          <span>Admin</span>
+        </button>
+      </div>
 
-          {/* LOGIN FORM */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* Input 1: Identity / ID */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#102A43]">
-                {selectedRole === 'STUDENT' && 'Student Roll Number or Institutional Email:'}
-                {selectedRole === 'MENTOR' && 'Faculty ID or Institutional Email:'}
-                {selectedRole === 'ADMIN' && 'Admin ID or System Root Email:'}
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-[#5A6E7F] absolute left-3.5 top-3" />
-                <input
-                  type="text"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-semibold text-[#102A43] focus:outline-none focus:border-[#123B63]"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Input 2: Password */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#102A43]">Password:</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-[#5A6E7F] absolute left-3.5 top-3" />
-                <input
-                  type="password"
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-semibold text-[#102A43] focus:outline-none focus:border-[#123B63]"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Quick Demo Sign In Preset Button */}
-            <div className="pt-2">
+      {/* Optional Credential Input Modal for Custom Username & Password */}
+      <AnimatePresence>
+        {showCredentialModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm pointer-events-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[#FFFCF7] rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-[#0C2238]/15 space-y-6 relative"
+            >
+              {/* Close button */}
               <button
                 type="button"
-                onClick={() => onLogin(selectedRole)}
-                className="w-full py-2.5 px-4 rounded-xl bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] font-bold text-xs border border-[#E2D7C6] transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+                onClick={() => setShowCredentialModal(false)}
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-[#EFE7D8] text-[#10253A] transition-colors cursor-pointer"
+                aria-label="Close credentials dialog"
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#15803D]" />
-                <span>
-                  {selectedRole === 'STUDENT' && '⚡ 1-Click Sign In as Krishna Singh (Student)'}
-                  {selectedRole === 'MENTOR' && '⚡ 1-Click Sign In as Prof. S. Kulkarni (Faculty)'}
-                  {selectedRole === 'ADMIN' && '⚡ 1-Click Sign In as Institutional Admin'}
-                </span>
+                <X className="w-5 h-5" />
               </button>
-            </div>
 
-            {/* Submit Action Button */}
-            <div className="pt-3">
-              <button
-                type="submit"
-                className="w-full py-3 px-6 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-bold shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer"
-              >
-                <span>
-                  {selectedRole === 'STUDENT' && 'Sign In to Student Dashboard'}
-                  {selectedRole === 'MENTOR' && 'Sign In to Faculty Mentoring Console'}
-                  {selectedRole === 'ADMIN' && 'Sign In to Institutional Admin Console'}
-                </span>
-                <ArrowRight className="w-4 h-4 text-[#F5C056]" />
-              </button>
-            </div>
+              <div className="space-y-1 text-center">
+                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#7A6437]">
+                    AUTHENTICATION GATEWAY
+                  </span>
+                </div>
+                <h3 className="text-xl font-black text-[#10253A]">Institutional Sign In</h3>
+                <p className="text-xs text-[#627083]">Enter your roll number or campus email</p>
+              </div>
 
-          </form>
+              {/* Role tabs */}
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'STUDENT', title: 'Student', icon: GraduationCap },
+                  { id: 'MENTOR', title: 'Teacher', icon: UserCheck },
+                  { id: 'ADMIN', title: 'Admin', icon: ShieldCheck },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  const isSel = selectedRole === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleRoleTabChange(item.id as any)}
+                      className={`p-2.5 rounded-xl border text-center flex flex-col items-center justify-center space-y-1 transition-all cursor-pointer ${
+                        isSel
+                          ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-md'
+                          : 'bg-[#F7F4EE] text-[#10253A] border-[#0C2238]/10 hover:bg-[#EFE7D8]'
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 ${isSel ? 'text-[#E8C56B]' : 'text-[#0C2238]'}`} />
+                      <span className="text-[11px] font-extrabold">{item.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-        </motion.div>
-      </main>
+              {/* Form inputs */}
+              <form onSubmit={handleFormSubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#10253A]">
+                    {selectedRole === 'STUDENT' ? 'Roll No / Email' : 'Institutional Email'}
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-[#5A6E7F] absolute left-3.5 top-3" />
+                    <input
+                      type="text"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-semibold text-[#10253A] focus:outline-none focus:border-[#123B63]"
+                      required
+                    />
+                  </div>
+                </div>
 
-      {/* Footer copyright */}
-      <footer className="max-w-5xl mx-auto w-full text-center text-xs text-[#5A6E7F] py-4 border-t border-[#E2D7C6]">
-        🌾 © 2026 VIT Mumbai. Autonomous AI Student Development & Mentoring Platform. All rights reserved. 🌾
-      </footer>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#10253A]">Password</label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-[#5A6E7F] absolute left-3.5 top-3" />
+                    <input
+                      type="password"
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] text-xs font-semibold text-[#10253A] focus:outline-none focus:border-[#123B63]"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoggingIn}
+                  className="w-full py-3 px-6 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white text-xs font-extrabold shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+                >
+                  <span>Sign In as {selectedRole === 'STUDENT' ? 'Student' : selectedRole === 'MENTOR' ? 'Teacher' : 'Admin'}</span>
+                  <ArrowRight className="w-4 h-4 text-[#E8C56B]" />
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
