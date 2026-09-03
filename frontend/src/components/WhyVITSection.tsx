@@ -37,7 +37,7 @@ export const WhyVITSection: React.FC = () => {
               </span>
               <h2 className="text-4xl sm:text-5xl font-black text-[#F5F2EA] tracking-tight leading-tight font-display">
                 A Place to <br />
-                <span className="text-gold-gradient font-serif italic">Grow, Lead & Build</span>
+                <span className="text-[#F5F2EA] font-serif">Grow, Lead & Build</span>
               </h2>
               <p className="text-sm text-[#F5F2EA]/80 font-light leading-relaxed">
                 World-class infrastructure, experienced faculty, industry connect and a supportive ecosystem for your overall growth as an engineer.

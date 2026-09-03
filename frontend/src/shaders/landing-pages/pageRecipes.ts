@@ -92,7 +92,8 @@ const INTER_EMBEDDED: PageFont = {
 const IOWAN_OLD_STYLE: PageFont = {
   value: "iowan-old-style",
   label: "Iowan Old Style",
-  stack: '"Iowan Old Style", Baskerville, "Times New Roman", serif',
+  stack: '"Iowan Old Style", "Instrument Serif", "Newsreader", "Cormorant Garamond", "Palatino Linotype", Palatino, Georgia, serif',
+  google: "Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700",
 };
 
 const INTER_LOADED: PageFont = {
@@ -1366,7 +1367,7 @@ body { font-family: ${type.body}; font-weight: ${type.bodyWeight}; }
   font-weight: ${type.headingWeight};
 }
 .hero-word {
-  font-size: clamp(184px, 22vw, ${px(type.headingSize)});
+  font-size: clamp(140px, 20vw, ${px(type.headingSize)});
   letter-spacing: ${type.headingLetterSpacing}em;
 }
 .detail-title {

@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
 
         {/* Quick Links */}
         <div className="md:col-span-3 space-y-3">
-          <h4 className="text-xs font-bold text-[#E8C477] uppercase tracking-wider">Quick Navigation</h4>
+          <h4 className="text-xs font-bold text-[#E8C477] tracking-wider">Quick Navigation</h4>
           <ul className="space-y-2 font-medium">
             <li><a href="#home" className="hover:text-[#E8C477] transition-colors">Home</a></li>
             <li><a href="#about" className="hover:text-[#E8C477] transition-colors">About VIT</a></li>
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
 
         {/* Accreditation & Accreditation */}
         <div className="md:col-span-4 space-y-3">
-          <h4 className="text-xs font-bold text-[#E8C477] uppercase tracking-wider">Accreditation & Standards</h4>
+          <h4 className="text-xs font-bold text-[#E8C477] tracking-wider">Accreditation & Standards</h4>
           <ul className="space-y-2">
             <li className="flex items-center space-x-2 text-[#E8C477] font-semibold">
               <ShieldCheck className="w-4 h-4 text-[#D6A84F]" />

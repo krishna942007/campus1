@@ -1,15 +1,107 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Check, AlertCircle, PlusCircle, ShieldAlert, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Check, AlertCircle, PlusCircle, ShieldAlert, Sparkles, X, Target, 
+  Clock, ArrowRight, ShieldCheck, Flame, Zap, Award, ChevronRight, BarChart2
+} from 'lucide-react';
+import { useStudentState, studentStore } from '../services/studentStateStore';
+
+export interface DetailedSkill {
+  name: string;
+  percent: number;
+  target: number;
+  state: 'MASTERED' | 'MAINTAIN' | 'IMPROVE' | 'CRITICAL GAP';
+  impact: 'HIGH IMPACT' | 'MEDIUM IMPACT' | 'LOW IMPACT';
+  verdict: string;
+  action: string;
+  wasteHours?: number;
+  reallocateTo?: string;
+  rank: number;
+  effort: string;
+}
 
 export const SkillGapSection: React.FC = () => {
-  const verifiedSkills = [
-    { name: 'Python Programming', percent: 95, level: 'ADVANCED (95%)' },
-    { name: 'Data Structures & Algorithms', percent: 90, level: 'ADVANCED (90%)' },
-    { name: 'SQL & Database Architecture', percent: 85, level: 'INTERMEDIATE (85%)' },
-    { name: 'Full-Stack Web (React & FastAPI)', percent: 80, level: 'INTERMEDIATE (80%)' },
-    { name: 'Linux & Shell Scripting', percent: 78, level: 'INTERMEDIATE (78%)' },
+  const state = useStudentState();
+  const [selectedSkill, setSelectedSkill] = useState<DetailedSkill | null>(null);
+  const [showComparison, setShowComparison] = useState<boolean>(false);
+  const [nextSkillFound, setNextSkillFound] = useState<DetailedSkill | null>(null);
+
+  // Dynamic Skill Catalog mapped to student state
+  const skillCatalog: DetailedSkill[] = [
+    {
+      name: 'PyTorch Neural Networks',
+      percent: 32,
+      target: 80,
+      state: 'CRITICAL GAP',
+      impact: 'HIGH IMPACT',
+      verdict: 'Largest barrier to AI Research Engineer pathway. Immediate focus required.',
+      action: 'CRITICAL GAP',
+      rank: 1,
+      effort: '12 hours'
+    },
+    {
+      name: 'CUDA & Parallel Programming',
+      percent: 20,
+      target: 75,
+      state: 'CRITICAL GAP',
+      impact: 'HIGH IMPACT',
+      verdict: 'Secondary technical requirement for deep learning hardware acceleration.',
+      action: 'CRITICAL GAP',
+      rank: 2,
+      effort: '18 hours'
+    },
+    {
+      name: 'Distributed System Design',
+      percent: 70,
+      target: 80,
+      state: 'IMPROVE',
+      impact: 'MEDIUM IMPACT',
+      verdict: 'Moderate proficiency. Strengthening microservices architecture will improve readiness.',
+      action: 'IMPROVE',
+      rank: 3,
+      effort: '16 hours'
+    },
+    {
+      name: 'Data Structures & Algorithms',
+      percent: 88,
+      target: 85,
+      state: 'MAINTAIN',
+      impact: 'LOW IMPACT',
+      verdict: 'Solid foundation. Periodic maintenance via practice sets is sufficient.',
+      action: 'MAINTAIN',
+      rank: 4,
+      effort: '3 hours/wk'
+    },
+    {
+      name: 'Python Programming',
+      percent: 95,
+      target: 85,
+      state: 'MASTERED',
+      impact: 'LOW IMPACT',
+      verdict: 'You do not need to spend significant time improving Python right now.',
+      action: 'MAINTAIN',
+      wasteHours: 8,
+      reallocateTo: 'PyTorch Neural Networks',
+      rank: 5,
+      effort: '0 hours'
+    }
   ];
+
+  const handleFindNextSkill = () => {
+    // Select highest impact critical gap
+    const highest = skillCatalog.find(s => s.state === 'CRITICAL GAP') || skillCatalog[0];
+    setNextSkillFound(highest);
+    setSelectedSkill(highest);
+  };
+
+  const handleAddToRoadmap = (skill: DetailedSkill) => {
+    studentStore.applyFuturePlan({
+      actionNames: [skill.name],
+      projectedProgress: Math.min(100, state.progress + 4),
+      primaryAction: `Master ${skill.name}`
+    });
+    setNextSkillFound(null);
+  };
 
   return (
     <section className="relative py-24 w-full bg-[#F7F4EE] border-t border-[#0C2238]/08 z-10 overflow-hidden">
@@ -17,140 +109,275 @@ export const SkillGapSection: React.FC = () => {
       <div className="absolute top-1/3 -right-20 w-96 h-96 bg-[#C99632]/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-[#244F7D]/25 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-10">
         
         {/* Section Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-14 space-y-4"
-        >
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
-            <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
-            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              SKILL GAP INTELLIGENCE
-            </span>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-3xl space-y-4"
+          >
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
+              <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
+                INTELLIGENT SKILL ANALYSIS SYSTEM
+              </span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
+              KNOW WHERE <br />
+              <span className="text-[#C99632] font-serif-accent italic font-normal">
+                YOU STAND.
+              </span>
+            </h2>
+
+            <p className="text-base font-normal text-[#627083] leading-relaxed">
+              Click any skill card to open detailed AI verdicts, time-waste alerts, high-impact rankings, and role comparison benchmarks.
+            </p>
+          </motion.div>
+
+          {/* Action Control Buttons */}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => setShowComparison(!showComparison)}
+              className="px-5 py-3 rounded-full bg-[#FFFCF7]/90 hover:bg-[#FFFCF7] text-[#10253A] border border-[#0C2238]/12 text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center space-x-2"
+            >
+              <BarChart2 className="w-4 h-4 text-[#C99632]" />
+              <span>{showComparison ? 'Hide Role Comparison' : 'Compare with Target Role'}</span>
+            </button>
+
+            <button
+              onClick={handleFindNextSkill}
+              className="px-6 py-3 rounded-full bg-[#0C2238] hover:bg-[#07182A] text-white text-xs font-extrabold shadow-xl hover:shadow-2xl transition-all cursor-pointer flex items-center space-x-2"
+            >
+              <Sparkles className="w-4 h-4 text-[#E8C56B]" />
+              <span>Find My Next Skill →</span>
+            </button>
           </div>
-
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-            KNOW WHERE <br />
-            <span className="text-[#C99632] font-serif-accent italic font-normal">
-              YOU STAND.
-            </span>
-          </h2>
-
-          <p className="text-base font-normal text-[#627083] leading-relaxed">
-            Automatic comparison between your current verified skills and your target engineering role benchmark.
-          </p>
-        </motion.div>
+        </div>
 
         {/* Current vs Target Comparison Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Left: Current Verified Profile with Animated Bars (Glassmorphism) */}
+          {/* Left: Interactive Skill Cards Grid (7 cols) */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 p-8 bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 space-y-6 rounded-3xl relative overflow-hidden"
+            className="lg:col-span-7 p-6 sm:p-8 bg-[#FFFFFF]/10 backdrop-blur-[5px] border border-[#0C2238]/08 shadow-xl shadow-[#0C2238]/05 space-y-5 rounded-3xl relative overflow-hidden"
           >
             <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-4">
               <div>
                 <span className="text-[10px] font-extrabold text-[#C99632] tracking-wider block uppercase">
-                  VERIFIED PROFILE
+                  ACTIVE SKILL MATRIX
                 </span>
-                <h3 className="text-xl font-extrabold font-display text-[#10253A]">Current Competencies</h3>
+                <h3 className="text-xl font-extrabold font-display text-[#10253A]">Click Any Skill to Inspect</h3>
               </div>
               <span className="text-xs font-extrabold text-[#159A72] bg-[#E6F4ED]/80 backdrop-blur-xs px-3 py-1 border border-[#159A72]/20 rounded-full">
-                8 SKILLS VERIFIED
+                5 SKILLS MONITORED
               </span>
             </div>
 
-            <div className="space-y-4">
-              {verifiedSkills.map((item) => (
-                <div key={item.name} className="space-y-1.5 p-3.5 bg-[#FFFCF7]/50 hover:bg-[#FFFCF7]/80 backdrop-blur-md border border-[#0C2238]/08 rounded-2xl text-xs transition-all duration-300">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Check className="w-4 h-4 text-[#159A72]" />
-                      <span className="font-bold text-[#10253A]">{item.name}</span>
+            <div className="space-y-3.5">
+              {skillCatalog.map((item) => {
+                const isSelected = selectedSkill?.name === item.name;
+                return (
+                  <div 
+                    key={item.name}
+                    onClick={() => setSelectedSkill(item)}
+                    className={`p-4 border rounded-2xl transition-all duration-300 cursor-pointer space-y-2 relative overflow-hidden ${
+                      isSelected
+                        ? 'bg-[#0C2340] text-white border-[#C99632] shadow-xl scale-[1.01]'
+                        : item.state === 'CRITICAL GAP'
+                        ? 'bg-[#FFFCF7]/90 hover:bg-[#FFFCF7] border-red-500/30 text-[#10253A]'
+                        : 'bg-[#FFFCF7]/90 hover:bg-[#FFFCF7] border-[#0C2238]/08 text-[#10253A]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2.5">
+                        {item.state === 'MASTERED' && <Check className="w-4 h-4 text-emerald-500" />}
+                        {item.state === 'MAINTAIN' && <ShieldCheck className="w-4 h-4 text-[#C99632]" />}
+                        {item.state === 'IMPROVE' && <Zap className="w-4 h-4 text-amber-500" />}
+                        {item.state === 'CRITICAL GAP' && <Flame className="w-4 h-4 text-red-500 animate-pulse" />}
+                        <span className="font-extrabold text-sm">{item.name}</span>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        {item.wasteHours && (
+                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-600 border border-amber-500/30">
+                            STOP SPENDING TIME HERE
+                          </span>
+                        )}
+                        <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full border ${
+                          item.state === 'MASTERED'
+                            ? 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30'
+                            : item.state === 'MAINTAIN'
+                            ? 'bg-[#C99632]/15 text-[#C99632] border-[#C99632]/30'
+                            : item.state === 'IMPROVE'
+                            ? 'bg-amber-500/15 text-amber-600 border-amber-500/30'
+                            : 'bg-red-500/15 text-red-500 border-red-500/30'
+                        }`}>
+                          {item.state}
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-extrabold text-xs text-[#C99632]">{item.level}</span>
+
+                    {/* Progress Bar & Level */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[11px] font-bold opacity-90">
+                        <span>Current: {item.percent}%</span>
+                        <span>Required: {item.target}%</span>
+                      </div>
+                      <div className="w-full h-2 rounded-full bg-[#0C2238]/10 overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${item.percent}%` }}
+                          transition={{ duration: 0.8 }}
+                          className={`h-full rounded-full ${
+                            item.state === 'MASTERED'
+                              ? 'bg-emerald-500'
+                              : item.state === 'CRITICAL GAP'
+                              ? 'bg-gradient-to-r from-red-500 to-amber-500'
+                              : 'bg-gradient-to-r from-[#0C2238] to-[#C99632]'
+                          }`}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  {/* Animated Progress Bar */}
-                  <div className="w-full h-2 rounded-full bg-[#0C2238]/10 overflow-hidden">
-                    <motion.div
-                      initial={{ width: '0%' }}
-                      whileInView={{ width: `${item.percent}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                      className="h-full rounded-full bg-gradient-to-r from-[#0C2238] to-[#C99632]"
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
 
-          {/* Center VS Divider Arrow */}
-          <div className="lg:col-span-2 text-center space-y-1 py-4">
-            <span className="text-sm font-extrabold text-[#C99632] bg-[#EFE7D8]/80 backdrop-blur-xs px-4 py-2 rounded-full border border-[#C99632]/30 inline-block shadow-sm">
-              VS
-            </span>
-            <div className="w-full h-px bg-[#0C2238]/10 my-2" />
-            <span className="text-xs font-bold uppercase tracking-widest text-[#627083]">BENCHMARK</span>
-          </div>
-
-          {/* Right: Target Role Requirements & Gap Breakdown (Dark Translucent Glass) */}
+          {/* Right: High Impact Ranking & Selected Skill Inspector (5 cols) */}
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 p-8 bg-[#0C2340]/90 sm:bg-black/75 backdrop-blur-xl text-white border border-white/10 shadow-2xl space-y-6 rounded-3xl relative overflow-hidden"
+            className="lg:col-span-5 p-6 sm:p-8 bg-[#0C2340]/90 sm:bg-black/75 backdrop-blur-xl text-white border border-white/10 shadow-2xl space-y-6 rounded-3xl relative overflow-hidden"
           >
+            {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
                 <span className="text-[10px] font-extrabold text-[#E8C56B] tracking-wider block uppercase">
-                  TARGET BENCHMARK
+                  HIGH IMPACT RANKING
                 </span>
-                <h3 className="text-xl font-extrabold font-display text-white">AI Research Engineer</h3>
+                <h3 className="text-xl font-extrabold font-display text-white">Role Priority Index</h3>
               </div>
               <span className="text-xs font-extrabold text-[#E8C56B] bg-[#C99632]/20 px-3 py-1 border border-[#C99632]/40 rounded-full">
-                2 SKILL GAPS
+                TARGET: {state.careerGoal}
               </span>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-md border border-white/15 rounded-2xl text-xs">
-                <div className="flex items-center space-x-2.5">
-                  <AlertCircle className="w-4 h-4 text-[#E8C56B]" />
-                  <span className="font-bold text-white">PyTorch & Deep Neural Networks</span>
-                </div>
-                <span className="text-xs text-[#E8C56B] font-extrabold">GAP IDENTIFIED</span>
-              </div>
-
-              <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-md border border-white/15 rounded-2xl text-xs">
-                <div className="flex items-center space-x-2.5">
-                  <AlertCircle className="w-4 h-4 text-[#E8C56B]" />
-                  <span className="font-bold text-white">Distributed System Design & CUDA</span>
-                </div>
-                <span className="text-xs text-[#E8C56B] font-extrabold">GAP IDENTIFIED</span>
-              </div>
+            {/* High Impact Skills List */}
+            <div className="space-y-2.5">
+              {skillCatalog
+                .filter(s => s.impact === 'HIGH IMPACT' || s.impact === 'MEDIUM IMPACT')
+                .map(s => (
+                  <div key={s.name} className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-2.5">
+                      <span className="w-5 h-5 rounded-full bg-[#C99632]/30 text-[#E8C56B] font-mono font-bold flex items-center justify-center text-[10px]">
+                        #{s.rank}
+                      </span>
+                      <span className="font-extrabold text-white">{s.name}</span>
+                    </div>
+                    <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md ${
+                      s.impact === 'HIGH IMPACT' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                    }`}>
+                      {s.impact}
+                    </span>
+                  </div>
+                ))}
             </div>
 
-            {/* Advisory Action Notice */}
-            <div className="pt-3 border-t border-white/10 flex items-center space-x-2 text-xs text-[#E8C56B] font-medium">
-              <ShieldAlert className="w-4 h-4 text-[#E8C56B] shrink-0" />
-              <span>Skill gaps are advisory indicators for student self-development.</span>
+            {/* 4. TIME WASTE DETECTOR BANNER */}
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 to-amber-500/5 border border-amber-500/30 space-y-1.5">
+              <div className="flex items-center space-x-2 text-amber-400">
+                <ShieldAlert className="w-4 h-4" />
+                <span className="text-xs font-extrabold uppercase">TIME WASTE DETECTOR ACTIVE</span>
+              </div>
+              <p className="text-xs text-slate-200 leading-relaxed">
+                Python score (95%) exceeds required benchmark (85%). Stop spending study time on Python and reallocate <strong className="text-[#E8C56B]">~8 hours</strong> to PyTorch.
+              </p>
             </div>
+
+            {/* Selected Skill Inspector Modal / Expanded Box */}
+            {selectedSkill && (
+              <div className="p-5 rounded-2xl bg-white/10 border border-[#C99632]/50 space-y-3 relative">
+                <button
+                  onClick={() => setSelectedSkill(null)}
+                  className="absolute top-3 right-3 p-1 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                <div className="flex items-center space-x-2">
+                  <Sparkles className="w-4 h-4 text-[#E8C56B]" />
+                  <h4 className="text-sm font-extrabold text-white font-display">{selectedSkill.name} Analysis</h4>
+                </div>
+
+                <div className="text-xs space-y-1.5 text-slate-200">
+                  <p><strong>Current vs Target:</strong> {selectedSkill.percent}% vs {selectedSkill.target}% ({selectedSkill.state})</p>
+                  <p className="italic text-[#E8C56B]">"AI Verdict: {selectedSkill.verdict}"</p>
+                  {selectedSkill.wasteHours && (
+                    <p className="text-amber-400 font-bold">⚠️ Waste Alert: ~{selectedSkill.wasteHours} unnecessary study hours detected!</p>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => handleAddToRoadmap(selectedSkill)}
+                  className="w-full py-2 rounded-xl bg-[#C99632] hover:bg-[#b08226] text-[#0C2238] font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1.5"
+                >
+                  <span>Add {selectedSkill.name} to Roadmap</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
           </motion.div>
 
         </div>
+
+        {/* Visual Role Comparison Inspector */}
+        {showComparison && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-6 sm:p-8 rounded-3xl bg-[#FFFCF7] border border-[#0C2238]/12 shadow-xl space-y-5 text-[#10253A]"
+          >
+            <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-3">
+              <h3 className="text-base font-extrabold font-display flex items-center space-x-2">
+                <BarChart2 className="w-5 h-5 text-[#C99632]" />
+                <span>Visual Level vs Target Role Requirement ({state.careerGoal})</span>
+              </h3>
+              <button onClick={() => setShowComparison(false)} className="text-xs text-[#627083] hover:text-[#10253A]">
+                Close
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {skillCatalog.map(s => (
+                <div key={s.name} className="space-y-1.5 text-xs">
+                  <div className="flex justify-between font-extrabold">
+                    <span>{s.name}</span>
+                    <span className="text-[#C99632]">You: {s.percent}% | Role: {s.target}%</span>
+                  </div>
+                  <div className="w-full h-3 rounded-full bg-[#F7F4EE] border border-[#0C2238]/10 overflow-hidden relative">
+                    <div className="h-full bg-slate-300 opacity-60 absolute left-0" style={{ width: `${s.target}%` }} />
+                    <div className="h-full bg-[#0C2238] absolute left-0" style={{ width: `${s.percent}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
       </div>
     </section>
   );
 };
-

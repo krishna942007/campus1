@@ -52,7 +52,7 @@ export const TestimonialsSection: React.FC = () => {
             </span>
             <h2 className="text-4xl sm:text-5xl font-black text-[#F5F2EA] tracking-tight leading-tight font-display">
               Hear from our <br />
-              <span className="text-gold-gradient font-serif italic">Community</span>
+              <span className="text-[#F5F2EA] font-serif">Community</span>
             </h2>
             <p className="text-sm text-[#F5F2EA]/80 font-light leading-relaxed">
               Stories of growth, innovation, and achievements from students, alumni, and distinguished faculty members.

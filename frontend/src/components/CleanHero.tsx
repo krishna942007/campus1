@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, Shield, Sparkles, GraduationCap, Users, BarChart3, Bell } from 'lucide-react';
-import { GlassCard } from './ui/GlassCard';
 
 interface CleanHeroProps {
   onSelectRole: (role: 'STUDENT' | 'MENTOR' | 'ADMIN') => void;
@@ -80,7 +79,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-serif-accent italic font-normal text-[#C99632] tracking-tight leading-[1.08]"
+              className="text-5xl sm:text-6xl lg:text-7xl font-serif-accent font-normal text-[#10253A] tracking-tight leading-[1.08]"
             >
               Lead the Future.
             </motion.h1>
@@ -113,7 +112,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
 
             <a
               href="#features"
-              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-full bg-[#FFFCF7]/40 backdrop-blur-xl hover:bg-[#FFFCF7]/65 text-[#10253A] font-bold text-sm border border-[#0C2238]/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-full bg-[#FFFCF7]/90 backdrop-blur-md hover:bg-[#FFFCF7] text-[#10253A] font-bold text-sm border border-[#0C2238]/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 fill-[#10253A] text-[#10253A]" />
               <span>Explore Platform</span>

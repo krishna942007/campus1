@@ -8,8 +8,8 @@ export const MinimalFooter: React.FC = () => {
         <div className="lg:col-span-6 space-y-4">
           <div className="flex items-center space-x-3">
             <div className="w-2.5 h-2.5 rounded-full bg-[#D6A84F]" />
-            <span className="text-2xl font-black text-[#F5F2EA] font-display uppercase tracking-wider">
-              VIT MUMBAI
+            <span className="text-2xl font-bold text-[#F5F2EA] font-display tracking-wider">
+              Vit Mumbai
             </span>
           </div>
 
