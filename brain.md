@@ -325,6 +325,7 @@ The project is fully build-ready and pre-configured for one-click deployment acr
     - Verified responsive 3D book physics, cover-opening animations, and embedded vintage portal login card across all viewports.
     - Removed automatic DOMContentLoaded book opening; books now strictly remain closed in the 3D gallery view until explicitly clicked by the user.
     - Removed overlay controls from the 3D book gateway view (Direct Access pill bar, redundant top back button, and floating AI widget on /login) for a clean, distraction-free visual experience.
+23. **Master Presentation Deck (`ppt.md`) Generation**: Generated a comprehensive 20-slide presentation deck covering every feature, portal, function, architecture diagram, design specification, and presenter speaking script for Campus 1 / VIT Mumbai platform.
 
 ---
 *Document maintained automatically. Updated for Campus 1 release on GitHub.*
