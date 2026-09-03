@@ -103,7 +103,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
       if (stored) return JSON.parse(stored);
     } catch {}
     return {
-      name: currentTeacher?.name || 'Prof. S. Kulkarni',
+      name: currentTeacher?.name || 'Prof. Sameer Kulkarni',
       email: currentTeacher?.email || 's.kulkarni@vit.edu.in',
       roleId: currentTeacher?.rollNo || 'FAC-CSE-004',
       designation: currentTeacher?.designation || 'Associate Professor & Head of AI Lab',
@@ -627,148 +627,157 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
   const pendingRequestsCount = storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'PENDING' || r.status === 'CHANGE_PENDING').length;
 
   return (
-    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col">
       
-      {/* 1. SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-b lg:border-b-0 lg:border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
-        <div>
-          {/* Top Brand Header */}
-          <div className="h-[76px] px-6 border-b border-[#E2D7C6] flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">VIT</span>
-            </div>
-            <div>
-              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT Mumbai</h2>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
-                FACULTY MENTOR CENTER
-              </p>
-            </div>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="p-3 space-y-1 text-xs font-semibold">
-            {[
-              { name: 'Overview', icon: LayoutDashboard },
-              { name: 'Mentor Requests', icon: UserCheck, badge: pendingRequestsCount > 0 ? `${pendingRequestsCount}` : undefined },
-              { name: 'My Students', icon: Users, badge: `${allMentees.length}` },
-              { name: 'Assignments', icon: CheckSquare, badge: `${storeState.assignments.length}` },
-              { name: 'Online Course Explorer', icon: BookOpen, badge: 'Curriculum' },
-              { name: 'Attention & Risk', icon: AlertTriangle, badge: '1' },
-              { name: 'Meetings', icon: Calendar },
-              { name: 'Feedback & Goals', icon: Target },
-              { name: 'Progress Analytics', icon: TrendingUp },
-              { name: 'AI Mentor Assistant', icon: Sparkles, badge: 'Copilot' },
-              { name: 'Notifications', icon: Bell, badge: `${storeState.facultyNotifications.filter((n: any) => !n.read).length}` },
-            ].map((item) => {
-              const Icon = item.icon;
-              const isActive = activeNav === item.name;
-              return (
-                <button
-                  key={item.name}
-                  onClick={() => {
-                    setActiveNav(item.name as any);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left ${
-                    isActive
-                      ? 'bg-[#123B63] text-white shadow-sm font-bold'
-                      : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3 min-w-0 flex-1 pr-1">
-                    <div className="w-5 h-5 flex items-center justify-center shrink-0">
-                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    </div>
-                    <span className="leading-tight text-xs font-semibold block text-left">
-                      {item.name}
-                    </span>
-                  </div>
-                  {item.badge && (
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ml-1.5 whitespace-nowrap ${
-                      isActive ? 'bg-[#C49A52] text-[#102A43]' : 'bg-[#E9DDC9] text-[#102A43]'
-                    }`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Sidebar Footer Support & Exit */}
-        <div className="p-3 border-t border-[#E2D7C6] space-y-1.5 text-xs">
-          <button 
-            onClick={() => setActiveNav('Settings')}
-            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold text-left ${
-              activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
-            }`}
-          >
-            <div className="w-5 h-5 flex items-center justify-center shrink-0">
-              <Settings className="w-4 h-4 text-[#1D4E73]" />
-            </div>
-            <span className="leading-tight text-xs font-semibold">Settings & Preferences</span>
-          </button>
-
-          <button
-            onClick={onBackToLanding}
-            className="w-full flex items-center space-x-3 px-3 py-2 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer text-left"
-          >
-            <div className="w-5 h-5 flex items-center justify-center shrink-0">
-              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-            </div>
-            <span className="leading-tight text-xs font-bold">Back to Portal Overview</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* 2. MAIN DASHBOARD CONTENT AREA */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      {/* UNIFIED FULL-WIDTH TOP HEADER BAR (CLEAN 90° CORNER WITH SIDEBAR DIVIDER) */}
+      <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] sticky top-0 z-30 shadow-xs flex flex-col lg:flex-row">
         
-        {/* TOP FACULTY IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] min-h-[76px] px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
-          <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#123B63] text-[#F5C056] flex items-center justify-center font-extrabold text-sm shadow-sm border border-[#C49A52]/40 uppercase">
-              {teacherProfile.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'FM'}
+        {/* Top Brand Header (Matches Sidebar Width & Border-R) */}
+        <div className="w-full lg:w-64 h-[84px] px-6 lg:border-r border-[#E2D7C6] flex items-center space-x-3 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
+            <span className="text-[#F5C056]">VIT</span>
+          </div>
+          <div>
+            <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT Mumbai</h2>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
+              FACULTY MENTOR CENTER
+            </p>
+          </div>
+        </div>
+
+        {/* Faculty Identity + Action Controls */}
+        <div className="flex-1 px-6 py-3.5 flex flex-col xl:flex-row xl:items-center justify-between gap-4 min-w-0">
+          
+          {/* Left: Avatar + Professor Info Hierarchy */}
+          <div className="flex items-center space-x-4 min-w-0">
+            <div className="w-12 h-12 rounded-2xl bg-[#123B63] text-[#F5C056] flex items-center justify-center font-extrabold text-base shadow-sm border border-[#C49A52]/40 uppercase shrink-0">
+              {teacherProfile.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'SK'}
             </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="text-lg font-extrabold text-[#102A43]">{teacherProfile.name}</h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold border border-[#E2D7C6] uppercase">
+            
+            <div className="min-w-0 space-y-1">
+              {/* Primary Row: Name & Role */}
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+                <h1 className="text-lg sm:text-xl font-extrabold text-[#102A43] font-display tracking-tight">
+                  {teacherProfile.name}
+                </h1>
+                <span className="text-xs sm:text-sm font-semibold text-[#627083]">
                   {teacherProfile.designation}
                 </span>
               </div>
-              <p className="text-xs text-[#5A6E7F]">
-                Department of {teacherProfile.department} • {teacherProfile.location} | Teaching: <strong>{teacherProfile.semestersTaught.join(', ')}</strong> | Mentees: <strong className="text-[#123B63]">{allMentees.length} Active</strong>
+              
+              {/* Secondary / Department Subtitle */}
+              <p className="text-xs font-semibold text-[#5A6E7F]">
+                Department of {teacherProfile.department}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          {/* Right: Action Buttons (AI Assistant removed from header) */}
+          <div className="flex items-center space-x-3 shrink-0 self-start xl:self-center">
             <button
               onClick={() => setShowCreateAssignmentModal(true)}
-              className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] text-xs font-bold transition-all cursor-pointer shadow-2xs"
             >
-              <Plus className="w-3.5 h-3.5 text-[#123B63]" />
+              <Plus className="w-4 h-4 text-[#123B63]" />
               <span>Post New Assignment</span>
             </button>
 
             <button
-              onClick={() => setAiDrawerOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#F5C056]" />
-              <span>✦ AI Faculty Assistant</span>
-            </button>
-
-            <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-xs transition-colors cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-2xs transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4 text-[#123B63]" />
               <span>Back to Portal Overview</span>
             </button>
           </div>
-        </header>
+        </div>
+
+      </header>
+
+      {/* 2. BODY CONTENT (SIDEBAR + MAIN) */}
+      <div className="flex-1 flex flex-col lg:flex-row min-h-0">
+        
+        {/* SIDEBAR NAVIGATION */}
+        <aside className="w-full lg:w-64 bg-[#FFFDF8] border-b lg:border-b-0 lg:border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
+          <div>
+            {/* Navigation Links */}
+            <nav className="p-3 space-y-1 text-xs font-semibold">
+              {[
+                { name: 'Overview', icon: LayoutDashboard },
+                { name: 'Mentor Requests', icon: UserCheck, badge: pendingRequestsCount > 0 ? `${pendingRequestsCount}` : undefined },
+                { name: 'My Students', icon: Users, badge: `${allMentees.length}` },
+                { name: 'Assignments', icon: CheckSquare, badge: `${storeState.assignments.length}` },
+                { name: 'Online Course Explorer', icon: BookOpen, badge: 'Curriculum' },
+                { name: 'Attention & Risk', icon: AlertTriangle, badge: '1' },
+                { name: 'Meetings', icon: Calendar },
+                { name: 'Feedback & Goals', icon: Target },
+                { name: 'Progress Analytics', icon: TrendingUp },
+                { name: 'AI Mentor Assistant', icon: Sparkles, badge: 'Copilot' },
+                { name: 'Notifications', icon: Bell, badge: `${storeState.facultyNotifications.filter((n: any) => !n.read).length}` },
+              ].map((item) => {
+                const Icon = item.icon;
+                const isActive = activeNav === item.name;
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      setActiveNav(item.name as any);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left ${
+                      isActive
+                        ? 'bg-[#123B63] text-white shadow-sm font-bold'
+                        : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3 min-w-0 flex-1 pr-1">
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                        <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
+                      </div>
+                      <span className="leading-tight text-xs font-semibold block text-left">
+                        {item.name}
+                      </span>
+                    </div>
+                    {item.badge && (
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ml-1.5 whitespace-nowrap ${
+                        isActive ? 'bg-[#C49A52] text-[#102A43]' : 'bg-[#E9DDC9] text-[#102A43]'
+                      }`}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Sidebar Footer Support & Exit */}
+          <div className="p-3 border-t border-[#E2D7C6] space-y-1.5 text-xs">
+            <button 
+              onClick={() => setActiveNav('Settings')}
+              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold text-left ${
+                activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
+              }`}
+            >
+              <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                <Settings className="w-4 h-4 text-[#1D4E73]" />
+              </div>
+              <span className="leading-tight text-xs font-semibold">Settings & Preferences</span>
+            </button>
+
+            <button
+              onClick={onBackToLanding}
+              className="w-full flex items-center space-x-3 px-3 py-2 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer text-left"
+            >
+              <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                <ArrowLeft className="w-4 h-4 text-[#123B63]" />
+              </div>
+              <span className="leading-tight text-xs font-bold">Back to Portal Overview</span>
+            </button>
+          </div>
+        </aside>
+
+        {/* MAIN DASHBOARD CONTENT AREA */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
 
         {/* MAIN BODY WRAPPER */}
         <main className="p-6 max-w-7xl mx-auto space-y-6 w-full flex-1">
@@ -1823,6 +1832,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
 
         </main>
       </div>
+    </div>
 
       {/* CONFIRM ACCEPT MODAL */}
       <AnimatePresence>
