@@ -53,7 +53,7 @@ export const CleanHero: React.FC<CleanHeroProps> = ({ onSelectRole }) => {
           >
             <span className="w-2 h-2 rounded-full bg-[#C99632]" />
             <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A6437]">
-              VIT MUMBAI • AI STUDENT DEVELOPMENT PLATFORM
+              VIT Mumbai • AI Student Development Platform
             </span>
           </motion.div>
 

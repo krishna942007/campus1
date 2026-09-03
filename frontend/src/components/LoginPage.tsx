@@ -85,7 +85,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     if (role === 'STUDENT') {
       setUser({
         _id: 'std_01',
-        name: rollNo === '101' ? 'Aarav Sharma' : 'Krishna Singh',
+        name: 'Aarav Sharma',
         email: email || (rollNo ? `${rollNo.toLowerCase()}@vit.edu.in` : '2023cse001@vit.edu.in'),
         role: 'STUDENT',
         department: 'Computer Engineering',

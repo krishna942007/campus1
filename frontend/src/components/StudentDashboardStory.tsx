@@ -141,10 +141,10 @@ export const StudentDashboardStory: React.FC = () => {
           <div className="space-y-2 max-w-2xl relative z-10">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#C99632]/20 border border-[#C99632]/40 text-[#E8C56B] text-[10px] font-mono font-bold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>SIGNATURE ACADEMIC INTELLIGENCE FEATURE</span>
+              <span>Signature Academic Intelligence Feature</span>
             </div>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-display">
-              WHAT IF? — FUTURE SIMULATOR
+              What If?: Future Simulator
             </h3>
             <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
               "See how your next decision could change your trajectory." Simulate possible academic, skill, and mentoring actions using your current student profile.
@@ -161,19 +161,19 @@ export const StudentDashboardStory: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Desktop App Window Mockup Frame - Dark Transparent Blue Glass */}
+        {/* Desktop App Window Mockup Frame - Light Champagne / Ivory Glass */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.97, y: 25 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="p-2 sm:p-2 bg-gradient-to-b from-[#1E293B]/80 to-[#0F172A]/90 rounded-[32px] sm:rounded-2xl border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] backdrop-blur-sm relative overflow-hidden"
+          className="p-2 sm:p-2 bg-[#F3EBDD]/90 sm:bg-[#EFE7D8]/80 rounded-[32px] sm:rounded-2xl border border-[#0C2238]/15 shadow-2xl shadow-[#0C2238]/10 backdrop-blur-md relative overflow-hidden"
         >
-          {/* Inner Application Container: Translucent Dark Blue Glass with Blur */}
-          <div className="bg-[#0C2340]/85 sm:bg-black/75 backdrop-blur-xl rounded-[24px] sm:rounded-xl border border-white/10 shadow-2xl overflow-hidden text-white">
+          {/* Inner Application Container: Translucent Light Warm Ivory Glass */}
+          <div className="bg-[#FAF7F0]/95 sm:bg-[#F7F4EE]/90 backdrop-blur-xl rounded-[24px] sm:rounded-xl border border-[#0C2238]/12 shadow-2xl overflow-hidden text-[#10253A]">
             
             {/* Desktop macOS Window Chrome Header */}
-            <div className="px-6 py-3.5 bg-[#07172A]/90 text-white flex items-center justify-between border-b border-white/10 backdrop-blur-md">
+            <div className="px-6 py-3.5 bg-[#0C2238] text-white flex items-center justify-between border-b border-white/10 backdrop-blur-md">
               <div className="flex items-center space-x-2">
                 <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-black/20 shadow-xs inline-block" />
                 <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-black/20 shadow-xs inline-block" />
@@ -195,19 +195,19 @@ export const StudentDashboardStory: React.FC = () => {
             <div className="p-6 sm:p-10 space-y-7">
               
               {/* Header Profile Titlebar + Live Profile Sync Indicator */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#0C2238]/10">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white/10 text-white flex items-center justify-center font-bold text-lg shadow-md border border-white/15">
-                    <User className="w-6 h-6 text-[#E8C56B]" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#0C2238]/08 text-[#0C2238] flex items-center justify-center font-bold text-lg shadow-sm border border-[#0C2238]/12">
+                    <User className="w-6 h-6 text-[#C99632]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-extrabold text-white font-display flex items-center space-x-3">
-                      <span>Krishna Singh</span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#C99632]/20 border border-[#C99632]/40 text-[#E8C56B] font-mono font-bold">
+                    <h3 className="text-xl font-extrabold text-[#10253A] font-display flex items-center space-x-3">
+                      <span>Aarav Sharma</span>
+                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#C99632]/15 border border-[#C99632]/35 text-[#0C2238] font-mono font-bold">
                         {state.careerGoal}
                       </span>
                     </h3>
-                    <span className="text-xs text-slate-300 font-extrabold tracking-wide">
+                    <span className="text-xs text-[#627083] font-semibold tracking-wide">
                       B.Tech Computer Engineering (Batch 2023-2027) • ID: 2023CSE001
                     </span>
                   </div>
@@ -215,109 +215,111 @@ export const StudentDashboardStory: React.FC = () => {
 
                 {/* Live Profile Sync Indicator */}
                 <div className="flex items-center space-x-3">
-                  <div className="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-mono font-bold flex items-center space-x-2">
+                  <div className="px-3.5 py-1.5 rounded-full bg-[#FFFCF7]/90 border border-[#0C2238]/12 text-xs font-mono font-bold flex items-center space-x-2 shadow-2xs">
                     {state.syncStatus === 'updating' ? (
                       <>
                         <RefreshCw className="w-3.5 h-3.5 text-[#C99632] animate-spin" />
-                        <span className="text-[#E8C56B]">● UPDATING PROFILE...</span>
+                        <span className="text-[#C99632]">● UPDATING PROFILE...</span>
                       </>
                     ) : state.syncStatus === 'updated' ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                        <span className="text-emerald-400">● PROFILE UPDATED</span>
+                        <Check className="w-3.5 h-3.5 text-[#159A72] animate-pulse" />
+                        <span className="text-[#159A72]">● PROFILE UPDATED</span>
                       </>
                     ) : (
                       <>
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
-                        <span className="text-emerald-400">● PROFILE SYNCED</span>
+                        <span className="w-2 h-2 rounded-full bg-[#159A72] animate-ping inline-block" />
+                        <span className="text-[#159A72]">● PROFILE SYNCED</span>
                       </>
                     )}
                   </div>
 
-                  <div className="px-3 py-1.5 rounded-full bg-white/10 text-[#E8C56B] font-extrabold text-[11px] border border-white/15 shadow-xs">
-                    RANK #4 IN DEPT
+                  <div className="px-3 py-1.5 rounded-full bg-[#0C2238] text-[#E8C56B] font-extrabold text-[11px] border border-[#0C2238]/20 shadow-xs">
+                    Rank #4 in Dept
                   </div>
                 </div>
               </div>
 
               {/* 1. LIVE TOP METRICS BAR */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 {/* Courses */}
-                <div className="p-4.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all space-y-1">
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">COURSES</span>
-                  <div className="text-2xl font-extrabold text-white font-display">0{state.courses.active} Active</div>
-                  <span className="text-[11px] text-emerald-400 font-medium block">All 6 Enrolled</span>
+                <div className="p-4 rounded-xl bg-[#FFFCF7]/90 backdrop-blur-md border border-[#0C2238]/10 hover:border-[#C99632]/40 transition-all flex flex-col justify-between space-y-2 shadow-sm shadow-[#0C2238]/05">
+                  <span className="text-[10px] font-extrabold text-[#627083] uppercase tracking-widest block font-sans">COURSES</span>
+                  <div className="text-2.5xl font-normal text-[#10253A] font-serif tracking-tight">
+                    0{state.courses.active} Active
+                  </div>
+                  <span className="text-xs text-[#159A72] font-extrabold block">All 6 Enrolled</span>
                 </div>
 
                 {/* Tasks */}
-                <div className="p-4.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all space-y-1">
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">TASKS</span>
-                  <div className="text-2xl font-extrabold text-[#E8C56B] font-display">
+                <div className="p-4 rounded-xl bg-[#FFFCF7]/90 backdrop-blur-md border border-[#0C2238]/10 hover:border-[#C99632]/40 transition-all flex flex-col justify-between space-y-2 shadow-sm shadow-[#0C2238]/05">
+                  <span className="text-[10px] font-extrabold text-[#627083] uppercase tracking-widest block font-sans">TASKS</span>
+                  <div className="text-2.5xl font-normal text-[#C99632] font-serif tracking-tight">
                     <AnimatedNumber value={state.tasks.pending} /> Pending
                   </div>
-                  <span className="text-[11px] text-slate-400 font-medium block">{state.tasks.completed} Completed so far</span>
+                  <span className="text-xs text-[#627083] font-medium block">{state.tasks.completed} Completed so far</span>
                 </div>
 
                 {/* Progress */}
-                <div className="p-4.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all space-y-2">
+                <div className="p-4 rounded-xl bg-[#FFFCF7]/90 backdrop-blur-md border border-[#0C2238]/10 hover:border-[#C99632]/40 transition-all flex flex-col justify-between space-y-2 shadow-sm shadow-[#0C2238]/05">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">PROGRESS</span>
-                    <span className="text-xs font-extrabold text-emerald-400">
+                    <span className="text-[10px] font-extrabold text-[#627083] uppercase tracking-widest font-sans">PROGRESS</span>
+                    <span className="text-xs font-extrabold text-[#159A72]">
                       <AnimatedNumber value={state.progress} suffix="%" />
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-[#0C2238]/10 overflow-hidden my-1">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${state.progress}%` }}
                       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                      className="h-full rounded-full bg-gradient-to-r from-[#244F7D] via-[#C99632] to-emerald-400"
+                      className="h-full rounded-full bg-gradient-to-r from-[#244F7D] via-[#C99632] to-[#159A72]"
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 font-medium block">Roadmap Velocity: High</span>
+                  <span className="text-[10px] text-[#627083] font-medium block">Roadmap Velocity: High</span>
                 </div>
 
                 {/* Opportunities */}
-                <div className="p-4.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between">
+                <div className="p-4 rounded-xl bg-[#FFFCF7]/90 backdrop-blur-md border border-[#0C2238]/10 hover:border-[#C99632]/40 transition-all flex flex-col justify-between space-y-2 shadow-sm shadow-[#0C2238]/05">
                   <div>
-                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">OPPORTUNITIES</span>
-                    <div className="text-2xl font-extrabold text-white font-display">
+                    <span className="text-[10px] font-extrabold text-[#627083] uppercase tracking-widest block font-sans">OPPORTUNITIES</span>
+                    <div className="text-2.5xl font-normal text-[#10253A] font-serif tracking-tight">
                       0<AnimatedNumber value={state.opportunities} /> Open
                     </div>
                   </div>
                   <button
                     onClick={() => studentStore.applyOpportunity()}
-                    className="mt-2 w-full py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-bold text-[#E8C56B] transition-all cursor-pointer flex items-center justify-center space-x-1"
+                    className="w-full py-1.5 px-3 rounded-full bg-[#0C2238] hover:bg-[#123B63] border border-[#0C2238]/15 text-[11px] font-bold text-white transition-all cursor-pointer flex items-center justify-center space-x-1.5 shadow-xs"
                   >
                     <span>Apply / Save</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#E8C56B]" />
                   </button>
                 </div>
 
               </div>
 
               {/* Active Question Highlight Display */}
-              <div className="p-6 sm:p-7 bg-white/5 backdrop-blur-md text-white border border-white/10 space-y-3 rounded-2xl shadow-xl relative overflow-hidden">
+              <div className="p-6 sm:p-7 bg-[#FFFCF7]/95 backdrop-blur-md text-[#10253A] border border-[#0C2238]/12 space-y-3 rounded-2xl shadow-md relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#C99632]/10 rounded-full blur-2xl pointer-events-none" />
                 <div className="flex items-center justify-between text-xs font-extrabold relative z-10">
-                  <span className="text-[#E8C56B] tracking-wider uppercase flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-[#E8C56B]" />
-                    <span>ACTIVE INTELLIGENCE QUERY</span>
+                  <span className="text-[#C99632] tracking-wider uppercase flex items-center space-x-2">
+                    <Sparkles className="w-4 h-4 text-[#C99632]" />
+                    <span>Active Intelligence Query</span>
                   </span>
-                  <span className="text-emerald-400 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-500/30 text-[11px] font-extrabold">
+                  <span className="text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 text-[11px] font-extrabold">
                     {studentQuestions[activeQuestion].status}
                   </span>
                 </div>
-                <h4 className="text-lg sm:text-xl font-extrabold text-white font-display leading-tight relative z-10">
+                <h4 className="text-lg sm:text-xl font-extrabold text-[#10253A] font-display leading-tight relative z-10">
                   "{studentQuestions[activeQuestion].q}"
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-200 font-normal leading-relaxed relative z-10">
+                <p className="text-xs sm:text-sm text-[#627083] font-normal leading-relaxed relative z-10">
                   {studentQuestions[activeQuestion].answer}
                 </p>
-                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-semibold relative z-10">
-                  <span className="text-[#E8C56B] font-extrabold uppercase tracking-wider text-[10px]">SIGNAL METRIC:</span>
-                  <span className="font-extrabold text-white bg-white/10 px-3 py-1 rounded-lg border border-white/15 font-mono text-[11px]">
+                <div className="pt-2 border-t border-[#0C2238]/08 flex items-center justify-between text-xs font-semibold relative z-10">
+                  <span className="text-[#627083] font-extrabold uppercase tracking-wider text-[10px]">Recommended Next Best Action:</span>
+                  <span className="font-extrabold text-[#0C2238] bg-[#EFE7D8] px-3 py-1 rounded-lg border border-[#0C2238]/10 font-mono text-[11px]">
                     {studentQuestions[activeQuestion].metric}
                   </span>
                 </div>
@@ -327,25 +329,25 @@ export const StudentDashboardStory: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                 
                 {/* Today's Priority Card (7 cols) */}
-                <div className="lg:col-span-7 p-6 rounded-2xl bg-gradient-to-br from-[#0C2238]/90 to-[#123B63]/80 border border-[#C99632]/40 shadow-xl space-y-4 relative overflow-hidden">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="lg:col-span-7 p-6 rounded-2xl bg-[#FFFCF7]/95 backdrop-blur-md border border-[#0C2238]/12 shadow-md space-y-4 relative overflow-hidden">
+                  <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-3">
                     <div className="flex items-center space-x-2">
-                      <Zap className="w-4 h-4 text-[#E8C56B] fill-[#E8C56B]" />
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#E8C56B]">
-                        TODAY'S PRIORITY
+                      <Zap className="w-4 h-4 text-[#C99632] fill-[#C99632]" />
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#C99632]">
+                        Skill Roadmap & Gap Analysis
                       </span>
                     </div>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#C99632]/20 text-[#E8C56B] border border-[#C99632]/40 text-[10px] font-mono font-bold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#EFE7D8] text-[#0C2238] border border-[#C99632]/30 text-[10px] font-mono font-bold">
                       {state.todayPriority.impact}
                     </span>
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-extrabold text-white font-display">
+                    <h3 className="text-xl font-extrabold text-[#10253A] font-display">
                       {state.todayPriority.title}
                     </h3>
-                    <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                      <strong className="text-[#E8C56B]">Why this matters:</strong> {state.todayPriority.reason}
+                    <p className="text-xs text-[#627083] mt-1 leading-relaxed">
+                      <strong className="text-[#C99632]">Why this matters:</strong> {state.todayPriority.reason}
                     </p>
                   </div>
 
@@ -353,17 +355,17 @@ export const StudentDashboardStory: React.FC = () => {
                     {state.todayPriority.status === 'pending' && (
                       <button
                         onClick={() => studentStore.startPriorityTask()}
-                        className="px-5 py-2.5 rounded-xl bg-[#C99632] hover:bg-[#b08226] text-[#0C2238] font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center space-x-1.5"
+                        className="px-5 py-2.5 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center space-x-1.5"
                       >
                         <span>Start Task</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#E8C56B]" />
                       </button>
                     )}
 
                     {state.todayPriority.status === 'active' && (
                       <button
                         onClick={() => studentStore.completePriorityTask()}
-                        className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center space-x-1.5 animate-pulse"
+                        className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center space-x-1.5 animate-pulse"
                       >
                         <span>Complete Task</span>
                         <Check className="w-3.5 h-3.5" />
@@ -371,46 +373,46 @@ export const StudentDashboardStory: React.FC = () => {
                     )}
 
                     {state.todayPriority.status === 'completed' && (
-                      <div className="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold text-xs flex items-center space-x-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <div className="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-extrabold text-xs flex items-center space-x-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                         <span>✓ Completed</span>
                       </div>
                     )}
 
                     <button
                       onClick={() => setShowWhyModal(true)}
-                      className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white font-bold text-xs transition-all cursor-pointer flex items-center space-x-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-[#EFE7D8] hover:bg-[#E5DAC6] border border-[#0C2238]/12 text-[#0C2238] font-bold text-xs transition-all cursor-pointer flex items-center space-x-1.5"
                     >
-                      <HelpCircle className="w-3.5 h-3.5 text-[#E8C56B]" />
+                      <HelpCircle className="w-3.5 h-3.5 text-[#C99632]" />
                       <span>Why?</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Live AI Recommendation Card (5 cols) */}
-                <div className="lg:col-span-5 p-6 rounded-2xl bg-white/5 border border-white/10 space-y-4 flex flex-col justify-between">
+                <div className="lg:col-span-5 p-6 rounded-2xl bg-[#FFFCF7]/95 backdrop-blur-md border border-[#0C2238]/12 shadow-md space-y-4 flex flex-col justify-between">
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-3">
                       <div className="flex items-center space-x-2">
-                        <Sparkles className="w-4 h-4 text-[#E8C56B]" />
-                        <span className="text-xs font-extrabold uppercase tracking-wider text-[#E8C56B]">
-                          AI RECOMMENDATION
+                        <Sparkles className="w-4 h-4 text-[#C99632]" />
+                        <span className="text-xs font-extrabold uppercase tracking-wider text-[#C99632]">
+                          Academic Compliance & Attendance Radar
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono text-emerald-400 font-bold">
+                      <span className="text-[10px] font-mono text-[#159A72] font-bold">
                         {state.recommendations[0]?.impact || '+4% readiness'}
                       </span>
                     </div>
 
-                    <h4 className="text-base font-extrabold text-white font-display">
+                    <h4 className="text-base font-extrabold text-[#10253A] font-display">
                       {state.recommendations[0]?.topic || 'Focus on PyTorch & Deep Learning'}
                     </h4>
 
-                    <div className="text-[11px] text-slate-300 space-y-1">
-                      <span className="text-slate-400 font-medium block">Based on:</span>
+                    <div className="text-[11px] text-[#627083] space-y-1">
+                      <span className="text-[#627083] font-medium block">Based on:</span>
                       <div className="flex flex-wrap gap-1.5">
                         {(state.recommendations[0]?.basedOn || ['skill gaps', 'career goal']).map((b, i) => (
-                          <span key={i} className="px-2 py-0.5 rounded-md bg-white/10 border border-white/10 text-[10px] text-slate-200">
+                          <span key={i} className="px-2 py-0.5 rounded-md bg-[#EFE7D8] border border-[#0C2238]/10 text-[10px] text-[#0C2238] font-semibold">
                             {b}
                           </span>
                         ))}
@@ -427,13 +429,13 @@ export const StudentDashboardStory: React.FC = () => {
                     disabled={state.recommendations[0]?.added}
                     className={`w-full py-2.5 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center space-x-2 cursor-pointer ${
                       state.recommendations[0]?.added
-                        ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 cursor-not-allowed'
-                        : 'bg-white/10 hover:bg-white/20 border border-white/15 text-white'
+                        ? 'bg-emerald-50 border border-emerald-200 text-emerald-800 cursor-not-allowed'
+                        : 'bg-[#0C2238] hover:bg-[#123B63] border border-[#0C2238]/15 text-white shadow-xs'
                     }`}
                   >
                     {state.recommendations[0]?.added ? (
                       <>
-                        <Check className="w-4 h-4 text-emerald-400" />
+                        <Check className="w-4 h-4 text-emerald-600" />
                         <span>✓ Added to Roadmap</span>
                       </>
                     ) : (
@@ -451,12 +453,12 @@ export const StudentDashboardStory: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 pt-1">
                 
                 {/* Your Progress Interactive Stage Panel (7 cols) */}
-                <div className="lg:col-span-7 p-6 rounded-2xl bg-white/5 border border-white/10 space-y-5">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#E8C56B]">
-                      YOUR PROGRESS STAGES
+                <div className="lg:col-span-7 p-6 rounded-2xl bg-[#FFFCF7]/95 backdrop-blur-md border border-[#0C2238]/12 shadow-md space-y-5">
+                  <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-3">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#C99632]">
+                      Grounded Rag Knowledge Base
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">Click stages to inspect</span>
+                    <span className="text-[10px] font-mono text-[#627083]">Click stages to inspect</span>
                   </div>
 
                   {/* Stage Tabs */}
@@ -467,8 +469,8 @@ export const StudentDashboardStory: React.FC = () => {
                         onClick={() => studentStore.setProgressStage(stg)}
                         className={`py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
                           state.activeProgressStage === stg
-                            ? 'bg-[#C99632] text-[#0C2238] border-[#C99632] shadow-md'
-                            : 'bg-white/5 hover:bg-white/10 text-slate-300 border-white/10'
+                            ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-md'
+                            : 'bg-[#EFE7D8]/60 hover:bg-[#EFE7D8] text-[#10253A] border-[#0C2238]/10'
                         }`}
                       >
                         {stg}
@@ -484,16 +486,16 @@ export const StudentDashboardStory: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.25 }}
-                      className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3"
+                      className="p-4 rounded-xl bg-[#FAF7F0] border border-[#0C2238]/08 space-y-3"
                     >
                       {state.activeProgressStage === 'LEARN' && (
                         <div className="space-y-2 text-xs">
-                          <div className="flex justify-between items-center text-white font-extrabold">
+                          <div className="flex justify-between items-center text-[#10253A] font-extrabold">
                             <span>Deep Learning Specialization (Module 3)</span>
-                            <span className="text-[#E8C56B]">75% Complete</span>
+                            <span className="text-[#C99632]">75% Complete</span>
                           </div>
-                          <p className="text-slate-300 text-[11px]">Next Lesson: Optimization Algorithms & Adam Optimizer</p>
-                          <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                          <p className="text-[#627083] text-[11px]">Next Lesson: Optimization Algorithms &amp; Adam Optimizer</p>
+                          <div className="w-full h-1.5 rounded-full bg-[#0C2238]/10 overflow-hidden">
                             <div className="w-[75%] h-full bg-[#C99632] rounded-full" />
                           </div>
                         </div>
@@ -501,39 +503,39 @@ export const StudentDashboardStory: React.FC = () => {
 
                       {state.activeProgressStage === 'PRACTICE' && (
                         <div className="space-y-2 text-xs">
-                          <div className="flex justify-between items-center text-white font-extrabold">
-                            <span>Technical & DSA Practice Track</span>
-                            <span className="text-emerald-400">82% Solved</span>
+                          <div className="flex justify-between items-center text-[#10253A] font-extrabold">
+                            <span>Technical &amp; DSA Practice Track</span>
+                            <span className="text-[#159A72]">82% Solved</span>
                           </div>
-                          <p className="text-slate-300 text-[11px]">Active Set: Graphs, Dynamic Programming & PyTorch Tensors</p>
-                          <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
-                            <div className="w-[82%] h-full bg-emerald-400 rounded-full" />
+                          <p className="text-[#627083] text-[11px]">Active Set: Graphs, Dynamic Programming &amp; PyTorch Tensors</p>
+                          <div className="w-full h-1.5 rounded-full bg-[#0C2238]/10 overflow-hidden">
+                            <div className="w-[82%] h-full bg-[#159A72] rounded-full" />
                           </div>
                         </div>
                       )}
 
                       {state.activeProgressStage === 'BUILD' && (
                         <div className="space-y-2 text-xs">
-                          <div className="flex justify-between items-center text-white font-extrabold">
-                            <span>Capstone & GitHub Portfolio</span>
-                            <span className="text-sky-400">Phase 2 Validated</span>
+                          <div className="flex justify-between items-center text-[#10253A] font-extrabold">
+                            <span>Capstone &amp; GitHub Portfolio</span>
+                            <span className="text-[#244F7D]">Phase 2 Validated</span>
                           </div>
-                          <p className="text-slate-300 text-[11px]">Active Repo: Autonomous Vision Transformer & RAG Copilot</p>
-                          <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
-                            <div className="w-[65%] h-full bg-sky-400 rounded-full" />
+                          <p className="text-[#627083] text-[11px]">Active Repo: Autonomous Vision Transformer &amp; RAG Copilot</p>
+                          <div className="w-full h-1.5 rounded-full bg-[#0C2238]/10 overflow-hidden">
+                            <div className="w-[65%] h-full bg-[#244F7D] rounded-full" />
                           </div>
                         </div>
                       )}
 
                       {state.activeProgressStage === 'GROW' && (
                         <div className="space-y-2 text-xs">
-                          <div className="flex justify-between items-center text-white font-extrabold">
-                            <span>Career Readiness & Mentorship</span>
-                            <span className="text-purple-400">IEEE Paper Track</span>
+                          <div className="flex justify-between items-center text-[#10253A] font-extrabold">
+                            <span>Career Readiness &amp; Mentorship</span>
+                            <span className="text-[#7A6437]">IEEE Paper Track</span>
                           </div>
-                          <p className="text-slate-300 text-[11px]">Mentor Review logged by Prof. S. Kulkarni (Approved)</p>
-                          <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
-                            <div className="w-[90%] h-full bg-purple-400 rounded-full" />
+                          <p className="text-[#627083] text-[11px]">Mentor Review logged by Prof. S. Kulkarni (Approved)</p>
+                          <div className="w-full h-1.5 rounded-full bg-[#0C2238]/10 overflow-hidden">
+                            <div className="w-[90%] h-full bg-[#7A6437] rounded-full" />
                           </div>
                         </div>
                       )}
@@ -542,12 +544,12 @@ export const StudentDashboardStory: React.FC = () => {
                 </div>
 
                 {/* 5. RECENT ACTIVITY FEED (5 cols) */}
-                <div className="lg:col-span-5 p-6 rounded-2xl bg-white/5 border border-white/10 space-y-4">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#E8C56B]">
+                <div className="lg:col-span-5 p-6 rounded-2xl bg-[#FFFCF7]/95 backdrop-blur-md border border-[#0C2238]/12 shadow-md space-y-4">
+                  <div className="flex items-center justify-between border-b border-[#0C2238]/08 pb-3">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#C99632]">
                       RECENT ACTIVITY
                     </span>
-                    <span className="text-[10px] font-mono text-emerald-400">Real-time Stream</span>
+                    <span className="text-[10px] font-mono text-[#159A72] font-bold">Real-time Stream</span>
                   </div>
 
                   <div className="space-y-2.5 max-h-[170px] overflow-y-auto pr-1">
@@ -557,13 +559,13 @@ export const StudentDashboardStory: React.FC = () => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs flex items-center justify-between"
+                        className="p-3 rounded-xl bg-[#FAF7F0] border border-[#0C2238]/08 text-xs flex items-center justify-between"
                       >
                         <div className="flex items-center space-x-2.5 min-w-0 pr-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#E8C56B] shrink-0" />
-                          <span className="font-semibold text-slate-200 truncate">{act.text}</span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#C99632] shrink-0" />
+                          <span className="font-semibold text-[#10253A] truncate">{act.text}</span>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-mono whitespace-nowrap shrink-0">{act.timestamp}</span>
+                        <span className="text-[10px] text-[#627083] font-mono whitespace-nowrap shrink-0">{act.timestamp}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -634,7 +636,7 @@ export const StudentDashboardStory: React.FC = () => {
 };
 
 const PlusIcon = () => (
-  <svg className="w-4 h-4 text-[#E8C56B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
   </svg>
 );

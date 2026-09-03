@@ -126,7 +126,6 @@ export const CleanNavbar: React.FC<CleanNavbarProps> = ({ onSelectRole, activeVi
           </div>
 
           {[
-            { label: 'Digital Twin', href: '#digital-twin' },
             { label: 'AI Assistant', href: '#ai-assistant' },
             { label: 'Roadmap', href: '#roadmap' },
             { label: 'Mentoring', href: '#mentoring' },

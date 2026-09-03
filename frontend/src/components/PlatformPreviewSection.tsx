@@ -142,15 +142,15 @@ export const PlatformPreviewSection: React.FC = () => {
                   VIT
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white leading-none font-display">VIT MUMBAI</h4>
-                  <p className="text-[10px] text-white/60 font-mono mt-0.5">AUTONOMOUS ACADEMIC ECOSYSTEM</p>
+                  <h4 className="text-xs font-bold text-white leading-none font-display">VIT Mumbai</h4>
+                  <p className="text-[10px] text-white/60 font-mono mt-0.5">Autonomous Academic Ecosystem</p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-3">
                 <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span>ERP SYNC ACTIVE</span>
+                  <span>ERP Sync Active</span>
                 </div>
                 <div className="w-2 h-2 rounded-full bg-[#C99632]" />
               </div>
@@ -179,10 +179,10 @@ export const PlatformPreviewSection: React.FC = () => {
                         <div>
                           <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                             <span className="text-[10px] font-bold text-[#C99632] uppercase tracking-wider font-mono">
-                              STUDENT DOSSIER
+                              Student Dossier
                             </span>
                             <span className="px-2 py-0.5 rounded-md bg-white/10 text-[9px] font-bold text-white/90">
-                              SEM IV
+                              Sem IV
                             </span>
                           </div>
 
@@ -220,7 +220,7 @@ export const PlatformPreviewSection: React.FC = () => {
                             </h4>
                           </div>
                           <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#159A72] border border-emerald-200 text-[10px] font-extrabold">
-                            75% COMPLIANT
+                            75% Compliant
                           </span>
                         </div>
 
@@ -251,10 +251,10 @@ export const PlatformPreviewSection: React.FC = () => {
                       <div className="md:col-span-6 bg-[#FFFCF7] p-4 rounded-2xl border border-[#0C2238]/12 shadow-sm space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] font-extrabold text-[#C99632] uppercase tracking-wider font-mono">
-                            AI MENTOR MATCH ENGINE
+                            AI Mentor Match Engine
                           </span>
                           <span className="px-2 py-0.5 rounded-md bg-[#0C2238] text-white text-[9px] font-bold">
-                            96% MATCH
+                            96% Match
                           </span>
                         </div>
 
@@ -280,7 +280,7 @@ export const PlatformPreviewSection: React.FC = () => {
                       <div className="md:col-span-6 bg-[#FFFCF7] p-4 rounded-2xl border border-[#0C2238]/12 shadow-sm space-y-3 flex flex-col justify-between">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] font-extrabold text-[#244F7D] uppercase tracking-wider font-mono">
-                            RECOMMENDED COURSEWORK
+                            Recommended Coursework
                           </span>
                           <span className="px-2 py-0.5 rounded-full bg-[#DCE8F4] text-[#244F7D] text-[9px] font-bold">
                             STANFORD / MIT
@@ -379,7 +379,7 @@ export const PlatformPreviewSection: React.FC = () => {
                     <div className="bg-[#0C2238] text-white p-4 rounded-2xl border border-white/10 shadow-lg flex items-center justify-between">
                       <div>
                         <span className="text-[10px] font-bold text-[#C99632] uppercase tracking-wider font-mono block">
-                          SYSTEM TELEMETRY &amp; GOVERNANCE
+                          System Telemetry &amp; Governance
                         </span>
                         <h4 className="text-sm font-bold text-white font-display">VIT Institutional Admin Suite</h4>
                       </div>

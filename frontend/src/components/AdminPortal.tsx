@@ -131,7 +131,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
   const [userSearch, setUserSearch] = useState('');
   const [userRoleFilter, setUserRoleFilter] = useState('All');
   const [usersList, setUsersList] = useState([
-    { id: 1, name: 'Krishna Singh', role: 'Student', dept: 'Computer Engineering', status: 'Active', lastActive: 'Today', email: 'krishna.s@vit.edu.in' },
+    { id: 1, name: 'Aarav Sharma', role: 'Student', dept: 'Computer Engineering', status: 'Active', lastActive: 'Today', email: 'aarav.s@vit.edu.in' },
     { id: 2, name: 'Prof. S. Kulkarni', role: 'Faculty / Mentor', dept: 'AI & Data Science', status: 'Active', lastActive: 'Today', email: 's.kulkarni@vit.edu.in' },
     { id: 3, name: 'Dr. R. Mehta', role: 'Department Admin', dept: 'Computer Engineering', status: 'Active', lastActive: 'Yesterday', email: 'r.mehta@vit.edu.in' },
     { id: 4, name: 'Aarav Sharma', role: 'Student', dept: 'Computer Engineering', status: 'Attention', lastActive: '12 days ago', email: 'aarav.s@vit.edu.in' },

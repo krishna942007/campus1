@@ -168,7 +168,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
   const [showScheduleMeetingModal, setShowScheduleMeetingModal] = useState(false);
   const [newMeeting, setNewMeeting] = useState({
     studentId: '2023CSE001',
-    studentName: 'Krishna Singh',
+    studentName: 'Aarav Sharma',
     date: 'Aug 22, 2026 at 4:00 PM IST',
     title: '1-on-1 Placement & Capstone Review'
   });
@@ -265,7 +265,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
     e.preventDefault();
     if (!selectedCourseToAssign) return;
 
-    const studentObj = allMentees.find(m => m.roll === assignStudentId) || { name: 'Krishna Singh', roll: '2023CSE001' };
+    const studentObj = allMentees.find(m => m.roll === assignStudentId) || { name: 'Aarav Sharma', roll: '2023CSE001' };
 
     const newAssignedCourse: AssignedOnlineCourse = {
       id: `oc-assigned-${Date.now()}`,
@@ -376,7 +376,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
     }
   ];
 
-  // Dynamically include accepted student Krishna Singh if request status is ACCEPTED
+  // Dynamically include accepted student Aarav Sharma if request status is ACCEPTED
   const acceptedRequests = storeState.mentorRequests.filter((r: MentorRequest) => r.status === 'ACCEPTED');
   const dynamicMentees = acceptedRequests.map((r: MentorRequest) => ({
     id: r.studentId,
@@ -391,7 +391,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
     reason: `Assigned Mentee • Matches ${r.field} track`,
     lastMeeting: 'Aug 10, 2026',
     devProgress: '72%',
-    email: 'krishna.s@vit.edu.in',
+    email: 'aarav.s@vit.edu.in',
     goal: r.goal,
     skills: ['Python', 'React', 'TypeScript', 'pgvector RAG', 'PyTorch'],
     projects: ['Full-Stack RAG Vector Search Platform', 'CNN Medical Classifier']
@@ -613,8 +613,8 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
     setTimeout(() => {
       let reply = 'I have analyzed your assigned mentee dataset. ';
       const lower = query.toLowerCase();
-      if (lower.includes('krishna') || lower.includes('request')) {
-        reply += 'Krishna Singh (2023CSE001) has an incoming request with 96% match score based on AI/ML goals & CS503 curriculum.';
+      if (lower.includes('aarav') || lower.includes('request')) {
+        reply += 'Aarav Sharma (2023CSE001) has an incoming request with 96% match score based on AI/ML goals & CS503 curriculum.';
       } else if (lower.includes('attention') || lower.includes('risk') || lower.includes('aarav')) {
         reply += 'Aarav Sharma (2023CSE042) has 68% attendance and a CGPA drop to 5.80. Attendance in Discrete Math is critical.';
       } else {
@@ -1157,7 +1157,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
                     </div>
 
                     <p className="text-xs text-slate-200 leading-relaxed bg-white/5 p-3.5 rounded-2xl border border-white/10">
-                      "Prof. Kulkarni, Krishna Singh has a 96% match score and requested mentorship for AI/ML and PostgreSQL RAG capstone guidance. Accepting this request directly supports CS503 curriculum goals."
+                      "Prof. Kulkarni, Aarav Sharma has a 96% match score and requested mentorship for AI/ML and PostgreSQL RAG capstone guidance. Accepting this request directly supports CS503 curriculum goals."
                     </p>
 
                     <button
