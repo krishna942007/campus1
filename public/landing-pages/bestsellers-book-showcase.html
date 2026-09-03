@@ -78,9 +78,35 @@
       min-height: 100svh;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 25%, rgba(224, 208, 180, .6), transparent 64%),
-        radial-gradient(circle at 50% 85%, rgba(206, 186, 154, .45), transparent 50%),
-        linear-gradient(180deg, #FAF6EE 0%, #F4EBD9 42%, #E8DEC8 100%);
+        radial-gradient(circle at 50% 38%, #FAF6EE 0%, #F4EBD9 55%, #ECE2CC 100%);
+    }
+
+    .parchment-texture-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.055;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.35 0 0 0 0.52  0 0.3 0 0 0.46  0 0 0.25 0 0.4  0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
+    }
+
+    .architectural-linework-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.045;
+    }
+
+    .parchment-center-clearing {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 45%, rgba(250, 246, 238, 0.92) 0%, rgba(250, 246, 238, 0.5) 45%, transparent 85%);
     }
 
     .stage::after {
@@ -1372,6 +1398,106 @@
 </head>
 <body data-mode="gallery" data-menu="closed">
   <main class="stage" aria-label="Interactive AI coding field library">
+    <!-- Fine Parchment Paper Grain Texture Layer -->
+    <div class="parchment-texture-overlay"></div>
+
+    <!-- Faint Architectural & Academic Vector Linework (3-5% Opacity) -->
+    <svg class="architectural-linework-layer" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#6E5B42" stroke-linecap="round" stroke-linejoin="round">
+      
+      <!-- Top-Left Corner: Architectural Compass & Geometric Concentric Arcs -->
+      <g opacity="0.95">
+        <circle cx="100" cy="100" r="180" stroke-width="0.8" stroke-dasharray="3 6" />
+        <circle cx="100" cy="100" r="320" stroke-width="0.6" />
+        <circle cx="100" cy="100" r="500" stroke-width="0.7" stroke-dasharray="8 4 2 4" />
+        <circle cx="100" cy="100" r="750" stroke-width="0.5" />
+        <circle cx="100" cy="100" r="1050" stroke-width="0.4" stroke-dasharray="4 8" />
+
+        <line x1="100" y1="100" x2="950" y2="330" stroke-width="0.5" stroke-dasharray="2 4" />
+        <line x1="100" y1="100" x2="700" y2="700" stroke-width="0.5" />
+        <line x1="100" y1="100" x2="330" y2="950" stroke-width="0.5" stroke-dasharray="2 4" />
+
+        <!-- Top Margin Measurement Ticks -->
+        <line x1="200" y1="30" x2="200" y2="45" stroke-width="0.8" />
+        <line x1="250" y1="32" x2="250" y2="40" stroke-width="0.5" />
+        <line x1="300" y1="30" x2="300" y2="45" stroke-width="0.8" />
+        <line x1="350" y1="32" x2="350" y2="40" stroke-width="0.5" />
+        <line x1="400" y1="30" x2="400" y2="45" stroke-width="0.8" />
+        <line x1="450" y1="32" x2="450" y2="40" stroke-width="0.5" />
+        <line x1="500" y1="30" x2="500" y2="45" stroke-width="0.8" />
+        <line x1="200" y1="37" x2="500" y2="37" stroke-width="0.5" />
+
+        <circle cx="60" cy="60" r="12" stroke-width="0.6" />
+        <line x1="40" y1="60" x2="80" y2="60" stroke-width="0.6" />
+        <line x1="60" y1="40" x2="60" y2="80" stroke-width="0.6" />
+
+        <!-- Faint Classical Arch Contour -->
+        <path d="M 40 450 L 40 260 Q 40 120 180 120 L 320 120" stroke-width="0.6" />
+        <path d="M 55 450 L 55 268 Q 55 135 188 135 L 320 135" stroke-width="0.4" stroke-dasharray="3 3" />
+      </g>
+
+      <!-- Top-Right Corner: Academic Golden Ratio & Scientific Grid -->
+      <g opacity="0.95">
+        <circle cx="1820" cy="100" r="220" stroke-width="0.7" />
+        <circle cx="1820" cy="100" r="400" stroke-width="0.5" stroke-dasharray="6 6" />
+        <circle cx="1820" cy="100" r="680" stroke-width="0.6" />
+        <circle cx="1820" cy="100" r="980" stroke-width="0.4" stroke-dasharray="2 4" />
+
+        <line x1="1820" y1="100" x2="1000" y2="320" stroke-width="0.5" stroke-dasharray="4 4" />
+        <line x1="1820" y1="100" x2="1200" y2="720" stroke-width="0.5" />
+        <line x1="1820" y1="100" x2="1520" y2="980" stroke-width="0.5" stroke-dasharray="4 4" />
+
+        <!-- Right Margin Measurement Scale Ticks -->
+        <line x1="1880" y1="200" x2="1895" y2="200" stroke-width="0.8" />
+        <line x1="1882" y1="250" x2="1890" y2="250" stroke-width="0.5" />
+        <line x1="1880" y1="300" x2="1895" y2="300" stroke-width="0.8" />
+        <line x1="1882" y1="350" x2="1890" y2="350" stroke-width="0.5" />
+        <line x1="1880" y1="400" x2="1895" y2="400" stroke-width="0.8" />
+        <line x1="1887" y1="200" x2="1887" y2="400" stroke-width="0.5" />
+
+        <circle cx="1860" cy="60" r="12" stroke-width="0.6" />
+        <line x1="1840" y1="60" x2="1880" y2="60" stroke-width="0.6" />
+        <line x1="1860" y1="40" x2="1860" y2="80" stroke-width="0.6" />
+      </g>
+
+      <!-- Bottom-Left Corner: Architectural Column Fluting & Datum Grid -->
+      <g opacity="0.95">
+        <circle cx="100" cy="980" r="200" stroke-width="0.7" stroke-dasharray="5 5" />
+        <circle cx="100" cy="980" r="420" stroke-width="0.5" />
+        <circle cx="100" cy="980" r="700" stroke-width="0.6" stroke-dasharray="8 4" />
+
+        <!-- Faint Classical Column Fluting Lines -->
+        <line x1="60" y1="620" x2="60" y2="1020" stroke-width="0.5" />
+        <line x1="75" y1="620" x2="75" y2="1020" stroke-width="0.4" stroke-dasharray="4 4" />
+        <line x1="90" y1="620" x2="90" y2="1020" stroke-width="0.5" />
+        <line x1="105" y1="620" x2="105" y2="1020" stroke-width="0.4" stroke-dasharray="4 4" />
+        <line x1="120" y1="620" x2="120" y2="1020" stroke-width="0.5" />
+
+        <line x1="40" y1="920" x2="450" y2="920" stroke-width="0.5" />
+        <line x1="40" y1="970" x2="450" y2="970" stroke-width="0.5" stroke-dasharray="2 4" />
+
+        <circle cx="60" cy="1020" r="12" stroke-width="0.6" />
+        <line x1="40" y1="1020" x2="80" y2="1020" stroke-width="0.6" />
+        <line x1="60" y1="1000" x2="60" y2="1040" stroke-width="0.6" />
+      </g>
+
+      <!-- Bottom-Right Corner: Astrolabe & Radial Celestial Diagram -->
+      <g opacity="0.95">
+        <circle cx="1820" cy="980" r="180" stroke-width="0.8" />
+        <circle cx="1820" cy="980" r="340" stroke-width="0.6" stroke-dasharray="6 3" />
+        <circle cx="1820" cy="980" r="560" stroke-width="0.5" />
+        <circle cx="1820" cy="980" r="820" stroke-width="0.4" stroke-dasharray="4 8" />
+
+        <line x1="1820" y1="980" x2="950" y2="780" stroke-width="0.5" stroke-dasharray="3 3" />
+        <line x1="1820" y1="980" x2="1200" y2="380" stroke-width="0.5" />
+
+        <circle cx="1860" cy="1020" r="12" stroke-width="0.6" />
+        <line x1="1840" y1="1020" x2="1880" y2="1020" stroke-width="0.6" />
+        <line x1="1860" y1="1000" x2="1860" y2="1040" stroke-width="0.6" />
+      </g>
+    </svg>
+
+    <!-- Central Area Soft Clearing Mask -->
+    <div class="parchment-center-clearing"></div>
     <header class="topbar">
       <a class="brand" href="#" aria-label="Campus1 home">Campus1</a>
       <div class="nav-actions">
