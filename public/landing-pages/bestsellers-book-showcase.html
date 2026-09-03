@@ -640,18 +640,17 @@
       position: relative;
       width: 100%;
       padding: 42px 36px 32px;
-      background: radial-gradient(ellipse at 50% 20%, rgba(46, 38, 28, 0.96) 0%, rgba(20, 17, 13, 0.98) 100%);
-      border: 1px solid rgba(212, 185, 142, 0.38);
+      background: rgba(15, 23, 42, 0.85); /* Dark Blue Background */
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.65),
-        0 4px 16px rgba(0, 0, 0, 0.4),
-        inset 0 0 0 1px rgba(212, 185, 142, 0.12),
-        inset 0 1px 20px rgba(195, 164, 123, 0.08);
-      color: #dfd1be;
+        0 24px 60px rgba(0, 0, 0, 0.4),
+        0 20px 25px -5px rgba(15, 23, 42, 0.2);
+      color: #f8fafc;
       text-align: center;
       user-select: none;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     /* Corner Accents */
@@ -662,7 +661,7 @@
       width: 24px;
       height: 24px;
       pointer-events: none;
-      border-color: rgba(212, 185, 142, 0.55);
+      border-color: rgba(255, 255, 255, 0.25);
       border-style: solid;
     }
     .vintage-login-card::before {
@@ -690,7 +689,7 @@
       position: absolute;
       width: 24px;
       height: 24px;
-      border-color: rgba(212, 185, 142, 0.55);
+      border-color: rgba(255, 255, 255, 0.25);
       border-style: solid;
     }
     .card-inner-corners::before {
@@ -706,23 +705,10 @@
       border-bottom-right-radius: 12px;
     }
 
-    /* Top Crest Flourish */
-    .vintage-crest {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .crest-svg {
-      width: 110px;
-      height: 38px;
-      color: #c9a674;
-    }
-
     /* Title & Subtitle */
     .vintage-title {
       margin: 2px 0 4px;
-      color: #ebdcc4;
+      color: #ffffff;
       font-family: "Instrument Serif", "Cormorant Garamond", "Playfair Display", Georgia, serif;
       font-size: clamp(38px, 4vw, 54px);
       font-style: italic;
@@ -743,21 +729,25 @@
     .vintage-divider .div-line {
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201, 166, 116, 0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     }
     .vintage-divider .div-gem {
-      color: #c9a674;
+      color: #94a3b8;
       font-size: 11px;
       transform: rotate(45deg);
     }
 
     .vintage-subtitle {
       margin: 0 0 24px;
-      color: #b7a48d;
+      color: #94a3b8;
       font-family: "Instrument Serif", "Newsreader", Georgia, serif;
       font-size: 15px;
       font-style: italic;
       letter-spacing: 0.02em;
+    }
+    
+    .vintage-login-card .cover-kicker {
+      color: #cbd5e1;
     }
 
     /* Form inputs */
@@ -775,25 +765,23 @@
       width: 100%;
       height: 52px;
       padding: 0 16px;
-      background: rgba(22, 19, 14, 0.72);
-      border: 1px solid rgba(201, 166, 116, 0.35);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 12px;
       transition: border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
     }
     .vintage-field:focus-within {
-      border-color: #dfcfb0;
-      background: rgba(32, 27, 20, 0.88);
-      box-shadow: 0 0 14px rgba(201, 166, 116, 0.25), inset 0 0 8px rgba(0, 0, 0, 0.4);
-    }
-
-    .field-icon {
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.1), inset 0 0 8px rgba(0, 0, 0, 0.2);
+    }    .field-icon {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 20px;
       height: 20px;
       margin-right: 12px;
-      color: #b7a48d;
+      color: #94a3b8;
       flex-shrink: 0;
     }
 
@@ -804,14 +792,14 @@
       background: transparent;
       border: none;
       outline: none;
-      color: #f7eedf;
+      color: #ffffff;
       font-family: "Instrument Serif", "Newsreader", Georgia, serif;
       font-size: 16px;
       font-style: italic;
       letter-spacing: 0.02em;
     }
     .vintage-input::placeholder {
-      color: rgba(183, 164, 141, 0.55);
+      color: rgba(255, 255, 255, 0.4);
       font-style: italic;
     }
 
@@ -822,12 +810,12 @@
       background: none;
       border: none;
       padding: 4px;
-      color: #b7a48d;
+      color: #94a3b8;
       cursor: pointer;
       transition: color 180ms ease;
     }
     .password-toggle:hover {
-      color: #f7eedf;
+      color: #ffffff;
     }
 
     /* Submit Button */
@@ -841,10 +829,10 @@
       height: 54px;
       margin-top: 6px;
       padding: 0 24px;
-      background: linear-gradient(180deg, #ebdcc4 0%, #dfcbab 100%);
-      border: 1px solid #dfcbab;
+      background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
-      color: #2a2217;
+      color: #0f172a;
       font-family: "Instrument Serif", "Cormorant Garamond", Georgia, serif;
       font-size: 22px;
       font-style: italic;
@@ -865,8 +853,7 @@
 
     .leaf-motif {
       font-size: 16px;
-      color: #7b6246;
-      line-height: 1;
+      opacity: 0.9;
     }
 
     /* Bottom Rosette Emblem */
@@ -1501,10 +1488,6 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Campus1 home">Campus1</a>
       <div class="nav-actions">
-        <button class="icon-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">
-          <span class="menu-glyph" aria-hidden="true"></span>
-        </button>
-        <button class="ticket-button" type="button" data-toast="The collection is complete.">The Collection</button>
       </div>
     </header>
 
@@ -1609,22 +1592,8 @@
       <div class="vintage-login-card">
         <div class="card-inner-corners"></div>
         
-        <!-- Top Ornate Crest Motif -->
-        <div class="vintage-crest">
-          <svg class="crest-svg" viewBox="0 0 120 44" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M60 4c-3 8-10 14-22 15 12 1 18 8 20 18 2-10 8-17 20-18-12-1-19-7-22-15z" stroke-width="1.2" fill="rgba(201, 166, 116, 0.15)"/>
-            <path d="M38 19c-8 0-16-4-22-10 2 8 8 15 16 17-6 1-13-2-18-7 4 9 12 13 22 13" stroke-width="1" stroke-linecap="round"/>
-            <path d="M82 19c8 0 16-4 22-10-2 8-8 15-16 17 6 1 13-2 18-7-4 9-12 13-22 13" stroke-width="1" stroke-linecap="round"/>
-            <circle cx="60" cy="22" r="2.5" fill="currentColor"/>
-            <circle cx="48" cy="18" r="1.5" fill="currentColor"/>
-            <circle cx="72" cy="18" r="1.5" fill="currentColor"/>
-            <circle cx="34" cy="24" r="1.2" fill="currentColor"/>
-            <circle cx="86" cy="24" r="1.2" fill="currentColor"/>
-          </svg>
-        </div>
-
         <!-- Role Badge -->
-        <div class="vintage-role-badge" id="roleBadgeText" style="text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a674; margin-bottom: 4px;">STUDENT ACCESS</div>
+        <div class="vintage-role-badge" id="roleBadgeText" style="text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #cbd5e1; margin-bottom: 4px;">STUDENT ACCESS</div>
 
         <!-- Title -->
         <h2 class="vintage-title" id="cardTitle">Student Portal</h2>
@@ -1778,7 +1747,7 @@
         cursor: {
           role: 'ADMIN',
           badge: 'INSTITUTIONAL ADMIN ACCESS',
-          title: 'Admin Suite',
+          title: 'Admin',
           subtitle: 'Institutional telemetry, live ERP sync & campus management',
           defaultUser: 'admin@vit.edu.in',
           placeholder: 'Admin Institutional Email (e.g. admin@vit.edu.in)',
@@ -1982,8 +1951,12 @@
         if (!frame) frame = window.requestAnimationFrame(updateParallax);
       });
 
-      closeButton.addEventListener("click", closeDetail);
-      menuButton.addEventListener("click", () => toggleMenu());
+      if (closeButton) {
+        closeButton.addEventListener("click", closeDetail);
+      }
+      if (menuButton) {
+        menuButton.addEventListener("click", () => toggleMenu());
+      }
 
       document.addEventListener("click", (event) => {
         const toastTarget = event.target.closest("[data-toast]");
@@ -2011,21 +1984,22 @@
       function submitInlineLogin() {
         const usernameInput = document.querySelector("#inlineUsernameInput");
         const passwordInput = document.querySelector("#inlinePasswordInput");
-        const username = (usernameInput?.value || activeBookRole.defaultUser).trim();
+        const activeRole = activeBookRole || ROLE_CONFIGS.claude;
+        const username = (usernameInput?.value || activeRole.defaultUser).trim();
         const password = (passwordInput?.value || 'password123').trim();
 
-        showToast(activeBookRole.toastMsg);
+        showToast(activeRole.toastMsg);
 
         try {
           if (window.parent && window.parent !== window) {
             window.parent.postMessage({
               type: 'campus1-role-login',
-              role: activeBookRole.role,
+              role: activeRole.role,
               username: username,
               password: password
             }, '*');
           } else {
-            window.location.href = activeBookRole.targetPath;
+            window.location.href = activeRole.targetPath;
           }
         } catch (e) {
           console.error(e);

@@ -1951,8 +1951,12 @@
         if (!frame) frame = window.requestAnimationFrame(updateParallax);
       });
 
-      closeButton.addEventListener("click", closeDetail);
-      menuButton.addEventListener("click", () => toggleMenu());
+      if (closeButton) {
+        closeButton.addEventListener("click", closeDetail);
+      }
+      if (menuButton) {
+        menuButton.addEventListener("click", () => toggleMenu());
+      }
 
       document.addEventListener("click", (event) => {
         const toastTarget = event.target.closest("[data-toast]");
@@ -1980,21 +1984,22 @@
       function submitInlineLogin() {
         const usernameInput = document.querySelector("#inlineUsernameInput");
         const passwordInput = document.querySelector("#inlinePasswordInput");
-        const username = (usernameInput?.value || activeBookRole.defaultUser).trim();
+        const activeRole = activeBookRole || ROLE_CONFIGS.claude;
+        const username = (usernameInput?.value || activeRole.defaultUser).trim();
         const password = (passwordInput?.value || 'password123').trim();
 
-        showToast(activeBookRole.toastMsg);
+        showToast(activeRole.toastMsg);
 
         try {
           if (window.parent && window.parent !== window) {
             window.parent.postMessage({
               type: 'campus1-role-login',
-              role: activeBookRole.role,
+              role: activeRole.role,
               username: username,
               password: password
             }, '*');
           } else {
-            window.location.href = activeBookRole.targetPath;
+            window.location.href = activeRole.targetPath;
           }
         } catch (e) {
           console.error(e);
