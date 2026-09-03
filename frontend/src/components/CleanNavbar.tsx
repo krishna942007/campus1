@@ -145,33 +145,7 @@ export const CleanNavbar: React.FC<CleanNavbarProps> = ({ onSelectRole, activeVi
         {/* Right Action Controls - Compact Proportions */}
         <div className="flex items-center space-x-2 sm:space-x-2.5">
           
-          {/* Role selector pill */}
-          <div className="hidden md:flex items-center bg-[#FFFFFF]/40 backdrop-blur-md rounded-full p-0.5 border border-[#0C2238]/08 shadow-2xs gap-0.5">
-            <button
-              onClick={() => onSelectRole('STUDENT')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold transition-all duration-200 cursor-pointer ${
-                activeView === 'STUDENT' ? 'bg-[#0C2238] text-white shadow-2xs' : 'text-[#627083] hover:text-[#10253A] hover:bg-[#FFFFFF]/60'
-              }`}
-            >
-              Student
-            </button>
-            <button
-              onClick={() => onSelectRole('MENTOR')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold transition-all duration-200 cursor-pointer ${
-                activeView === 'MENTOR' ? 'bg-[#0C2238] text-white shadow-2xs' : 'text-[#627083] hover:text-[#10253A] hover:bg-[#FFFFFF]/60'
-              }`}
-            >
-              Faculty
-            </button>
-            <button
-              onClick={() => onSelectRole('ADMIN')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold transition-all duration-200 cursor-pointer ${
-                activeView === 'ADMIN' ? 'bg-[#0C2238] text-white shadow-2xs' : 'text-[#627083] hover:text-[#10253A] hover:bg-[#FFFFFF]/60'
-              }`}
-            >
-              Admin
-            </button>
-          </div>
+
 
           <button 
             onClick={() => onSelectRole('STUDENT')}
@@ -212,26 +186,7 @@ export const CleanNavbar: React.FC<CleanNavbarProps> = ({ onSelectRole, activeVi
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="lg:hidden bg-[#FFFCF7]/95 backdrop-blur-2xl border-b border-[#0C2238]/10 px-4 py-3 space-y-2.5 shadow-md"
           >
-            <div className="grid grid-cols-3 gap-1.5 pb-2.5 border-b border-[#0C2238]/08">
-              <button
-                onClick={() => { onSelectRole('STUDENT'); setMobileMenuOpen(false); }}
-                className="py-1.5 text-center rounded-lg bg-[#0C2238] text-white text-[11px] font-bold"
-              >
-                Student
-              </button>
-              <button
-                onClick={() => { onSelectRole('MENTOR'); setMobileMenuOpen(false); }}
-                className="py-1.5 text-center rounded-lg bg-[#EFE7D8] text-[#10253A] text-[11px] font-bold"
-              >
-                Faculty
-              </button>
-              <button
-                onClick={() => { onSelectRole('ADMIN'); setMobileMenuOpen(false); }}
-                className="py-1.5 text-center rounded-lg bg-[#EFE7D8] text-[#10253A] text-[11px] font-bold"
-              >
-                Admin
-              </button>
-            </div>
+
 
             <div className="space-y-0.5 text-[11px] font-bold uppercase text-[#10253A]">
               <a 
