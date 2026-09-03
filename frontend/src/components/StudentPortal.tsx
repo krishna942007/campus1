@@ -1013,14 +1013,6 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
             </button>
 
             <button
-              onClick={() => setAiDrawerOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#F5C056]" />
-              <span>✦ AI Assistant</span>
-            </button>
-
-            <button
               onClick={onBackToLanding}
               className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-xs transition-colors cursor-pointer"
             >
@@ -1058,463 +1050,438 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
 
           {/* VIEW 1: OVERVIEW */}
           {activeNav === 'Overview' && (
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
               
-              {/* TOP EXECUTIVE OVERVIEW: 50/50 BALANCED TWO-COLUMN LAYOUT */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+              {/* LEFT COLUMN (50%): Summary Cards + Upcoming + Mentor + CGPA Chart + Next Best Actions */}
+              <div className="space-y-6">
                 
-                {/* LEFT COLUMN (50%): 2x2 SUMMARY CARDS + UPCOMING + MENTOR */}
-                <div className="space-y-6">
+                {/* 2x2 COMPACT SUMMARY CARDS GRID */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   
-                  {/* 2x2 COMPACT SUMMARY CARDS GRID */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    
-                    {/* Stat 1: Current CGPA */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
-                      <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#DCFCE7] border border-[#BBF7D0] flex items-center justify-center text-[#15803D] shadow-2xs">
-                          <GraduationCap className="w-4 h-4" />
-                        </div>
-                        <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[9px] font-extrabold tracking-wide">
-                          OFFICIAL RECORD
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
-                          Current CGPA
-                        </span>
-                        <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
-                            {currentStudentCgpa.toFixed(2)}
-                          </span>
-                          <span className="text-[11px] font-bold text-[#159A72]">
-                            {currentStudentCgpa >= 9.0 ? 'Top 3%' : currentStudentCgpa >= 8.5 ? 'Top 10%' : currentStudentCgpa >= 7.5 ? 'Above Avg' : 'Need Focus'}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
-                        <span>Weighted Credits</span>
-                        <span className="font-bold text-[#10253A]">{profileData.semester.includes('VI') ? '132' : '84'} Earned</span>
-                      </div>
-                    </div>
-
-                    {/* Stat 2: Attendance % */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
-                      <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] flex items-center justify-center text-[#4F46E5] shadow-2xs">
-                          <Clock className="w-4 h-4" />
-                        </div>
-                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wide ${
-                          currentAttPct >= 75 ? 'bg-[#DCFCE7] text-[#15803D]' : 'bg-[#FEE2E2] text-[#B91C1C]'
-                        }`}>
-                          {currentAttPct >= 75 ? 'ELIGIBLE (75%+)' : 'ATTENTION (<75%)'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
-                          Attendance Rate
-                        </span>
-                        <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
-                            {currentAttPct.toFixed(1)}%
-                          </span>
-                          <span className={`text-[11px] font-bold ${currentAttPct >= 75 ? 'text-[#159A72]' : 'text-[#B91C1C]'}`}>
-                            {currentAttPct >= 85 ? 'Safe' : currentAttPct >= 75 ? 'Acceptable' : 'Critical'}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
-                        <span>Classes Attended</span>
-                        <span className="font-bold text-[#10253A]">
-                          {Math.round((currentAttPct / 100) * 126)} / 126
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Stat 3: Academic Stage */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
-                      <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] shadow-2xs">
-                          <BookOpen className="w-4 h-4" />
-                        </div>
-                        <span className="px-2 py-0.5 rounded-full bg-[#EFE7D8] text-[#10253A] text-[9px] font-extrabold tracking-wide">
-                          {profileData.semester.includes('VI') ? 'YEAR 3' : 'YEAR 2'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
-                          Academic Stage
-                        </span>
-                        <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
-                            {profileData.semester.replace('Semester ', 'Sem ')}
-                          </span>
-                          <span className="text-[11px] font-bold text-[#0C2238]">{profileData.division}</span>
-                        </div>
-                      </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
-                        <span>Graduation Batch</span>
-                        <span className="font-bold text-[#10253A]">{profileData.batch}</span>
-                      </div>
-                    </div>
-
-                    {/* Stat 4: Dev Progress */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
-                      <div className="flex items-center justify-between">
-                        <div className="w-9 h-9 rounded-2xl bg-[#E0E7FF] border border-[#C7D2FE] flex items-center justify-center text-[#4338CA] shadow-2xs">
-                          <Target className="w-4 h-4" />
-                        </div>
-                        <span className="px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[9px] font-extrabold tracking-wide">
-                          ON TRACK
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
-                          Roadmap Completion
-                        </span>
-                        <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
-                            {Math.round((roadmapMilestones.filter((m: any) => m.done).length / (roadmapMilestones.length || 1)) * 100)}%
-                          </span>
-                          <span className="text-[11px] font-bold text-[#D97706]">
-                            {roadmapMilestones.filter((m: any) => m.done).length} / {roadmapMilestones.length} Done
-                          </span>
-                        </div>
-                      </div>
-                      <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
-                        <span>Career Milestone</span>
-                        <span className="font-bold text-[#159A72]">
-                          {roadmapMilestones.find((m: any) => !m.done)?.title.split(' ')[0] || 'Capstone'}
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* FEATURE 3: "UPCOMING" */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs space-y-3">
+                  {/* Stat 1: Current CGPA */}
+                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4 text-[#123B63]" />
-                        <h3 className="text-sm font-extrabold text-[#102A43]">Upcoming</h3>
+                      <div className="w-9 h-9 rounded-2xl bg-[#DCFCE7] border border-[#BBF7D0] flex items-center justify-center text-[#15803D] shadow-2xs">
+                        <GraduationCap className="w-4 h-4" />
                       </div>
-                      <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[9px] font-bold">
-                        VERIFIED EVENTS
-                      </span>
-                    </div>
-
-                    <div className="space-y-2.5">
-                      {upcomingEvents.map((evt: any, idx: number) => (
-                        <div key={idx} className="p-3 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] flex items-center justify-between text-xs">
-                          <div className="flex items-center space-x-3 min-w-0">
-                            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex flex-col items-center justify-center font-bold shrink-0">
-                              <span className="text-[9px] uppercase text-[#F5C056]">{evt.date.split(' ')[0]}</span>
-                              <span className="text-xs leading-none">{evt.date.split(' ')[1]}</span>
-                            </div>
-                            <div className="min-w-0">
-                              <h4 className="font-bold text-[#102A43] truncate">{evt.title}</h4>
-                              <p className="text-[10px] text-[#5A6E7F] truncate">{evt.type} • {evt.status}</p>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => setActiveNav(evt.navTarget as any)}
-                            className="px-2.5 py-1 rounded-lg bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] font-bold text-[10px] cursor-pointer shrink-0 ml-2"
-                          >
-                            View →
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* ASSIGNED MENTOR STATUS CARD */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-extrabold text-[#102A43]">Assigned Faculty Mentor</h3>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
-                        mentorStatus === 'ACCEPTED'
-                          ? 'bg-[#DCFCE7] text-[#15803D]'
-                          : mentorStatus === 'DECLINED'
-                          ? 'bg-[#FEE2E2] text-[#B91C1C]'
-                          : mentorStatus === 'NONE'
-                          ? 'bg-[#E2D7C6] text-[#5A6E7F]'
-                          : 'bg-[#FEF3C7] text-[#D97706]'
-                      }`}>
-                        {mentorStatus === 'ACCEPTED' ? 'ACTIVE' : mentorStatus === 'NONE' ? 'NOT ASSIGNED' : mentorStatus}
-                      </span>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1.5 text-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="font-extrabold text-[#102A43] text-xs">
-                          {latestRequest?.mentorName || (mentorStatus === 'NONE' ? 'AI Mentor Match Available' : 'Prof. S. Kulkarni')}
-                        </span>
-                        <span className="font-bold text-[#123B63] text-[11px]">96% Match</span>
-                      </div>
-                      <p className="text-[#5A6E7F] text-[11px]">
-                        {latestRequest?.mentorDept || 'Department of Computer Engineering & AI'}
-                      </p>
-                      <p className="text-[10px] text-[#C49A52] font-semibold">
-                        Specialty: {selectedField} & Career Placement Track
-                      </p>
-                    </div>
-
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setActiveNav('Mentoring')}
-                        className="flex-1 py-2 rounded-xl bg-[#123B63] text-white font-bold text-xs hover:bg-[#1D4E73] transition-colors"
-                      >
-                        {mentorStatus === 'NONE' ? 'Find Faculty Mentor →' : 'View Mentoring Logs →'}
-                      </button>
-                      {mentorStatus !== 'NONE' && (
-                        <button
-                          onClick={() => setShowChangeMentorModal(true)}
-                          className="px-3 py-2 rounded-xl bg-[#E9DDC9] text-[#102A43] font-bold text-xs hover:bg-[#E2D7C6]"
-                        >
-                          Change Mentor
-                        </button>
-                      )}
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* RIGHT COLUMN (50%): GOAL PROGRESS ENGINE */}
-                <div>
-                  <GoalProgressSection />
-                </div>
-
-              </div>
-
-              {/* MAIN 2-COLUMN STRUCTURED BENTO LAYOUT (50/50) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                
-                {/* LEFT COLUMN (50%): CGPA TREND */}
-                <div className="space-y-6">
-                  
-                  {/* CGPA LINE CHART */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-base font-extrabold text-[#102A43]">CGPA / SGPA Academic Trajectory</h3>
-                        <p className="text-xs text-[#5A6E7F]">Real semester-wise performance curve synced from VIT ERP</p>
-                      </div>
-                      <span className="text-xs font-bold text-[#15803D] bg-[#DCFCE7] px-2.5 py-1 rounded-full">
+                      <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D] text-[9px] font-extrabold tracking-wide">
                         OFFICIAL RECORD
                       </span>
                     </div>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
+                        Current CGPA
+                      </span>
+                      <div className="flex items-baseline space-x-2">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          {currentStudentCgpa.toFixed(2)}
+                        </span>
+                        <span className="text-[11px] font-bold text-[#159A72]">
+                          {currentStudentCgpa >= 9.0 ? 'Top 3%' : currentStudentCgpa >= 8.5 ? 'Top 10%' : currentStudentCgpa >= 7.5 ? 'Above Avg' : 'Need Focus'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <span>Weighted Credits</span>
+                      <span className="font-bold text-[#10253A]">{profileData.semester.includes('VI') ? '132' : '84'} Earned</span>
+                    </div>
+                  </div>
 
-                    <div className="h-64 w-full">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={cgpaTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#E2D7C6" />
-                          <XAxis dataKey="semester" stroke="#5A6E7F" fontSize={11} />
-                          <YAxis domain={[7.5, 10.0]} stroke="#5A6E7F" fontSize={11} />
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#FFFDF8', borderColor: '#E2D7C6', borderRadius: '12px', fontSize: '12px' }} 
-                          />
-                          <Line type="monotone" dataKey="sgpa" stroke="#C49A52" strokeWidth={2} name="SGPA" />
-                          <Line type="monotone" dataKey="cgpa" stroke="#123B63" strokeWidth={3} activeDot={{ r: 6 }} name="CGPA" />
-                        </LineChart>
-                      </ResponsiveContainer>
+                  {/* Stat 2: Attendance % */}
+                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] flex items-center justify-center text-[#4F46E5] shadow-2xs">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wide ${
+                        currentAttPct >= 75 ? 'bg-[#DCFCE7] text-[#15803D]' : 'bg-[#FEE2E2] text-[#B91C1C]'
+                      }`}>
+                        {currentAttPct >= 75 ? 'ELIGIBLE (75%+)' : 'ATTENTION (<75%)'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
+                        Attendance Rate
+                      </span>
+                      <div className="flex items-baseline space-x-2">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          {currentAttPct.toFixed(1)}%
+                        </span>
+                        <span className={`text-[11px] font-bold ${currentAttPct >= 75 ? 'text-[#159A72]' : 'text-[#B91C1C]'}`}>
+                          {currentAttPct >= 85 ? 'Safe' : currentAttPct >= 75 ? 'Acceptable' : 'Critical'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <span>Classes Attended</span>
+                      <span className="font-bold text-[#10253A]">
+                        {Math.round((currentAttPct / 100) * 126)} / 126
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Stat 3: Academic Stage */}
+                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] shadow-2xs">
+                        <BookOpen className="w-4 h-4" />
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-[#EFE7D8] text-[#10253A] text-[9px] font-extrabold tracking-wide">
+                        {profileData.semester.includes('VI') ? 'YEAR 3' : 'YEAR 2'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
+                        Academic Stage
+                      </span>
+                      <div className="flex items-baseline space-x-2">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          {profileData.semester.replace('Semester ', 'Sem ')}
+                        </span>
+                        <span className="text-[11px] font-bold text-[#0C2238]">{profileData.division}</span>
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <span>Graduation Batch</span>
+                      <span className="font-bold text-[#10253A]">{profileData.batch}</span>
+                    </div>
+                  </div>
+
+                  {/* Stat 4: Dev Progress */}
+                  <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-2xl bg-[#E0E7FF] border border-[#C7D2FE] flex items-center justify-center text-[#4338CA] shadow-2xs">
+                        <Target className="w-4 h-4" />
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[9px] font-extrabold tracking-wide">
+                        ON TRACK
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#627083] block mb-0.5">
+                        Roadmap Completion
+                      </span>
+                      <div className="flex items-baseline space-x-2">
+                        <span className="text-2xl sm:text-3xl font-extrabold text-[#10253A] font-display">
+                          {Math.round((roadmapMilestones.filter((m: any) => m.done).length / (roadmapMilestones.length || 1)) * 100)}%
+                        </span>
+                        <span className="text-[11px] font-bold text-[#D97706]">
+                          {roadmapMilestones.filter((m: any) => m.done).length} / {roadmapMilestones.length} Done
+                        </span>
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-[#0C2238]/06 flex items-center justify-between text-[10px] text-[#627083]">
+                      <span>Career Milestone</span>
+                      <span className="font-bold text-[#159A72]">
+                        {roadmapMilestones.find((m: any) => !m.done)?.title.split(' ')[0] || 'Capstone'}
+                      </span>
                     </div>
                   </div>
 
                 </div>
 
-                {/* RIGHT COLUMN (50%): MY DIRECTION & PROFILE COMPLETION */}
-                <div className="space-y-6">
-
-                  {/* "MY DIRECTION" PROFILE SECTION */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">My Direction</h3>
-                      <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[10px] font-bold text-[#102A43]">
-                        STUDENT PROVIDED
-                      </span>
+                {/* FEATURE 3: "UPCOMING" */}
+                <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Calendar className="w-4 h-4 text-[#123B63]" />
+                      <h3 className="text-sm font-extrabold text-[#102A43]">Upcoming</h3>
                     </div>
+                    <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[9px] font-bold">
+                      VERIFIED EVENTS
+                    </span>
+                  </div>
 
-                    {isConfused ? (
-                      <div className="p-4 rounded-xl bg-[#FEF3C7]/40 border border-[#D97706]/40 space-y-2">
-                        <span className="px-2 py-0.5 rounded-full bg-[#D97706] text-white font-bold text-[10px]">
-                          CAREER DIRECTION: STILL EXPLORING
-                        </span>
-                        <h4 className="font-extrabold text-[#102A43] text-xs">Let's figure it out together!</h4>
-                        <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
-                          You noted you're still exploring options. Explore career tracks, take our interest assessment, or talk to our AI Assistant to discover your best fit.
-                        </p>
+                  <div className="space-y-2.5">
+                    {upcomingEvents.map((evt: any, idx: number) => (
+                      <div key={idx} className="p-3 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] flex items-center justify-between text-xs">
+                        <div className="flex items-center space-x-3 min-w-0">
+                          <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex flex-col items-center justify-center font-bold shrink-0">
+                            <span className="text-[9px] uppercase text-[#F5C056]">{evt.date.split(' ')[0]}</span>
+                            <span className="text-xs leading-none">{evt.date.split(' ')[1]}</span>
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-[#102A43] truncate">{evt.title}</h4>
+                            <p className="text-[10px] text-[#5A6E7F] truncate">{evt.type} • {evt.status}</p>
+                          </div>
+                        </div>
                         <button
-                          onClick={() => {
-                            setOnboardingStep(2);
-                            setShowOnboardingModal(true);
-                          }}
-                          className="px-3.5 py-1.5 rounded-xl bg-[#123B63] text-white font-bold text-xs cursor-pointer"
+                          onClick={() => setActiveNav(evt.navTarget as any)}
+                          className="px-2.5 py-1 rounded-lg bg-[#E9DDC9] hover:bg-[#E2D7C6] text-[#102A43] font-bold text-[10px] cursor-pointer shrink-0 ml-2"
                         >
-                          Explore Career Paths →
+                          View →
                         </button>
                       </div>
-                    ) : (
-                      <div className="space-y-3 text-xs">
-                        <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
-                          <span className="text-[#5A6E7F]">Current Interest:</span>
-                          <span className="font-bold text-[#102A43]">{selectedField}</span>
-                        </div>
-                        <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
-                          <span className="text-[#5A6E7F]">Primary Goals:</span>
-                          <span className="font-bold text-[#123B63]">{selectedGoals.join(', ')}</span>
-                        </div>
-                        <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
-                          <span className="text-[#5A6E7F]">Learning Style:</span>
-                          <span className="font-bold text-[#102A43]">{learningPreference}</span>
-                        </div>
-                      </div>
-                    )}
+                    ))}
+                  </div>
+                </div>
+
+                {/* ASSIGNED MENTOR STATUS CARD */}
+                <div className="bg-[#FFFDF8] rounded-2xl p-5 border border-[#E2D7C6] shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-extrabold text-[#102A43]">Assigned Faculty Mentor</h3>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
+                      mentorStatus === 'ACCEPTED'
+                        ? 'bg-[#DCFCE7] text-[#15803D]'
+                        : mentorStatus === 'DECLINED'
+                        ? 'bg-[#FEE2E2] text-[#B91C1C]'
+                        : mentorStatus === 'NONE'
+                        ? 'bg-[#E2D7C6] text-[#5A6E7F]'
+                        : 'bg-[#FEF3C7] text-[#D97706]'
+                    }`}>
+                      {mentorStatus === 'ACCEPTED' ? 'ACTIVE' : mentorStatus === 'NONE' ? 'NOT ASSIGNED' : mentorStatus}
+                    </span>
                   </div>
 
-                  {/* FEATURE 4: "DEVELOPMENT PROFILE / PROFILE COMPLETION" */}
-                  <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-3">
+                  <div className="p-3.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1.5 text-xs">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">Development Profile</h3>
-                      <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-bold">
-                        DETERMINISTIC FORMULA
+                      <span className="font-extrabold text-[#102A43] text-xs">
+                        {latestRequest?.mentorName || (mentorStatus === 'NONE' ? 'AI Mentor Match Available' : 'Prof. S. Kulkarni')}
                       </span>
+                      <span className="font-bold text-[#123B63] text-[11px]">96% Match</span>
                     </div>
-
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-2xl font-extrabold text-[#123B63]">{profileCompletionPct}% Complete</span>
-                      <span className="text-xs text-[#5A6E7F]">
-                        {profileFieldsList.filter(f => Boolean(f.value)).length} / {profileFieldsList.length} Fields Populated
-                      </span>
-                    </div>
-
-                    <div className="w-full h-2.5 bg-[#E2D7C6] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#123B63]" style={{ width: `${profileCompletionPct}%` }} />
-                    </div>
-
-                    {missingProfileFields.length > 0 && (
-                      <div className="text-xs space-y-1">
-                        <p className="font-bold text-[#102A43]">Missing Fields:</p>
-                        <ul className="text-[11px] text-[#5A6E7F] space-y-0.5">
-                          {missingProfileFields.map((f, i) => (
-                            <li key={i} className="flex items-center space-x-1">
-                              <span className="text-[#C49A52]">•</span>
-                              <span>Add {f.label}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    <button
-                      onClick={() => setActiveNav('My Profile')}
-                      className="w-full py-2.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold text-xs transition-colors cursor-pointer"
-                    >
-                      Complete Profile →
-                    </button>
+                    <p className="text-[#5A6E7F] text-[11px]">
+                      {latestRequest?.mentorDept || 'Department of Computer Engineering & AI'}
+                    </p>
+                    <p className="text-[10px] text-[#C49A52] font-semibold">
+                      Specialty: {selectedField} & Career Placement Track
+                    </p>
                   </div>
 
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => setActiveNav('Mentoring')}
+                      className="flex-1 py-2 rounded-xl bg-[#123B63] text-white font-bold text-xs hover:bg-[#1D4E73] transition-colors"
+                    >
+                      {mentorStatus === 'NONE' ? 'Find Faculty Mentor →' : 'View Mentoring Logs →'}
+                    </button>
+                    {mentorStatus !== 'NONE' && (
+                      <button
+                        onClick={() => setShowChangeMentorModal(true)}
+                        className="px-3 py-2 rounded-xl bg-[#E9DDC9] text-[#102A43] font-bold text-xs hover:bg-[#E2D7C6]"
+                      >
+                        Change Mentor
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* CGPA LINE CHART */}
+                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-base font-extrabold text-[#102A43]">CGPA / SGPA Academic Trajectory</h3>
+                      <p className="text-xs text-[#5A6E7F]">Real semester-wise performance curve synced from VIT ERP</p>
+                    </div>
+                    <span className="text-xs font-bold text-[#15803D] bg-[#DCFCE7] px-2.5 py-1 rounded-full">
+                      OFFICIAL RECORD
+                    </span>
+                  </div>
+
+                  <div className="h-64 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={cgpaTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#E2D7C6" />
+                        <XAxis dataKey="semester" stroke="#5A6E7F" fontSize={11} />
+                        <YAxis domain={[7.5, 10.0]} stroke="#5A6E7F" fontSize={11} />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: '#FFFDF8', borderColor: '#E2D7C6', borderRadius: '12px', fontSize: '12px' }} 
+                        />
+                        <Line type="monotone" dataKey="sgpa" stroke="#C49A52" strokeWidth={2} name="SGPA" />
+                        <Line type="monotone" dataKey="cgpa" stroke="#123B63" strokeWidth={3} activeDot={{ r: 6 }} name="CGPA" />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* FEATURE 1: "YOUR NEXT BEST ACTIONS" */}
+                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Target className="w-5 h-5 text-[#123B63]" />
+                      <h3 className="text-base font-extrabold text-[#102A43]">Your Next Best Actions</h3>
+                    </div>
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold shrink-0">
+                      REAL DATA DRIVEN
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {nextBestActions.map((action) => (
+                      <div key={action.id} className="p-4 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-2">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-extrabold text-[#102A43] text-xs flex items-center space-x-1.5 min-w-0">
+                            <span className="shrink-0">🎯</span>
+                            <span className="truncate">{action.title}</span>
+                          </h4>
+                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase shrink-0 ${
+                            action.priority === 'URGENT' 
+                              ? 'bg-[#FEE2E2] text-[#B91C1C]' 
+                              : action.priority === 'HIGH'
+                              ? 'bg-[#FEF3C7] text-[#D97706]'
+                              : 'bg-[#DCFCE7] text-[#15803D]'
+                          }`}>
+                            {action.priority}
+                          </span>
+                        </div>
+
+                        <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
+                          <strong className="text-[#102A43]">Reason:</strong> {action.reason}
+                        </p>
+
+                        <div className="pt-1 flex items-center justify-between border-t border-[#E2D7C6]">
+                          {action.deadline && (
+                            <span className="text-[10px] font-bold text-[#C49A52]">
+                              Deadline: {action.deadline}
+                            </span>
+                          )}
+                          <button
+                            onClick={() => setActiveNav(action.navTarget as any)}
+                            className="px-3.5 py-1.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold text-xs cursor-pointer ml-auto"
+                          >
+                            {action.ctaText}
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
               </div>
 
-              {/* FULL-WIDTH STANDALONE HORIZONTAL ROW: NEXT BEST ACTIONS & SUBJECT ATTENDANCE BREAKDOWN */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              {/* RIGHT COLUMN (50%): Goal Progress + My Direction + Development Profile + Subject Attendance Breakdown */}
+              <div className="space-y-6">
                 
-                {/* FEATURE 1: "YOUR NEXT BEST ACTIONS" */}
-                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <Target className="w-5 h-5 text-[#123B63]" />
-                        <h3 className="text-base font-extrabold text-[#102A43]">Your Next Best Actions</h3>
-                      </div>
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold shrink-0">
-                        REAL DATA DRIVEN
-                      </span>
-                    </div>
+                {/* GOAL PROGRESS ENGINE */}
+                <GoalProgressSection />
 
-                    <div className="space-y-3">
-                      {nextBestActions.map((action) => (
-                        <div key={action.id} className="p-4 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-extrabold text-[#102A43] text-xs flex items-center space-x-1.5 min-w-0">
-                              <span className="shrink-0">🎯</span>
-                              <span className="truncate">{action.title}</span>
-                            </h4>
-                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase shrink-0 ${
-                              action.priority === 'URGENT' 
-                                ? 'bg-[#FEE2E2] text-[#B91C1C]' 
-                                : action.priority === 'HIGH'
-                                ? 'bg-[#FEF3C7] text-[#D97706]'
-                                : 'bg-[#DCFCE7] text-[#15803D]'
-                            }`}>
-                              {action.priority}
-                            </span>
-                          </div>
-
-                          <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
-                            <strong className="text-[#102A43]">Reason:</strong> {action.reason}
-                          </p>
-
-                          <div className="pt-1 flex items-center justify-between border-t border-[#E2D7C6]">
-                            {action.deadline && (
-                              <span className="text-[10px] font-bold text-[#C49A52]">
-                                Deadline: {action.deadline}
-                              </span>
-                            )}
-                            <button
-                              onClick={() => setActiveNav(action.navTarget as any)}
-                              className="px-3.5 py-1.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold text-xs cursor-pointer ml-auto"
-                            >
-                              {action.ctaText}
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                {/* "MY DIRECTION" PROFILE SECTION */}
+                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-extrabold text-[#102A43]">My Direction</h3>
+                    <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[10px] font-bold text-[#102A43]">
+                      STUDENT PROVIDED
+                    </span>
                   </div>
+
+                  {isConfused ? (
+                    <div className="p-4 rounded-xl bg-[#FEF3C7]/40 border border-[#D97706]/40 space-y-2">
+                      <span className="px-2 py-0.5 rounded-full bg-[#D97706] text-white font-bold text-[10px]">
+                        CAREER DIRECTION: STILL EXPLORING
+                      </span>
+                      <h4 className="font-extrabold text-[#102A43] text-xs">Let's figure it out together!</h4>
+                      <p className="text-[11px] text-[#5A6E7F] leading-relaxed">
+                        You noted you're still exploring options. Explore career tracks, take our interest assessment, or talk to our AI Assistant to discover your best fit.
+                      </p>
+                      <button
+                        onClick={() => {
+                          setOnboardingStep(2);
+                          setShowOnboardingModal(true);
+                        }}
+                        className="px-3.5 py-1.5 rounded-xl bg-[#123B63] text-white font-bold text-xs cursor-pointer"
+                      >
+                        Explore Career Paths →
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3 text-xs">
+                      <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
+                        <span className="text-[#5A6E7F]">Current Interest:</span>
+                        <span className="font-bold text-[#102A43]">{selectedField}</span>
+                      </div>
+                      <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
+                        <span className="text-[#5A6E7F]">Primary Goals:</span>
+                        <span className="font-bold text-[#123B63]">{selectedGoals.join(', ')}</span>
+                      </div>
+                      <div className="flex justify-between border-b border-[#E2D7C6] pb-2">
+                        <span className="text-[#5A6E7F]">Learning Style:</span>
+                        <span className="font-bold text-[#102A43]">{learningPreference}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* FEATURE 4: "DEVELOPMENT PROFILE / PROFILE COMPLETION" */}
+                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-extrabold text-[#102A43]">Development Profile</h3>
+                    <span className="px-2.5 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-[10px] font-bold">
+                      DETERMINISTIC FORMULA
+                    </span>
+                  </div>
+
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-2xl font-extrabold text-[#123B63]">{profileCompletionPct}% Complete</span>
+                    <span className="text-xs text-[#5A6E7F]">
+                      {profileFieldsList.filter(f => Boolean(f.value)).length} / {profileFieldsList.length} Fields Populated
+                    </span>
+                  </div>
+
+                  <div className="w-full h-2.5 bg-[#E2D7C6] rounded-full overflow-hidden">
+                    <div className="h-full bg-[#123B63]" style={{ width: `${profileCompletionPct}%` }} />
+                  </div>
+
+                  {missingProfileFields.length > 0 && (
+                    <div className="text-xs space-y-1">
+                      <p className="font-bold text-[#102A43]">Missing Fields:</p>
+                      <ul className="text-[11px] text-[#5A6E7F] space-y-0.5">
+                        {missingProfileFields.map((f, i) => (
+                          <li key={i} className="flex items-center space-x-1">
+                            <span className="text-[#C49A52]">•</span>
+                            <span>Add {f.label}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => setActiveNav('My Profile')}
+                    className="w-full py-2.5 rounded-xl bg-[#123B63] hover:bg-[#1D4E73] text-white font-bold text-xs transition-colors cursor-pointer"
+                  >
+                    Complete Profile →
+                  </button>
                 </div>
 
                 {/* ATTENDANCE MONITOR */}
-                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-base font-extrabold text-[#102A43]">Subject Attendance Breakdown</h3>
-                      <span className="text-xs font-bold text-[#102A43] bg-[#E9DDC9] px-2.5 py-1 rounded-full shrink-0">
-                        SYNCED FROM VIT
-                      </span>
-                    </div>
+                <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-extrabold text-[#102A43]">Subject Attendance Breakdown</h3>
+                    <span className="text-xs font-bold text-[#102A43] bg-[#E9DDC9] px-2.5 py-1 rounded-full shrink-0">
+                      SYNCED FROM VIT
+                    </span>
+                  </div>
 
-                    <div className="space-y-3">
-                      {attendanceSubjects.map((sub) => (
-                        <div key={sub.code} className="p-3.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1.5">
-                          <div className="flex items-center justify-between text-xs font-bold">
-                            <span className="text-[#102A43] truncate">{sub.code}: {sub.name}</span>
-                            <span className={`shrink-0 ml-2 ${sub.pct < 75 ? 'text-[#B91C1C]' : 'text-[#15803D]'}`}>
-                              {sub.attended}/{sub.total} ({sub.pct}%)
-                            </span>
-                          </div>
-
-                          <div className="w-full h-2 bg-[#E2D7C6] rounded-full overflow-hidden">
-                            <div 
-                              className={`h-full ${sub.pct < 75 ? 'bg-[#B91C1C]' : 'bg-[#15803D]'}`} 
-                              style={{ width: `${sub.pct}%` }} 
-                            />
-                          </div>
-
-                          {sub.neededFor75 && (
-                            <p className="text-[10px] font-bold text-[#B91C1C] flex items-center space-x-1">
-                              <AlertTriangle className="w-3 h-3 inline mr-1 shrink-0" />
-                              <span>Requires {sub.neededFor75} consecutive attended classes for 75%.</span>
-                            </p>
-                          )}
+                  <div className="space-y-3">
+                    {attendanceSubjects.map((sub) => (
+                      <div key={sub.code} className="p-3.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] space-y-1.5">
+                        <div className="flex items-center justify-between text-xs font-bold">
+                          <span className="text-[#102A43] truncate">{sub.code}: {sub.name}</span>
+                          <span className={`shrink-0 ml-2 ${sub.pct < 75 ? 'text-[#B91C1C]' : 'text-[#15803D]'}`}>
+                            {sub.attended}/{sub.total} ({sub.pct}%)
+                          </span>
                         </div>
-                      ))}
-                    </div>
+
+                        <div className="w-full h-2 bg-[#E2D7C6] rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full ${sub.pct < 75 ? 'bg-[#B91C1C]' : 'bg-[#15803D]'}`} 
+                            style={{ width: `${sub.pct}%` }} 
+                          />
+                        </div>
+
+                        {sub.neededFor75 && (
+                          <p className="text-[10px] font-bold text-[#B91C1C] flex items-center space-x-1">
+                            <AlertTriangle className="w-3 h-3 inline mr-1 shrink-0" />
+                            <span>Requires {sub.neededFor75} consecutive attended classes for 75%.</span>
+                          </p>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
               </div>
+
             </div>
           )}
 
