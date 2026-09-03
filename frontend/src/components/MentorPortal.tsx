@@ -130,10 +130,10 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
 
   const addToast = (title: string, message: string, type: 'success' | 'info' | 'warning' | 'error' = 'success') => {
     const id = `toast-${Date.now()}-${Math.random()}`;
-    setToasts((prev) => [...prev, { id, title, message, type }]);
+    setToasts((prev) => [...prev, { id, title, message, type, duration: 2000 }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4500);
+    }, 2000);
   };
 
   const dismissToast = (id: string) => {

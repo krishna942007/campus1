@@ -38,13 +38,18 @@ export function App() {
     const handleToastEvent = (e: Event) => {
       const customEvent = e as CustomEvent<ToastMessage>;
       if (customEvent.detail) {
+        const id = `toast-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
         const newToast: ToastMessage = {
-          id: Date.now().toString(),
+          id,
           type: customEvent.detail.type || 'success',
           title: customEvent.detail.title,
           message: customEvent.detail.message,
+          duration: 2000,
         };
         setToasts((prev) => [...prev, newToast]);
+        setTimeout(() => {
+          setToasts((prev) => prev.filter((t) => t.id !== id));
+        }, 2000);
       }
     };
 
