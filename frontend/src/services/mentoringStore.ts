@@ -149,7 +149,7 @@ const defaultStoreState = {
     {
       id: 'req-101',
       studentId: '2023CSE001',
-      studentName: 'Krishna Singh',
+      studentName: 'Aarav Sharma',
       mentorId: 'T101',
       requestedMentorName: 'Prof. S. Kulkarni',
       program: 'B.Tech Engineering',
@@ -182,8 +182,8 @@ const defaultStoreState = {
       submissions: [
         {
           studentId: '2023CSE001',
-          studentName: 'Krishna Singh',
-          fileName: 'CS503_KrishnaSingh_Lab3_RAG.zip',
+          studentName: 'Aarav Sharma',
+          fileName: 'CS503_AaravSharma_Lab3_RAG.zip',
           submittedAt: 'Aug 15, 2026 at 7:32 PM IST',
           status: 'SUBMITTED' as const
         }
@@ -214,8 +214,8 @@ const defaultStoreState = {
       submissions: [
         {
           studentId: '2023CSE001',
-          studentName: 'Krishna Singh',
-          fileName: 'CS502_KrishnaSingh_BTree_Project.zip',
+          studentName: 'Aarav Sharma',
+          fileName: 'CS502_AaravSharma_BTree_Project.zip',
           submittedAt: 'Aug 11, 2026 at 4:32 PM IST',
           status: 'SUBMITTED' as const
         }
@@ -226,7 +226,7 @@ const defaultStoreState = {
     {
       id: 'mtg-1',
       studentId: '2023CSE001',
-      studentName: 'Krishna Singh',
+      studentName: 'Aarav Sharma',
       mentorName: 'Prof. S. Kulkarni',
       date: 'Aug 20, 2026 at 3:00 PM IST',
       title: '1-on-1 Check-in with Prof. S. Kulkarni',
@@ -239,11 +239,11 @@ const defaultStoreState = {
       id: 'log-1',
       date: 'Aug 10, 2026',
       studentId: '2023CSE001',
-      studentName: 'Krishna Singh',
+      studentName: 'Aarav Sharma',
       mentorName: 'Prof. S. Kulkarni',
       sessionType: '1-on-1 Mentoring',
-      notesPrivate: 'Krishna showed solid grasp of vector embeddings. Needs practice with SQL index tuning.',
-      feedbackStudentVisible: 'Approved capstone proposal on RAG. Instructed Krishna to focus on PostgreSQL index tuning.',
+      notesPrivate: 'Aarav showed solid grasp of vector embeddings. Needs practice with SQL index tuning.',
+      feedbackStudentVisible: 'Approved capstone proposal on RAG. Instructed Aarav to focus on PostgreSQL index tuning.',
       followUpAction: 'Complete PostgreSQL indexing experiment',
       followUpCompleted: false
     },
@@ -251,7 +251,7 @@ const defaultStoreState = {
       id: 'log-2',
       date: 'Jul 22, 2026',
       studentId: '2023CSE001',
-      studentName: 'Krishna Singh',
+      studentName: 'Aarav Sharma',
       mentorName: 'Prof. S. Kulkarni',
       sessionType: 'Semester Review',
       notesPrivate: 'High performer with top 5% CGPA. Recommended IEEE paper grant.',
@@ -265,8 +265,8 @@ const defaultStoreState = {
     { id: 2, category: 'Mentoring', title: 'Mentor Match Recommended', text: 'AI matched Prof. S. Kulkarni (96% match score)', time: '1d ago', read: false },
   ],
   facultyNotifications: [
-    { id: 1, category: 'Mentoring', title: 'New Mentor Request', text: 'Krishna Singh (2023CSE001) requested you as mentor (96% Match)', time: '10m ago', read: false },
-    { id: 2, category: 'Assignment', title: 'Assignment Submission', text: 'Krishna Singh submitted CS503 Lab Assignment 3', time: '1h ago', read: false },
+    { id: 1, category: 'Mentoring', title: 'New Mentor Request', text: 'Aarav Sharma (2023CSE001) requested you as mentor (96% Match)', time: '10m ago', read: false },
+    { id: 2, category: 'Assignment', title: 'Assignment Submission', text: 'Aarav Sharma submitted CS503 Lab Assignment 3', time: '1h ago', read: false },
   ],
   assignedOnlineCourses: [
     {
@@ -281,7 +281,7 @@ const defaultStoreState = {
       syllabusOverview: 'Supervised Learning, Deep Learning, Support Vector Machines, Kernels, Reinforcement Learning & Neural Nets.',
       assignedBy: 'Prof. S. Kulkarni (HOD Computer Engineering)',
       assignedToStudentId: '2023CSE001',
-      assignedToStudentName: 'Krishna Singh',
+      assignedToStudentName: 'Aarav Sharma',
       assignedDate: 'Aug 15, 2026',
       guidanceNote: 'Recommended by Prof. S. Kulkarni for strengthening mathematical foundations for your RAG & Neural Networks capstone project.',
       status: 'ASSIGNED' as const
@@ -298,7 +298,7 @@ const defaultStoreState = {
       syllabusOverview: 'Neural Networks, Hyperparameter Tuning, Convolutional Nets (CNNs), Sequence Models (RNNs & Transformers).',
       assignedBy: 'Prof. S. Kulkarni (HOD Computer Engineering)',
       assignedToStudentId: '2023CSE001',
-      assignedToStudentName: 'Krishna Singh',
+      assignedToStudentName: 'Aarav Sharma',
       assignedDate: 'Aug 12, 2026',
       guidanceNote: 'Complete Modules 1 & 2 before starting the vision classifier capstone.',
       status: 'IN_PROGRESS' as const

@@ -172,7 +172,7 @@ async function runTestSuite() {
     });
 
     const studentS = await User.create({
-      name: "Student S (Krishna Singh)",
+      name: "Student S (Aarav Sharma)",
       email: "test_student_s@vit.edu.in",
       password: "password123",
       role: "STUDENT",

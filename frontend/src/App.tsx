@@ -7,18 +7,14 @@ import { PlatformPreviewSection } from './components/PlatformPreviewSection';
 import { StudentCommunitySection } from './components/StudentCommunitySection';
 
 import { StudentDashboardStory } from './components/StudentDashboardStory';
-import { StudentDigitalTwinSection } from './components/StudentDigitalTwinSection';
 import { AIAssistantSection } from './components/AIAssistantSection';
-import { LearningRoadmapSection } from './components/LearningRoadmapSection';
 import { SkillGapSection } from './components/SkillGapSection';
-import { WeeklyPlanSection } from './components/WeeklyPlanSection';
 import { ToastNotification, ToastMessage } from './components/ToastNotification';
 import { FloatingAIWidget } from './components/FloatingAIWidget';
 import { MentoringSection } from './components/MentoringSection';
 import { AcademicAttendanceSection } from './components/AcademicAttendanceSection';
 import { VITKnowledgeRAG } from './components/VITKnowledgeRAG';
 import { MengToSketchbookSection } from './components/MengToSketchbookSection';
-import { BestsellersBookShowcaseSection } from './components/BestsellersBookShowcaseSection';
 import { ProductFooter } from './components/ProductFooter';
 
 import { LoginPage } from './components/LoginPage';
@@ -144,16 +140,6 @@ export function App() {
                 <MengToSketchbookSection />
               </div>
 
-              {/* Section 4.6: Campus Portals 3D Book Showcase */}
-              <div id="bestsellers-showcase">
-                <BestsellersBookShowcaseSection onSelectRole={handleOpenLogin} />
-              </div>
-
-              {/* Section 4.8: Flagship Student Digital Twin Visualization */}
-              <div id="digital-twin">
-                <StudentDigitalTwinSection />
-              </div>
-
               {/* Student Profile Story */}
               <div id="dashboard">
                 <StudentDashboardStory />
@@ -164,11 +150,9 @@ export function App() {
                 <AIAssistantSection />
               </div>
 
-              {/* Learning Roadmap & Skill-Gap Analysis */}
+              {/* Skill-Gap Analysis */}
               <div id="roadmap">
-                <LearningRoadmapSection />
                 <SkillGapSection />
-                <WeeklyPlanSection />
               </div>
 
               {/* Faculty Mentoring */}
