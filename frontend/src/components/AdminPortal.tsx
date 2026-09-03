@@ -650,26 +650,73 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col">
       
-      {/* 1. ADMIN SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
-        <div>
-          {/* Top Brand Header */}
-          <div className="p-6 border-b border-[#E2D7C6] flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">VIT</span>
+      {/* 1. UNIFIED FULL-WIDTH TOP HEADER BAR (CLEAN 90° CORNER WITH SIDEBAR DIVIDER) */}
+      <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] sticky top-0 z-30 shadow-xs flex flex-col lg:flex-row">
+        
+        {/* Top Brand Header (Matches Sidebar Width & Border-R) */}
+        <div className="w-full lg:w-64 h-[84px] px-6 lg:border-r border-[#E2D7C6] flex items-center space-x-3 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
+            <span className="text-[#F5C056]">VIT</span>
+          </div>
+          <div>
+            <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT Mumbai</h2>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
+              INSTITUTIONAL ADMIN
+            </p>
+          </div>
+        </div>
+
+        {/* Admin Identity + Action Controls */}
+        <div className="flex-1 px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-w-0">
+          <div className="flex items-center space-x-3.5 min-w-0">
+            <div className="w-11 h-11 rounded-2xl bg-[#123B63] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-[#C49A52]/40 shrink-0">
+              <span className="text-[#F5C056]">AD</span>
             </div>
-            <div>
-              <h2 className="text-sm font-extrabold text-[#102A43] tracking-tight">VIT Mumbai</h2>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#C49A52]">
-                INSTITUTIONAL ADMIN
+            <div className="min-w-0">
+              <div className="flex items-center space-x-2">
+                <h1 className="text-lg font-extrabold text-[#102A43]">VIT Institutional Administration</h1>
+                <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold border border-[#E2D7C6] shrink-0">
+                  Super Admin
+                </span>
+              </div>
+              <p className="text-xs text-[#5A6E7F]">
+                System configuration • Data governance • AI operations | VIT Wadala
               </p>
             </div>
           </div>
 
-          {/* Grouped Navigation Links */}
-          <nav className="p-4 space-y-4 text-xs font-semibold overflow-y-auto max-h-[calc(100vh-210px)]">
+          {/* Right Action Controls (AI Assistant button removed from top header) */}
+          <div className="flex items-center space-x-3 shrink-0 self-start sm:self-center">
+            <button 
+              onClick={() => setActiveNav('Audit Logs')}
+              className="p-2.5 rounded-xl bg-[#F7F2E9] hover:bg-[#E9DDC9] text-[#102A43] border border-[#E2D7C6] relative cursor-pointer shadow-2xs transition-colors"
+              title="View Audit Notifications"
+            >
+              <Bell className="w-4 h-4 text-[#123B63]" />
+              <span className="w-2 h-2 rounded-full bg-[#B91C1C] absolute top-1.5 right-1.5" />
+            </button>
+
+            <button
+              onClick={onBackToLanding}
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-2xs transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
+              <span>Back to Portal Overview</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 2. BODY CONTENT (SIDEBAR + MAIN) */}
+      <div className="flex-1 flex flex-col lg:flex-row min-h-0">
+        
+        {/* ADMIN SIDEBAR NAVIGATION */}
+        <aside className="w-full lg:w-64 bg-[#FFFDF8] border-b lg:border-b-0 lg:border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
+          <div>
+            {/* Grouped Navigation Links */}
+            <nav className="p-4 space-y-4 text-xs font-semibold overflow-y-auto max-h-[calc(100vh-210px)]">
             
             {/* Group 1: Overview */}
             <div className="space-y-1">
@@ -853,53 +900,6 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
       {/* 2. MAIN DASHBOARD CONTENT AREA */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* TOP ADMIN IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
-          <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#123B63] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-[#C49A52]/40">
-              <span className="text-[#F5C056]">AD</span>
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="text-lg font-extrabold text-[#102A43]">VIT Institutional Administration</h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#E9DDC9] text-[#102A43] text-[10px] font-bold border border-[#E2D7C6]">
-                  Super Admin
-                </span>
-              </div>
-              <p className="text-xs text-[#5A6E7F]">
-                System configuration • Data governance • AI operations | VIT Wadala
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setActiveNav('AI Configuration')}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#123B63] hover:bg-[#1D4E73] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#F5C056]" />
-              <span>✦ Admin AI Assistant</span>
-            </button>
-
-            <button 
-              onClick={() => setActiveNav('Audit Logs')}
-              className="p-2 rounded-full bg-[#F7F2E9] hover:bg-[#E9DDC9] text-[#102A43] border border-[#E2D7C6] relative cursor-pointer"
-              title="View Audit Notifications"
-            >
-              <Bell className="w-4 h-4" />
-              <span className="w-2 h-2 rounded-full bg-[#B91C1C] absolute top-1 right-1" />
-            </button>
-
-            <button
-              onClick={onBackToLanding}
-              className="flex items-center space-x-2 px-4 py-2 rounded-full bg-white hover:bg-[#F7F2E9] text-[#102A43] text-xs font-bold border border-[#E2D7C6] shadow-xs transition-colors cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-              <span>Back to Portal Overview</span>
-            </button>
-          </div>
-        </header>
-
         {/* MAIN BODY WRAPPER */}
         <main className="p-6 max-w-7xl mx-auto space-y-6 w-full flex-1">
           
@@ -2461,6 +2461,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToLanding }) => 
 
         </main>
       </div>
+    </div>
 
       {/* 3. DOCUMENT UPLOAD MODAL */}
       <AnimatePresence>
