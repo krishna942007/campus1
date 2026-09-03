@@ -25,8 +25,6 @@ export function MengToSketchbookSection() {
   const borderRadius = useTransform(scrollYProgress, [0.05, 0.18, 0.80, 0.92], [24, 0, 0, 24]);
   const borderOpacity = useTransform(scrollYProgress, [0.05, 0.18, 0.80, 0.92], [1, 0, 0, 1]);
 
-  // Hint opacity
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.05, 0.16, 0.80, 0.92], [1, 1, 0, 0, 1]);
 
   // Helper functions to send postMessages cleanly without message loop/flooding
   const sendSlideMessage = (win: Window, ratio: number) => {
@@ -146,17 +144,6 @@ export function MengToSketchbookSection() {
             headingLetterSpacing={0.010}
             style={{ width: '100%', height: '100%' }}
           />
-        </motion.div>
-
-        {/* Scroll Zoom & Progression Hint Indicator */}
-        <motion.div
-          style={{ opacity: hintOpacity }}
-          className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0C2238]/10 backdrop-blur-md border border-[#0C2238]/15 text-xs text-[#10253A]/80 font-medium pointer-events-none"
-        >
-          <span>Scroll main page to zoom, flip spreads & explore full feature info</span>
-          <svg className="w-3.5 h-3.5 animate-bounce text-[#C99632]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
         </motion.div>
 
       </div>

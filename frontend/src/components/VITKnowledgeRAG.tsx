@@ -86,12 +86,12 @@ export const VITKnowledgeRAG: React.FC = () => {
   const handleExecuteSearch = (queryText?: string) => {
     const textToSearch = queryText || searchQuery || 'What is the attendance policy for end-semester examinations at VIT Wadala?';
     setIsSearching(true);
-    setSearchStage('SEARCHING OFFICIAL KNOWLEDGE BASE...');
+    setSearchStage('Searching Official Knowledge Base...');
 
     setTimeout(() => {
-      setSearchStage('DOCUMENTS FOUND: 4');
+      setSearchStage('Documents Found: 4');
       setTimeout(() => {
-        setSearchStage('RELEVANT EVIDENCE IDENTIFIED');
+        setSearchStage('Relevant Evidence Identified');
         setTimeout(() => {
           setIsSearching(false);
           const found = RAG_CATALOG.find(d => d.q.toLowerCase().includes(textToSearch.toLowerCase())) || RAG_CATALOG[0];
@@ -120,14 +120,14 @@ export const VITKnowledgeRAG: React.FC = () => {
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
             <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-              TRUSTWORTHY INSTITUTIONAL RAG KNOWLEDGE BASE
+              Trustworthy Institutional RAG Knowledge Base
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-            ASK VIT. <br />
+            Ask VIT. <br />
             <span className="text-[#C99632] font-serif-accent italic font-normal">
-              GET GROUNDED ANSWERS.
+              Get Grounded Answers.
             </span>
           </h2>
 

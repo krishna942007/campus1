@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VITARA — VIT Mumbai</title>
+<title>Campus1: VIT Mumbai</title>
 <meta name="description" content="Vidyalankar Institute of Technology Academic & Career Acceleration Platform — Wadala, Mumbai">
 <style>
 @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:block;
@@ -51,15 +51,30 @@ a{color:inherit;text-decoration:none}
 button{font:inherit}
 ::selection{background:rgba(43,39,33,.85);color:var(--paper)}
 
-/* the painted ground the whole page sits on */
+/* Vintage Academic Archive + Architectural Blueprint Linework + Parchment Texture Ground */
 .wash{
-  position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:radial-gradient(circle at 50% 35%, #f4efe4 0%, #ece7dc 70%, #e4dfd3 100%);
+  position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;
+  background:radial-gradient(circle at 50% 38%, #FAF6EE 0%, #F4EBD9 55%, #ECE2CC 100%);
   opacity:1;
 }
 .wash:after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(236,231,220,.1) 0%,rgba(236,231,220,.4) 58%,var(--paper) 88%);
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(247,244,238,.05) 0%,rgba(247,244,238,.35) 60%,var(--paper) 92%);
+}
+
+.parchment-texture-overlay{
+  position:absolute;inset:0;pointer-events:none;opacity:0.055;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.35 0 0 0 0.52  0 0.3 0 0 0.46  0 0 0.25 0 0.4  0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
+}
+
+.architectural-linework-layer{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+  opacity:0.045;
+}
+
+.parchment-center-clearing{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 45%, rgba(250,246,238,0.92) 0%, rgba(250,246,238,0.5) 45%, transparent 85%);
 }
 
 /* ---------------- top bar ---------------- */
@@ -437,14 +452,115 @@ button{font:inherit}
 </style>
 </head>
 <body>
-<div class="wash" aria-hidden="true"></div>
+<div class="wash" aria-hidden="true">
+  <!-- Fine Parchment Paper Grain Texture Layer -->
+  <div class="parchment-texture-overlay"></div>
+
+  <!-- Faint Architectural & Academic Vector Linework (3-5% Opacity) -->
+  <svg class="architectural-linework-layer" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#6E5B42" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- Top-Left Corner: Architectural Compass & Geometric Concentric Arcs -->
+    <g opacity="0.95">
+      <circle cx="100" cy="100" r="180" stroke-width="0.8" stroke-dasharray="3 6" />
+      <circle cx="100" cy="100" r="320" stroke-width="0.6" />
+      <circle cx="100" cy="100" r="500" stroke-width="0.7" stroke-dasharray="8 4 2 4" />
+      <circle cx="100" cy="100" r="750" stroke-width="0.5" />
+      <circle cx="100" cy="100" r="1050" stroke-width="0.4" stroke-dasharray="4 8" />
+
+      <line x1="100" y1="100" x2="950" y2="330" stroke-width="0.5" stroke-dasharray="2 4" />
+      <line x1="100" y1="100" x2="700" y2="700" stroke-width="0.5" />
+      <line x1="100" y1="100" x2="330" y2="950" stroke-width="0.5" stroke-dasharray="2 4" />
+
+      <!-- Top Margin Measurement Ticks -->
+      <line x1="200" y1="30" x2="200" y2="45" stroke-width="0.8" />
+      <line x1="250" y1="32" x2="250" y2="40" stroke-width="0.5" />
+      <line x1="300" y1="30" x2="300" y2="45" stroke-width="0.8" />
+      <line x1="350" y1="32" x2="350" y2="40" stroke-width="0.5" />
+      <line x1="400" y1="30" x2="400" y2="45" stroke-width="0.8" />
+      <line x1="450" y1="32" x2="450" y2="40" stroke-width="0.5" />
+      <line x1="500" y1="30" x2="500" y2="45" stroke-width="0.8" />
+      <line x1="200" y1="37" x2="500" y2="37" stroke-width="0.5" />
+
+      <circle cx="60" cy="60" r="12" stroke-width="0.6" />
+      <line x1="40" y1="60" x2="80" y2="60" stroke-width="0.6" />
+      <line x1="60" y1="40" x2="60" y2="80" stroke-width="0.6" />
+
+      <!-- Faint Classical Arch Contour -->
+      <path d="M 40 450 L 40 260 Q 40 120 180 120 L 320 120" stroke-width="0.6" />
+      <path d="M 55 450 L 55 268 Q 55 135 188 135 L 320 135" stroke-width="0.4" stroke-dasharray="3 3" />
+    </g>
+
+    <!-- Top-Right Corner: Academic Golden Ratio & Scientific Grid -->
+    <g opacity="0.95">
+      <circle cx="1820" cy="100" r="220" stroke-width="0.7" />
+      <circle cx="1820" cy="100" r="400" stroke-width="0.5" stroke-dasharray="6 6" />
+      <circle cx="1820" cy="100" r="680" stroke-width="0.6" />
+      <circle cx="1820" cy="100" r="980" stroke-width="0.4" stroke-dasharray="2 4" />
+
+      <line x1="1820" y1="100" x2="1000" y2="320" stroke-width="0.5" stroke-dasharray="4 4" />
+      <line x1="1820" y1="100" x2="1200" y2="720" stroke-width="0.5" />
+      <line x1="1820" y1="100" x2="1520" y2="980" stroke-width="0.5" stroke-dasharray="4 4" />
+
+      <!-- Right Margin Measurement Scale Ticks -->
+      <line x1="1880" y1="200" x2="1895" y2="200" stroke-width="0.8" />
+      <line x1="1882" y1="250" x2="1890" y2="250" stroke-width="0.5" />
+      <line x1="1880" y1="300" x2="1895" y2="300" stroke-width="0.8" />
+      <line x1="1882" y1="350" x2="1890" y2="350" stroke-width="0.5" />
+      <line x1="1880" y1="400" x2="1895" y2="400" stroke-width="0.8" />
+      <line x1="1887" y1="200" x2="1887" y2="400" stroke-width="0.5" />
+
+      <circle cx="1860" cy="60" r="12" stroke-width="0.6" />
+      <line x1="1840" y1="60" x2="1880" y2="60" stroke-width="0.6" />
+      <line x1="1860" y1="40" x2="1860" y2="80" stroke-width="0.6" />
+    </g>
+
+    <!-- Bottom-Left Corner: Architectural Column Fluting & Datum Grid -->
+    <g opacity="0.95">
+      <circle cx="100" cy="980" r="200" stroke-width="0.7" stroke-dasharray="5 5" />
+      <circle cx="100" cy="980" r="420" stroke-width="0.5" />
+      <circle cx="100" cy="980" r="700" stroke-width="0.6" stroke-dasharray="8 4" />
+
+      <!-- Faint Classical Column Fluting Lines -->
+      <line x1="60" y1="620" x2="60" y2="1020" stroke-width="0.5" />
+      <line x1="75" y1="620" x2="75" y2="1020" stroke-width="0.4" stroke-dasharray="4 4" />
+      <line x1="90" y1="620" x2="90" y2="1020" stroke-width="0.5" />
+      <line x1="105" y1="620" x2="105" y2="1020" stroke-width="0.4" stroke-dasharray="4 4" />
+      <line x1="120" y1="620" x2="120" y2="1020" stroke-width="0.5" />
+
+      <line x1="40" y1="920" x2="450" y2="920" stroke-width="0.5" />
+      <line x1="40" y1="970" x2="450" y2="970" stroke-width="0.5" stroke-dasharray="2 4" />
+
+      <circle cx="60" cy="1020" r="12" stroke-width="0.6" />
+      <line x1="40" y1="1020" x2="80" y2="1020" stroke-width="0.6" />
+      <line x1="60" y1="1000" x2="60" y2="1040" stroke-width="0.6" />
+    </g>
+
+    <!-- Bottom-Right Corner: Astrolabe & Radial Celestial Diagram -->
+    <g opacity="0.95">
+      <circle cx="1820" cy="980" r="180" stroke-width="0.8" />
+      <circle cx="1820" cy="980" r="340" stroke-width="0.6" stroke-dasharray="6 3" />
+      <circle cx="1820" cy="980" r="560" stroke-width="0.5" />
+      <circle cx="1820" cy="980" r="820" stroke-width="0.4" stroke-dasharray="4 8" />
+
+      <line x1="1820" y1="980" x2="950" y2="780" stroke-width="0.5" stroke-dasharray="3 3" />
+      <line x1="1820" y1="980" x2="1200" y2="380" stroke-width="0.5" />
+
+      <circle cx="1860" cy="1020" r="12" stroke-width="0.6" />
+      <line x1="1840" y1="1020" x2="1880" y2="1020" stroke-width="0.6" />
+      <line x1="1860" y1="1000" x2="1860" y2="1040" stroke-width="0.6" />
+    </g>
+  </svg>
+
+  <!-- Central Area Soft Clearing Mask -->
+  <div class="parchment-center-clearing"></div>
+</div>
 <main class="page home">
 
   <header class="top">
-    <a class="name" href="#">VITARA</a>
+    <a class="name" href="#">Campus1</a>
     <nav>
       <a href="#plates">Features</a>
-      <a href="#about">About VITARA</a>
+      <a href="#about">About Campus1</a>
       <a href="#contact">Support</a>
       <div class="top-socials">
         <a href="#" class="icon-btn" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.7 2.6h3.3l-7.2 8.2 8.5 11.2h-6.7l-5.2-6.9-6 6.9H1.1l7.7-8.8L.7 2.6h6.9l4.7 6.3 5.4-6.3Zm-1.2 17.5h1.8L7.6 4.4H5.7l10.8 15.7Z"/></svg></a>
@@ -491,7 +607,7 @@ button{font:inherit}
           <span class="tool-sep" aria-hidden="true"></span>
           <button class="tool" id="loupeBtn" aria-label="magnifier" aria-pressed="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8.8" cy="8.8" r="5.8"/><path d="M13 13l4.4 4.4"/><path d="M6.4 7.2a3.2 3.2 0 0 1 2.4-1.4" opacity=".55"/></svg></button>
         </div>
-        <p class="sb-hint" id="sbHint">Drag the page to turn · Drag the magnifying glass to inspect VITARA features</p>
+        <p class="sb-hint" id="sbHint">Drag the page to turn · Drag the magnifying glass to inspect Campus1 features</p>
       </div>
 
       <button class="hero-down" id="heroDown" aria-label="scroll to about">
@@ -506,8 +622,8 @@ button{font:inherit}
 
     <section id="about" class="about">
       <div>
-        <p class="section-label">About VITARA</p>
-        <p class="bio">VITARA (Vidyalankar Institute of Technology Academic & Career Acceleration Platform) is a unified, next-generation AI-powered institutional ecosystem built for <a class="bio-link" href="#">VIT Mumbai</a>. It unifies live attendance tracking with safe-to-miss lecture calculators, an automated student-mentor compatibility matching engine, grounded Gemini 2.0 RAG search over autonomous college regulations, and milestone-based technical career roadmaps.</p>
+        <p class="section-label">About Campus1</p>
+        <p class="bio">Campus1 (Vidyalankar Institute of Technology Academic & Career Acceleration Platform) is a unified, next-generation AI-powered institutional ecosystem built for <a class="bio-link" href="#">VIT Mumbai</a>. It unifies live attendance tracking with safe-to-miss lecture calculators, an automated student-mentor compatibility matching engine, grounded Gemini 2.0 RAG search over autonomous college regulations, and milestone-based technical career roadmaps.</p>
       </div>
     </section>
 
@@ -519,7 +635,7 @@ button{font:inherit}
     </section>
 
     <div class="rule short" aria-hidden="true"></div>
-    <p class="foot" id="contact">Vidyalankar Institute of Technology · Wadala, Mumbai · <a href="mailto:support@vitara.edu.in" class="bio-link">support@vitara.edu.in</a></p>
+    <p class="foot" id="contact">Vidyalankar Institute of Technology · Wadala, Mumbai · <a href="mailto:support@campus1.edu.in" class="bio-link">support@campus1.edu.in</a></p>
   </div>
 </main>
 

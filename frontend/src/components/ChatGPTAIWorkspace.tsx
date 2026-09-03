@@ -51,7 +51,7 @@ interface ChatGPTAIWorkspaceProps {
 }
 
 export const ChatGPTAIWorkspace: React.FC<ChatGPTAIWorkspaceProps> = ({
-  userName = 'Krishna Singh',
+  userName = 'Aarav Sharma',
   userRole = 'STUDENT',
   defaultPrompt,
   onToast

@@ -123,14 +123,14 @@ export const SkillGapSection: React.FC = () => {
             <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#EFE7D8] border border-[#C99632]/25">
               <Sparkles className="w-3.5 h-3.5 text-[#C99632]" />
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#7A6437]">
-                INTELLIGENT SKILL ANALYSIS SYSTEM
+                Intelligent Skill Analysis System
               </span>
             </div>
 
             <h2 className="text-4xl sm:text-5xl font-extrabold text-[#10253A] tracking-tight leading-[1.12] font-display">
-              KNOW WHERE <br />
+              Know Where <br />
               <span className="text-[#C99632] font-serif-accent italic font-normal">
-                YOU STAND.
+                You Stand.
               </span>
             </h2>
 
@@ -259,17 +259,17 @@ export const SkillGapSection: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 p-6 sm:p-8 bg-[#0C2340]/90 sm:bg-black/75 backdrop-blur-xl text-white border border-white/10 shadow-2xl space-y-6 rounded-3xl relative overflow-hidden"
+            className="lg:col-span-5 p-6 sm:p-8 bg-[#FAF7F0]/95 sm:bg-[#F7F4EE]/90 backdrop-blur-xl text-[#10253A] border border-[#0C2238]/12 shadow-2xl space-y-6 rounded-3xl relative overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center justify-between border-b border-[#0C2238]/10 pb-4">
               <div>
-                <span className="text-[10px] font-extrabold text-[#E8C56B] tracking-wider block uppercase">
+                <span className="text-[10px] font-extrabold text-[#C99632] tracking-wider block uppercase">
                   HIGH IMPACT RANKING
                 </span>
-                <h3 className="text-xl font-extrabold font-display text-white">Role Priority Index</h3>
+                <h3 className="text-xl font-extrabold font-display text-[#10253A]">Role Priority Index</h3>
               </div>
-              <span className="text-xs font-extrabold text-[#E8C56B] bg-[#C99632]/20 px-3 py-1 border border-[#C99632]/40 rounded-full">
+              <span className="text-xs font-extrabold text-[#0C2238] bg-[#EFE7D8] px-3 py-1 border border-[#C99632]/35 rounded-full">
                 TARGET: {state.careerGoal}
               </span>
             </div>
@@ -279,15 +279,15 @@ export const SkillGapSection: React.FC = () => {
               {skillCatalog
                 .filter(s => s.impact === 'HIGH IMPACT' || s.impact === 'MEDIUM IMPACT')
                 .map(s => (
-                  <div key={s.name} className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between text-xs">
+                  <div key={s.name} className="p-3.5 rounded-2xl bg-[#FFFCF7] border border-[#0C2238]/10 flex items-center justify-between text-xs shadow-2xs">
                     <div className="flex items-center space-x-2.5">
-                      <span className="w-5 h-5 rounded-full bg-[#C99632]/30 text-[#E8C56B] font-mono font-bold flex items-center justify-center text-[10px]">
+                      <span className="w-5 h-5 rounded-full bg-[#0C2238]/08 text-[#0C2238] font-mono font-bold flex items-center justify-center text-[10px]">
                         #{s.rank}
                       </span>
-                      <span className="font-extrabold text-white">{s.name}</span>
+                      <span className="font-extrabold text-[#10253A]">{s.name}</span>
                     </div>
                     <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md ${
-                      s.impact === 'HIGH IMPACT' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                      s.impact === 'HIGH IMPACT' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
                     }`}>
                       {s.impact}
                     </span>
@@ -296,45 +296,45 @@ export const SkillGapSection: React.FC = () => {
             </div>
 
             {/* 4. TIME WASTE DETECTOR BANNER */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 to-amber-500/5 border border-amber-500/30 space-y-1.5">
-              <div className="flex items-center space-x-2 text-amber-400">
-                <ShieldAlert className="w-4 h-4" />
+            <div className="p-4 rounded-2xl bg-[#EFE7D8]/80 border border-[#C99632]/40 space-y-1.5">
+              <div className="flex items-center space-x-2 text-[#7A6437]">
+                <ShieldAlert className="w-4 h-4 text-[#C99632]" />
                 <span className="text-xs font-extrabold uppercase">TIME WASTE DETECTOR ACTIVE</span>
               </div>
-              <p className="text-xs text-slate-200 leading-relaxed">
-                Python score (95%) exceeds required benchmark (85%). Stop spending study time on Python and reallocate <strong className="text-[#E8C56B]">~8 hours</strong> to PyTorch.
+              <p className="text-xs text-[#627083] leading-relaxed">
+                Python score (95%) exceeds required benchmark (85%). Stop spending study time on Python and reallocate <strong className="text-[#0C2238]">~8 hours</strong> to PyTorch.
               </p>
             </div>
 
             {/* Selected Skill Inspector Modal / Expanded Box */}
             {selectedSkill && (
-              <div className="p-5 rounded-2xl bg-white/10 border border-[#C99632]/50 space-y-3 relative">
+              <div className="p-5 rounded-2xl bg-[#FFFCF7] border border-[#C99632]/40 space-y-3 relative shadow-md">
                 <button
                   onClick={() => setSelectedSkill(null)}
-                  className="absolute top-3 right-3 p-1 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white"
+                  className="absolute top-3 right-3 p-1 rounded-lg hover:bg-[#0C2238]/08 text-[#627083] hover:text-[#10253A]"
                 >
                   <X className="w-4 h-4" />
                 </button>
 
                 <div className="flex items-center space-x-2">
-                  <Sparkles className="w-4 h-4 text-[#E8C56B]" />
-                  <h4 className="text-sm font-extrabold text-white font-display">{selectedSkill.name} Analysis</h4>
+                  <Sparkles className="w-4 h-4 text-[#C99632]" />
+                  <h4 className="text-sm font-extrabold text-[#10253A] font-display">{selectedSkill.name} Analysis</h4>
                 </div>
 
-                <div className="text-xs space-y-1.5 text-slate-200">
+                <div className="text-xs space-y-1.5 text-[#627083]">
                   <p><strong>Current vs Target:</strong> {selectedSkill.percent}% vs {selectedSkill.target}% ({selectedSkill.state})</p>
-                  <p className="italic text-[#E8C56B]">"AI Verdict: {selectedSkill.verdict}"</p>
+                  <p className="italic text-[#C99632]">"AI Verdict: {selectedSkill.verdict}"</p>
                   {selectedSkill.wasteHours && (
-                    <p className="text-amber-400 font-bold">⚠️ Waste Alert: ~{selectedSkill.wasteHours} unnecessary study hours detected!</p>
+                    <p className="text-amber-700 font-bold">⚠️ Waste Alert: ~{selectedSkill.wasteHours} unnecessary study hours detected!</p>
                   )}
                 </div>
 
                 <button
                   onClick={() => handleAddToRoadmap(selectedSkill)}
-                  className="w-full py-2 rounded-xl bg-[#C99632] hover:bg-[#b08226] text-[#0C2238] font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1.5"
+                  className="w-full py-2.5 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center justify-center space-x-1.5"
                 >
                   <span>Add {selectedSkill.name} to Roadmap</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#E8C56B]" />
                 </button>
               </div>
             )}

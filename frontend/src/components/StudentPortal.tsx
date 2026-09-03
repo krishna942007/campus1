@@ -110,10 +110,10 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
 
   const addToast = (title: string, message: string, type: 'success' | 'info' | 'warning' | 'error' = 'success') => {
     const id = `toast-${Date.now()}-${Math.random()}`;
-    setToasts((prev) => [...prev, { id, title, message, type }]);
+    setToasts((prev) => [...prev, { id, title, message, type, duration: 2000 }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4500);
+    }, 2000);
   };
 
   const dismissToast = (id: string) => {
@@ -184,7 +184,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
     const fallback = studentDefaults[sKey] || {};
 
     return {
-      name: currentUser?.name || fallback.name || 'Krishna Singh',
+      name: currentUser?.name || fallback.name || 'Aarav Sharma',
       studentId: currentUser?.rollNo || '2023CSE001',
       prn: currentUser?.rollNo ? `202301240${currentUser.rollNo.slice(-3)}` : '202301240091',
       program: 'B.Tech Engineering',
@@ -2252,7 +2252,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                     type="text"
                     value={submissionFileName}
                     onChange={(e) => setSubmissionFileName(e.target.value)}
-                    placeholder="e.g. CS503_KrishnaSingh_Lab3_RAG.zip"
+                    placeholder="e.g. CS503_AaravSharma_Lab3_RAG.zip"
                     className="w-full mt-1 p-2.5 rounded-xl bg-[#F7F2E9] border border-[#E2D7C6] font-semibold text-[#102A43]"
                     required
                   />

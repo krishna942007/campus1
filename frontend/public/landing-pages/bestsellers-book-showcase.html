@@ -78,9 +78,35 @@
       min-height: 100svh;
       overflow: hidden;
       background:
-        radial-gradient(ellipse at 50% 25%, rgba(224, 208, 180, .6), transparent 64%),
-        radial-gradient(circle at 50% 85%, rgba(206, 186, 154, .45), transparent 50%),
-        linear-gradient(180deg, #FAF6EE 0%, #F4EBD9 42%, #E8DEC8 100%);
+        radial-gradient(circle at 50% 38%, #FAF6EE 0%, #F4EBD9 55%, #ECE2CC 100%);
+    }
+
+    .parchment-texture-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.055;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.35 0 0 0 0.52  0 0.3 0 0 0.46  0 0 0.25 0 0.4  0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
+    }
+
+    .architectural-linework-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.045;
+    }
+
+    .parchment-center-clearing {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 45%, rgba(250, 246, 238, 0.92) 0%, rgba(250, 246, 238, 0.5) 45%, transparent 85%);
     }
 
     .stage::after {
@@ -614,18 +640,17 @@
       position: relative;
       width: 100%;
       padding: 42px 36px 32px;
-      background: radial-gradient(ellipse at 50% 20%, rgba(46, 38, 28, 0.96) 0%, rgba(20, 17, 13, 0.98) 100%);
-      border: 1px solid rgba(212, 185, 142, 0.38);
+      background: rgba(15, 23, 42, 0.85); /* Dark Blue Background */
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
       box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.65),
-        0 4px 16px rgba(0, 0, 0, 0.4),
-        inset 0 0 0 1px rgba(212, 185, 142, 0.12),
-        inset 0 1px 20px rgba(195, 164, 123, 0.08);
-      color: #dfd1be;
+        0 24px 60px rgba(0, 0, 0, 0.4),
+        0 20px 25px -5px rgba(15, 23, 42, 0.2);
+      color: #f8fafc;
       text-align: center;
       user-select: none;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     /* Corner Accents */
@@ -636,7 +661,7 @@
       width: 24px;
       height: 24px;
       pointer-events: none;
-      border-color: rgba(212, 185, 142, 0.55);
+      border-color: rgba(255, 255, 255, 0.25);
       border-style: solid;
     }
     .vintage-login-card::before {
@@ -664,7 +689,7 @@
       position: absolute;
       width: 24px;
       height: 24px;
-      border-color: rgba(212, 185, 142, 0.55);
+      border-color: rgba(255, 255, 255, 0.25);
       border-style: solid;
     }
     .card-inner-corners::before {
@@ -680,23 +705,10 @@
       border-bottom-right-radius: 12px;
     }
 
-    /* Top Crest Flourish */
-    .vintage-crest {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .crest-svg {
-      width: 110px;
-      height: 38px;
-      color: #c9a674;
-    }
-
     /* Title & Subtitle */
     .vintage-title {
       margin: 2px 0 4px;
-      color: #ebdcc4;
+      color: #ffffff;
       font-family: "Instrument Serif", "Cormorant Garamond", "Playfair Display", Georgia, serif;
       font-size: clamp(38px, 4vw, 54px);
       font-style: italic;
@@ -717,21 +729,25 @@
     .vintage-divider .div-line {
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201, 166, 116, 0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     }
     .vintage-divider .div-gem {
-      color: #c9a674;
+      color: #94a3b8;
       font-size: 11px;
       transform: rotate(45deg);
     }
 
     .vintage-subtitle {
       margin: 0 0 24px;
-      color: #b7a48d;
+      color: #94a3b8;
       font-family: "Instrument Serif", "Newsreader", Georgia, serif;
       font-size: 15px;
       font-style: italic;
       letter-spacing: 0.02em;
+    }
+    
+    .vintage-login-card .cover-kicker {
+      color: #cbd5e1;
     }
 
     /* Form inputs */
@@ -749,25 +765,23 @@
       width: 100%;
       height: 52px;
       padding: 0 16px;
-      background: rgba(22, 19, 14, 0.72);
-      border: 1px solid rgba(201, 166, 116, 0.35);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 12px;
       transition: border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
     }
     .vintage-field:focus-within {
-      border-color: #dfcfb0;
-      background: rgba(32, 27, 20, 0.88);
-      box-shadow: 0 0 14px rgba(201, 166, 116, 0.25), inset 0 0 8px rgba(0, 0, 0, 0.4);
-    }
-
-    .field-icon {
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.1), inset 0 0 8px rgba(0, 0, 0, 0.2);
+    }    .field-icon {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 20px;
       height: 20px;
       margin-right: 12px;
-      color: #b7a48d;
+      color: #94a3b8;
       flex-shrink: 0;
     }
 
@@ -778,14 +792,14 @@
       background: transparent;
       border: none;
       outline: none;
-      color: #f7eedf;
+      color: #ffffff;
       font-family: "Instrument Serif", "Newsreader", Georgia, serif;
       font-size: 16px;
       font-style: italic;
       letter-spacing: 0.02em;
     }
     .vintage-input::placeholder {
-      color: rgba(183, 164, 141, 0.55);
+      color: rgba(255, 255, 255, 0.4);
       font-style: italic;
     }
 
@@ -796,12 +810,12 @@
       background: none;
       border: none;
       padding: 4px;
-      color: #b7a48d;
+      color: #94a3b8;
       cursor: pointer;
       transition: color 180ms ease;
     }
     .password-toggle:hover {
-      color: #f7eedf;
+      color: #ffffff;
     }
 
     /* Submit Button */
@@ -815,10 +829,10 @@
       height: 54px;
       margin-top: 6px;
       padding: 0 24px;
-      background: linear-gradient(180deg, #ebdcc4 0%, #dfcbab 100%);
-      border: 1px solid #dfcbab;
+      background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
-      color: #2a2217;
+      color: #0f172a;
       font-family: "Instrument Serif", "Cormorant Garamond", Georgia, serif;
       font-size: 22px;
       font-style: italic;
@@ -839,8 +853,7 @@
 
     .leaf-motif {
       font-size: 16px;
-      color: #7b6246;
-      line-height: 1;
+      opacity: 0.9;
     }
 
     /* Bottom Rosette Emblem */
@@ -1372,13 +1385,109 @@
 </head>
 <body data-mode="gallery" data-menu="closed">
   <main class="stage" aria-label="Interactive AI coding field library">
+    <!-- Fine Parchment Paper Grain Texture Layer -->
+    <div class="parchment-texture-overlay"></div>
+
+    <!-- Faint Architectural & Academic Vector Linework (3-5% Opacity) -->
+    <svg class="architectural-linework-layer" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#6E5B42" stroke-linecap="round" stroke-linejoin="round">
+      
+      <!-- Top-Left Corner: Architectural Compass & Geometric Concentric Arcs -->
+      <g opacity="0.95">
+        <circle cx="100" cy="100" r="180" stroke-width="0.8" stroke-dasharray="3 6" />
+        <circle cx="100" cy="100" r="320" stroke-width="0.6" />
+        <circle cx="100" cy="100" r="500" stroke-width="0.7" stroke-dasharray="8 4 2 4" />
+        <circle cx="100" cy="100" r="750" stroke-width="0.5" />
+        <circle cx="100" cy="100" r="1050" stroke-width="0.4" stroke-dasharray="4 8" />
+
+        <line x1="100" y1="100" x2="950" y2="330" stroke-width="0.5" stroke-dasharray="2 4" />
+        <line x1="100" y1="100" x2="700" y2="700" stroke-width="0.5" />
+        <line x1="100" y1="100" x2="330" y2="950" stroke-width="0.5" stroke-dasharray="2 4" />
+
+        <!-- Top Margin Measurement Ticks -->
+        <line x1="200" y1="30" x2="200" y2="45" stroke-width="0.8" />
+        <line x1="250" y1="32" x2="250" y2="40" stroke-width="0.5" />
+        <line x1="300" y1="30" x2="300" y2="45" stroke-width="0.8" />
+        <line x1="350" y1="32" x2="350" y2="40" stroke-width="0.5" />
+        <line x1="400" y1="30" x2="400" y2="45" stroke-width="0.8" />
+        <line x1="450" y1="32" x2="450" y2="40" stroke-width="0.5" />
+        <line x1="500" y1="30" x2="500" y2="45" stroke-width="0.8" />
+        <line x1="200" y1="37" x2="500" y2="37" stroke-width="0.5" />
+
+        <circle cx="60" cy="60" r="12" stroke-width="0.6" />
+        <line x1="40" y1="60" x2="80" y2="60" stroke-width="0.6" />
+        <line x1="60" y1="40" x2="60" y2="80" stroke-width="0.6" />
+
+        <!-- Faint Classical Arch Contour -->
+        <path d="M 40 450 L 40 260 Q 40 120 180 120 L 320 120" stroke-width="0.6" />
+        <path d="M 55 450 L 55 268 Q 55 135 188 135 L 320 135" stroke-width="0.4" stroke-dasharray="3 3" />
+      </g>
+
+      <!-- Top-Right Corner: Academic Golden Ratio & Scientific Grid -->
+      <g opacity="0.95">
+        <circle cx="1820" cy="100" r="220" stroke-width="0.7" />
+        <circle cx="1820" cy="100" r="400" stroke-width="0.5" stroke-dasharray="6 6" />
+        <circle cx="1820" cy="100" r="680" stroke-width="0.6" />
+        <circle cx="1820" cy="100" r="980" stroke-width="0.4" stroke-dasharray="2 4" />
+
+        <line x1="1820" y1="100" x2="1000" y2="320" stroke-width="0.5" stroke-dasharray="4 4" />
+        <line x1="1820" y1="100" x2="1200" y2="720" stroke-width="0.5" />
+        <line x1="1820" y1="100" x2="1520" y2="980" stroke-width="0.5" stroke-dasharray="4 4" />
+
+        <!-- Right Margin Measurement Scale Ticks -->
+        <line x1="1880" y1="200" x2="1895" y2="200" stroke-width="0.8" />
+        <line x1="1882" y1="250" x2="1890" y2="250" stroke-width="0.5" />
+        <line x1="1880" y1="300" x2="1895" y2="300" stroke-width="0.8" />
+        <line x1="1882" y1="350" x2="1890" y2="350" stroke-width="0.5" />
+        <line x1="1880" y1="400" x2="1895" y2="400" stroke-width="0.8" />
+        <line x1="1887" y1="200" x2="1887" y2="400" stroke-width="0.5" />
+
+        <circle cx="1860" cy="60" r="12" stroke-width="0.6" />
+        <line x1="1840" y1="60" x2="1880" y2="60" stroke-width="0.6" />
+        <line x1="1860" y1="40" x2="1860" y2="80" stroke-width="0.6" />
+      </g>
+
+      <!-- Bottom-Left Corner: Architectural Column Fluting & Datum Grid -->
+      <g opacity="0.95">
+        <circle cx="100" cy="980" r="200" stroke-width="0.7" stroke-dasharray="5 5" />
+        <circle cx="100" cy="980" r="420" stroke-width="0.5" />
+        <circle cx="100" cy="980" r="700" stroke-width="0.6" stroke-dasharray="8 4" />
+
+        <!-- Faint Classical Column Fluting Lines -->
+        <line x1="60" y1="620" x2="60" y2="1020" stroke-width="0.5" />
+        <line x1="75" y1="620" x2="75" y2="1020" stroke-width="0.4" stroke-dasharray="4 4" />
+        <line x1="90" y1="620" x2="90" y2="1020" stroke-width="0.5" />
+        <line x1="105" y1="620" x2="105" y2="1020" stroke-width="0.4" stroke-dasharray="4 4" />
+        <line x1="120" y1="620" x2="120" y2="1020" stroke-width="0.5" />
+
+        <line x1="40" y1="920" x2="450" y2="920" stroke-width="0.5" />
+        <line x1="40" y1="970" x2="450" y2="970" stroke-width="0.5" stroke-dasharray="2 4" />
+
+        <circle cx="60" cy="1020" r="12" stroke-width="0.6" />
+        <line x1="40" y1="1020" x2="80" y2="1020" stroke-width="0.6" />
+        <line x1="60" y1="1000" x2="60" y2="1040" stroke-width="0.6" />
+      </g>
+
+      <!-- Bottom-Right Corner: Astrolabe & Radial Celestial Diagram -->
+      <g opacity="0.95">
+        <circle cx="1820" cy="980" r="180" stroke-width="0.8" />
+        <circle cx="1820" cy="980" r="340" stroke-width="0.6" stroke-dasharray="6 3" />
+        <circle cx="1820" cy="980" r="560" stroke-width="0.5" />
+        <circle cx="1820" cy="980" r="820" stroke-width="0.4" stroke-dasharray="4 8" />
+
+        <line x1="1820" y1="980" x2="950" y2="780" stroke-width="0.5" stroke-dasharray="3 3" />
+        <line x1="1820" y1="980" x2="1200" y2="380" stroke-width="0.5" />
+
+        <circle cx="1860" cy="1020" r="12" stroke-width="0.6" />
+        <line x1="1840" y1="1020" x2="1880" y2="1020" stroke-width="0.6" />
+        <line x1="1860" y1="1000" x2="1860" y2="1040" stroke-width="0.6" />
+      </g>
+    </svg>
+
+    <!-- Central Area Soft Clearing Mask -->
+    <div class="parchment-center-clearing"></div>
     <header class="topbar">
       <a class="brand" href="#" aria-label="Campus1 home">Campus1</a>
       <div class="nav-actions">
-        <button class="icon-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">
-          <span class="menu-glyph" aria-hidden="true"></span>
-        </button>
-        <button class="ticket-button" type="button" data-toast="The collection is complete.">The Collection</button>
       </div>
     </header>
 
@@ -1483,22 +1592,8 @@
       <div class="vintage-login-card">
         <div class="card-inner-corners"></div>
         
-        <!-- Top Ornate Crest Motif -->
-        <div class="vintage-crest">
-          <svg class="crest-svg" viewBox="0 0 120 44" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M60 4c-3 8-10 14-22 15 12 1 18 8 20 18 2-10 8-17 20-18-12-1-19-7-22-15z" stroke-width="1.2" fill="rgba(201, 166, 116, 0.15)"/>
-            <path d="M38 19c-8 0-16-4-22-10 2 8 8 15 16 17-6 1-13-2-18-7 4 9 12 13 22 13" stroke-width="1" stroke-linecap="round"/>
-            <path d="M82 19c8 0 16-4 22-10-2 8-8 15-16 17 6 1 13-2 18-7-4 9-12 13-22 13" stroke-width="1" stroke-linecap="round"/>
-            <circle cx="60" cy="22" r="2.5" fill="currentColor"/>
-            <circle cx="48" cy="18" r="1.5" fill="currentColor"/>
-            <circle cx="72" cy="18" r="1.5" fill="currentColor"/>
-            <circle cx="34" cy="24" r="1.2" fill="currentColor"/>
-            <circle cx="86" cy="24" r="1.2" fill="currentColor"/>
-          </svg>
-        </div>
-
         <!-- Role Badge -->
-        <div class="vintage-role-badge" id="roleBadgeText" style="text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a674; margin-bottom: 4px;">STUDENT ACCESS</div>
+        <div class="vintage-role-badge" id="roleBadgeText" style="text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #cbd5e1; margin-bottom: 4px;">STUDENT ACCESS</div>
 
         <!-- Title -->
         <h2 class="vintage-title" id="cardTitle">Student Portal</h2>
@@ -1652,7 +1747,7 @@
         cursor: {
           role: 'ADMIN',
           badge: 'INSTITUTIONAL ADMIN ACCESS',
-          title: 'Admin Suite',
+          title: 'Admin',
           subtitle: 'Institutional telemetry, live ERP sync & campus management',
           defaultUser: 'admin@vit.edu.in',
           placeholder: 'Admin Institutional Email (e.g. admin@vit.edu.in)',
@@ -1856,8 +1951,12 @@
         if (!frame) frame = window.requestAnimationFrame(updateParallax);
       });
 
-      closeButton.addEventListener("click", closeDetail);
-      menuButton.addEventListener("click", () => toggleMenu());
+      if (closeButton) {
+        closeButton.addEventListener("click", closeDetail);
+      }
+      if (menuButton) {
+        menuButton.addEventListener("click", () => toggleMenu());
+      }
 
       document.addEventListener("click", (event) => {
         const toastTarget = event.target.closest("[data-toast]");
@@ -1885,21 +1984,22 @@
       function submitInlineLogin() {
         const usernameInput = document.querySelector("#inlineUsernameInput");
         const passwordInput = document.querySelector("#inlinePasswordInput");
-        const username = (usernameInput?.value || activeBookRole.defaultUser).trim();
+        const activeRole = activeBookRole || ROLE_CONFIGS.claude;
+        const username = (usernameInput?.value || activeRole.defaultUser).trim();
         const password = (passwordInput?.value || 'password123').trim();
 
-        showToast(activeBookRole.toastMsg);
+        showToast(activeRole.toastMsg);
 
         try {
           if (window.parent && window.parent !== window) {
             window.parent.postMessage({
               type: 'campus1-role-login',
-              role: activeBookRole.role,
+              role: activeRole.role,
               username: username,
               password: password
             }, '*');
           } else {
-            window.location.href = activeBookRole.targetPath;
+            window.location.href = activeRole.targetPath;
           }
         } catch (e) {
           console.error(e);

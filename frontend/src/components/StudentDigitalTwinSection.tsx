@@ -261,7 +261,7 @@ export const StudentDigitalTwinSection: React.FC = () => {
 
               <div>
                 <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white tracking-tight">
-                  KRISHNA SINGH
+                  AARAV SHARMA
                 </h3>
                 <p className="text-xs text-[#E8C56B] font-extrabold mt-1">
                   Career Goal: {state.careerGoal}

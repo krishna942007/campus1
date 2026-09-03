@@ -166,7 +166,7 @@ export const FutureSimulatorModal: React.FC<FutureSimulatorModalProps> = ({ isOp
               </div>
               <div>
                 <h2 className="text-base font-extrabold font-display text-white flex items-center space-x-2">
-                  <span>WHAT IF? — FUTURE SIMULATOR</span>
+                  <span>What If?: Future Simulator</span>
                   <span className="px-2 py-0.5 rounded-full bg-[#159A72] text-[9px] font-mono font-bold text-white uppercase">
                     Live Engine Active
                   </span>
@@ -189,22 +189,22 @@ export const FutureSimulatorModal: React.FC<FutureSimulatorModalProps> = ({ isOp
             {/* Header: Current State Banner */}
             <div className="p-5 rounded-2xl bg-white/5 border border-white/10 grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">TARGET GOAL</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Target Goal</span>
                 <span className="text-sm font-extrabold text-[#E8C56B] block truncate">{state.careerGoal}</span>
               </div>
 
               <div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">CURRENT READINESS</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Current Readiness</span>
                 <span className="text-base font-extrabold text-white block">{currentReadiness}%</span>
               </div>
 
               <div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">SKILL ALIGNMENT</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Skill Alignment</span>
                 <span className="text-base font-extrabold text-white block">{currentAlignment}%</span>
               </div>
 
               <div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">ROADMAP VELOCITY</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Roadmap Velocity</span>
                 <span className="text-base font-extrabold text-emerald-400 block">{currentProgress}%</span>
               </div>
             </div>
@@ -268,11 +268,11 @@ export const FutureSimulatorModal: React.FC<FutureSimulatorModalProps> = ({ isOp
                     </span>
                     {isAnalyzing ? (
                       <span className="text-[10px] font-mono text-[#E8C56B] animate-pulse">
-                        ANALYZING...
+                        Analyzing...
                       </span>
                     ) : (
                       <span className="text-[10px] font-mono text-emerald-400 font-bold">
-                        SIMULATION READY
+                        Simulation Ready
                       </span>
                     )}
                   </div>
@@ -317,7 +317,7 @@ export const FutureSimulatorModal: React.FC<FutureSimulatorModalProps> = ({ isOp
                   {/* Why This Changes Box */}
                   <div className="pt-2 border-t border-white/10 space-y-1">
                     <span className="text-[10px] font-extrabold text-[#E8C56B] uppercase tracking-wider block">
-                      WHY THIS CHANGES
+                      Why This Changes
                     </span>
                     <p className="text-[11px] text-slate-200 leading-relaxed italic">
                       "{generateExplanation()}"

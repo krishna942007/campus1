@@ -42,7 +42,7 @@ export const MentoringSection: React.FC = () => {
     },
     {
       id: 'm-2',
-      name: 'Krishna Singh',
+      name: 'Aarav Sharma',
       prn: '2023CSE001',
       cgpa: state.cgpa,
       cgpaTrend: 'up',
@@ -146,36 +146,36 @@ export const MentoringSection: React.FC = () => {
         </motion.div>
 
         {/* 2. ATTENTION RADAR HEADER (20 Mentees Total) */}
-        <div className="p-6 rounded-3xl bg-[#0C2238] text-white border border-[#C99632]/40 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-6 rounded-3xl bg-[#FAF7F0]/95 sm:bg-[#F7F4EE]/90 backdrop-blur-xl text-[#10253A] border border-[#0C2238]/12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#C99632]/20 border border-[#C99632]/40 text-[#E8C56B] flex items-center justify-center font-bold text-xl">
+            <div className="w-12 h-12 rounded-2xl bg-[#0C2238]/08 border border-[#0C2238]/12 text-[#C99632] flex items-center justify-center font-bold text-xl">
               20
             </div>
             <div>
-              <h3 className="text-base font-extrabold font-display text-white">ASSIGNED MENTEE RADAR</h3>
-              <p className="text-xs text-slate-300">Prof. S. Kulkarni • Computer Engineering Dept</p>
+              <h3 className="text-base font-extrabold font-display text-[#10253A]">Assigned Mentee Radar</h3>
+              <p className="text-xs text-[#627083]">Prof. S. Kulkarni • Computer Engineering Dept</p>
             </div>
           </div>
 
           {/* Attention Radar Chips */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div className="px-4 py-2 rounded-2xl bg-red-500/20 border border-red-500/40 text-red-300 font-extrabold flex items-center space-x-2">
+            <div className="px-4 py-2 rounded-2xl bg-red-50 border border-red-200 text-red-700 font-extrabold flex items-center space-x-2">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping inline-block" />
               <span>{counts.immediate} Immediate Attention</span>
             </div>
 
-            <div className="px-4 py-2 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-extrabold flex items-center space-x-2">
+            <div className="px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 font-extrabold flex items-center space-x-2">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" />
               <span>{counts.monitor} Monitor</span>
             </div>
 
-            <div className="px-4 py-2 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" />
+            <div className="px-4 py-2 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-extrabold flex items-center space-x-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
               <span>{counts.onTrack} On Track</span>
             </div>
 
-            <div className="px-4 py-2 rounded-2xl bg-sky-500/20 border border-sky-500/40 text-sky-300 font-extrabold flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block" />
+            <div className="px-4 py-2 rounded-2xl bg-sky-50 border border-sky-200 text-sky-800 font-extrabold flex items-center space-x-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block" />
               <span>{counts.highPotential} High Potential</span>
             </div>
           </div>
@@ -213,15 +213,15 @@ export const MentoringSection: React.FC = () => {
           </div>
 
           {/* Right: Faculty Mentee Risk Roster (7 cols) */}
-          <div className="lg:col-span-7 p-7 sm:p-8 bg-[#0C2340]/95 text-white border border-white/10 shadow-2xl space-y-6 rounded-3xl relative overflow-hidden">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="lg:col-span-7 p-7 sm:p-8 bg-[#FAF7F0]/95 sm:bg-[#F7F4EE]/90 backdrop-blur-xl text-[#10253A] border border-[#0C2238]/12 shadow-2xl space-y-6 rounded-3xl relative overflow-hidden">
+            <div className="flex items-center justify-between border-b border-[#0C2238]/10 pb-4">
               <div>
-                <span className="text-[10px] font-extrabold text-[#E8C56B] tracking-wider block uppercase">
+                <span className="text-[10px] font-extrabold text-[#C99632] tracking-wider block uppercase">
                   FACULTY MENTOR INTERVENTION ROSTER
                 </span>
-                <h3 className="text-xl font-extrabold font-display text-white">Select Student for Risk Analysis</h3>
+                <h3 className="text-xl font-extrabold font-display text-[#10253A]">Select Student for Risk Analysis</h3>
               </div>
-              <span className="text-xs text-slate-300 font-mono">Real-time Pattern Detection</span>
+              <span className="text-xs text-[#627083] font-mono">Real-time Pattern Detection</span>
             </div>
 
             {/* Student Roster Cards */}
@@ -232,28 +232,28 @@ export const MentoringSection: React.FC = () => {
                   onClick={() => setSelectedStudent(st)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
                     selectedStudent?.id === st.id
-                      ? 'bg-white/15 border-[#C99632] shadow-lg scale-[1.01]'
-                      : 'bg-white/5 hover:bg-white/10 border-white/10'
+                      ? 'bg-[#FFFCF7] border-[#C99632] shadow-md scale-[1.01]'
+                      : 'bg-[#FFFCF7]/80 hover:bg-[#FFFCF7] border-[#0C2238]/10'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-sm font-extrabold text-white font-display flex items-center space-x-2">
+                      <h4 className="text-sm font-extrabold text-[#10253A] font-display flex items-center space-x-2">
                         <span>{st.name} ({st.prn})</span>
                       </h4>
-                      <span className="text-xs text-slate-300 font-bold">
+                      <span className="text-xs text-[#627083] font-bold">
                         CGPA {st.cgpa} ({st.cgpaTrend === 'up' ? '↑' : '↓'}) • {st.attendance}% Attendance ({st.attendanceTrend === 'up' ? '↑' : '↓'})
                       </span>
                     </div>
 
                     <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full border ${
                       st.category === 'IMMEDIATE_ATTENTION'
-                        ? 'bg-red-500/20 text-red-300 border-red-500/40'
+                        ? 'bg-red-50 text-red-700 border-red-200'
                         : st.category === 'HIGH_POTENTIAL'
-                        ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                        ? 'bg-sky-50 text-sky-700 border-sky-200'
                         : st.category === 'MONITOR'
-                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                        : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                        ? 'bg-amber-50 text-amber-700 border-amber-200'
+                        : 'bg-emerald-50 text-emerald-700 border-emerald-200'
                     }`}>
                       {st.category === 'IMMEDIATE_ATTENTION' ? '🔴 IMMEDIATE ATTENTION' : st.category === 'HIGH_POTENTIAL' ? '🔵 HIGH POTENTIAL' : st.category === 'MONITOR' ? '🟡 MONITOR' : '🟢 ON TRACK'}
                     </span>
@@ -264,25 +264,25 @@ export const MentoringSection: React.FC = () => {
 
             {/* Selected Student Risk & Intervention Inspector */}
             {selectedStudent && (
-              <div className="p-5 rounded-2xl bg-white/10 border border-[#C99632]/50 space-y-4 relative">
+              <div className="p-5 rounded-2xl bg-[#FFFCF7] border border-[#C99632]/40 space-y-4 relative shadow-md">
                 <button
                   onClick={() => setSelectedStudent(null)}
-                  className="absolute top-3 right-3 p-1 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white"
+                  className="absolute top-3 right-3 p-1 rounded-lg hover:bg-[#0C2238]/08 text-[#627083] hover:text-[#10253A]"
                 >
                   <X className="w-4 h-4" />
                 </button>
 
                 <div className="space-y-1">
-                  <span className="text-[10px] font-extrabold text-[#E8C56B] uppercase tracking-wider block">
+                  <span className="text-[10px] font-extrabold text-[#C99632] uppercase tracking-wider block">
                     AI ATTENTION INDICATOR & RISK PATTERN
                   </span>
-                  <h4 className="text-base font-extrabold text-white font-display">{selectedStudent.name}</h4>
-                  <p className="text-xs text-slate-200 font-semibold">{selectedStudent.pattern}</p>
+                  <h4 className="text-base font-extrabold text-[#10253A] font-display">{selectedStudent.name}</h4>
+                  <p className="text-xs text-[#627083] font-semibold">{selectedStudent.pattern}</p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase block">RECOMMENDED INTERVENTION</span>
-                  <p className="text-xs text-[#E8C56B] font-bold">{selectedStudent.recommendedIntervention}</p>
+                <div className="p-4 rounded-xl bg-[#FAF7F0] border border-[#0C2238]/08 space-y-2">
+                  <span className="text-[10px] font-extrabold text-[#627083] uppercase block">RECOMMENDED INTERVENTION</span>
+                  <p className="text-xs text-[#C99632] font-bold">{selectedStudent.recommendedIntervention}</p>
                 </div>
 
                 <button
@@ -290,18 +290,18 @@ export const MentoringSection: React.FC = () => {
                   disabled={selectedStudent.interventionCreated}
                   className={`w-full py-2.5 rounded-xl font-extrabold text-xs transition-all cursor-pointer flex items-center justify-center space-x-1.5 ${
                     selectedStudent.interventionCreated
-                      ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 cursor-not-allowed'
-                      : 'bg-[#C99632] hover:bg-[#b08226] text-[#0C2238] shadow-md'
+                      ? 'bg-emerald-50 border border-emerald-200 text-emerald-800 cursor-not-allowed'
+                      : 'bg-[#0C2238] hover:bg-[#123B63] text-white shadow-md'
                   }`}
                 >
                   {selectedStudent.interventionCreated ? (
                     <>
-                      <Check className="w-4 h-4 text-emerald-400" />
+                      <Check className="w-4 h-4 text-emerald-600" />
                       <span>✓ INTERVENTION CREATED</span>
                     </>
                   ) : (
                     <>
-                      <PlusCircle className="w-4 h-4 text-[#0C2238]" />
+                      <PlusCircle className="w-4 h-4 text-[#E8C56B]" />
                       <span>Create Intervention</span>
                     </>
                   )}

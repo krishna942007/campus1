@@ -160,32 +160,32 @@ export const AIAssistantSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Interactive Q&A Sandbox Translucent Dark Blue Glass Card */}
-        <div className="bg-[#0C2340]/90 sm:bg-black/75 backdrop-blur-xl rounded-3xl p-6 sm:p-10 text-white shadow-2xl border border-white/10 space-y-7 relative overflow-hidden">
+        {/* Interactive Q&A Sandbox Translucent Light Warm Ivory Glass Card */}
+        <div className="bg-[#FAF7F0]/95 sm:bg-[#F7F4EE]/90 backdrop-blur-xl rounded-3xl p-6 sm:p-10 text-[#10253A] shadow-2xl border border-[#0C2238]/12 space-y-7 relative overflow-hidden">
           
           {/* Top Header Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#0C2238]/10 pb-5">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#C99632]/20 border border-[#C99632]/40 text-[#E8C56B] flex items-center justify-center font-bold text-lg shadow-lg">
-                <Bot className="w-6 h-6 text-[#E8C56B]" />
+              <div className="w-12 h-12 rounded-2xl bg-[#0C2238]/08 border border-[#0C2238]/12 text-[#C99632] flex items-center justify-center font-bold text-lg shadow-sm">
+                <Bot className="w-6 h-6 text-[#C99632]" />
               </div>
               <div>
-                <h3 className="text-xl font-extrabold text-white tracking-tight font-display">Campus 1 Decision Assistant</h3>
-                <span className="text-xs text-[#E8C56B] font-bold tracking-wide">
-                  LIVE CONTEXT: KRISHNA SINGH • {state.careerGoal} • CGPA {state.cgpa}
+                <h3 className="text-xl font-extrabold text-[#10253A] tracking-tight font-display">Campus 1 Decision Assistant</h3>
+                <span className="text-xs text-[#627083] font-bold tracking-wide">
+                  Live Context: Aarav Sharma • {state.careerGoal} • CGPA {state.cgpa}
                 </span>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
-              <StatusBadge variant="OFFICIAL" label="ERP CONNECTED" />
-              <StatusBadge variant="AI_ADVISORY" label="CONTEXT AWARE" />
+              <StatusBadge variant="OFFICIAL" label="ERP Connected" />
+              <StatusBadge variant="AI_ADVISORY" label="Context Aware" />
             </div>
           </div>
 
           {/* Quick Intent Pills / Buttons */}
           <div className="space-y-2.5">
-            <p className="text-[10px] font-extrabold text-[#E8C56B] uppercase tracking-wider">Select Decision Intent:</p>
+            <p className="text-[10px] font-extrabold text-[#627083] uppercase tracking-wider">Select Decision Intent:</p>
             <div className="flex flex-wrap gap-2.5">
               {intentQueries.map((item, idx) => (
                 <button
@@ -193,8 +193,8 @@ export const AIAssistantSection: React.FC = () => {
                   onClick={() => { setSelectedIntent(idx); setCustomAnswer(null); }}
                   className={`px-3.5 py-2 text-xs font-extrabold rounded-xl transition-all cursor-pointer border ${
                     selectedIntent === idx && !customAnswer
-                      ? 'bg-[#C99632] text-[#0C2238] border-[#E8C56B] shadow-md scale-[1.02]'
-                      : 'bg-white/10 text-slate-200 hover:bg-white/20 border-white/15'
+                      ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-md scale-[1.02]'
+                      : 'bg-[#EFE7D8]/60 text-[#10253A] hover:bg-[#EFE7D8] border-[#0C2238]/10'
                   }`}
                 >
                   {item.title}
@@ -204,45 +204,45 @@ export const AIAssistantSection: React.FC = () => {
           </div>
 
           {/* Response Box with Source/Confidence & Data Signal Breakdown */}
-          <div className="p-6 sm:p-8 bg-white/5 backdrop-blur-md border border-white/15 space-y-5 rounded-2xl shadow-xl relative overflow-hidden">
+          <div className="p-6 sm:p-8 bg-[#FFFCF7]/95 backdrop-blur-md border border-[#0C2238]/12 space-y-5 rounded-2xl shadow-md relative overflow-hidden">
             
             {/* Header badges */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-extrabold border-b border-white/10 pb-3">
-              <span className="text-[#E8C56B] flex items-center space-x-1.5 uppercase tracking-wider">
-                <Sparkles className="w-4 h-4 text-[#E8C56B]" />
-                <span>CONTEXTUAL DECISION RESPONSE</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-extrabold border-b border-[#0C2238]/08 pb-3">
+              <span className="text-[#C99632] flex items-center space-x-1.5 uppercase tracking-wider">
+                <Sparkles className="w-4 h-4 text-[#C99632]" />
+                <span>Contextual Decision Response</span>
               </span>
 
               <div className="flex items-center space-x-3 text-[11px] font-mono">
-                <span className="text-slate-300">SOURCE: <strong className="text-white">{currentQuery.source}</strong></span>
-                <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                <span className="text-[#627083]">SOURCE: <strong className="text-[#10253A]">{currentQuery.source}</strong></span>
+                <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
                   {currentQuery.confidence}
                 </span>
               </div>
             </div>
 
             {/* Question Title */}
-            <h4 className="text-base sm:text-lg font-extrabold text-white font-display">
+            <h4 className="text-base sm:text-lg font-extrabold text-[#10253A] font-display">
               "{currentQuery.q}"
             </h4>
 
             {/* Main Response Text */}
-            <p className="text-sm sm:text-base text-slate-100 font-normal leading-relaxed">
+            <p className="text-sm sm:text-base text-[#627083] font-normal leading-relaxed">
               {customAnswer || currentQuery.response}
             </p>
 
             {/* Decision Comparison Table if available */}
             {currentQuery.comparisons && (
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
-                <span className="text-[10px] font-extrabold uppercase text-[#E8C56B] tracking-wider block">DECISION MATRIX COMPARISON</span>
+              <div className="p-4 rounded-xl bg-[#FAF7F0] border border-[#0C2238]/08 space-y-2">
+                <span className="text-[10px] font-extrabold uppercase text-[#C99632] tracking-wider block">DECISION MATRIX COMPARISON</span>
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   {currentQuery.comparisons.map((c, i) => (
-                    <div key={i} className="p-3 rounded-lg bg-black/40 border border-white/10 space-y-1">
+                    <div key={i} className="p-3 rounded-lg bg-[#FFFCF7] border border-[#0C2238]/10 space-y-1">
                       <div className="flex justify-between font-extrabold">
-                        <span className="text-white">{c.name}</span>
-                        <span className="text-[#E8C56B]">{c.impact}</span>
+                        <span className="text-[#10253A]">{c.name}</span>
+                        <span className="text-[#C99632]">{c.impact}</span>
                       </div>
-                      <p className="text-[11px] text-slate-300">Current: {c.current} | Target: {c.target}</p>
+                      <p className="text-[11px] text-[#627083]">Current: {c.current} | Target: {c.target}</p>
                     </div>
                   ))}
                 </div>
@@ -251,14 +251,14 @@ export const AIAssistantSection: React.FC = () => {
 
             {/* "WHY THIS RECOMMENDATION?" DATA SIGNALS BREAKDOWN */}
             {currentQuery.why && (
-              <div className="pt-3 border-t border-white/10 space-y-2">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#E8C56B] block">
+              <div className="pt-3 border-t border-[#0C2238]/08 space-y-2">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#C99632] block">
                   WHY THIS RECOMMENDATION? (UNDERLYING DATA SIGNALS)
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#627083]">
                   {currentQuery.why.map((signal, idx) => (
                     <div key={idx} className="flex items-center space-x-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#159A72] shrink-0" />
                       <span>{signal}</span>
                     </div>
                   ))}
@@ -271,11 +271,11 @@ export const AIAssistantSection: React.FC = () => {
               <div className="pt-3 flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => handleExecuteAction(currentQuery.recommendationAction)}
-                  className="px-6 py-2.5 rounded-xl bg-[#C99632] hover:bg-[#b08226] text-[#0C2238] font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center space-x-2"
+                  className="px-6 py-2.5 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs transition-all shadow-md cursor-pointer flex items-center space-x-2"
                 >
-                  <Zap className="w-3.5 h-3.5 fill-[#0C2238]" />
+                  <Zap className="w-3.5 h-3.5 fill-[#E8C56B] text-[#E8C56B]" />
                   <span>Add "{currentQuery.recommendationAction}" to Roadmap</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#E8C56B]" />
                 </button>
               </div>
             )}
@@ -289,20 +289,20 @@ export const AIAssistantSection: React.FC = () => {
               value={customInput}
               onChange={(e) => setCustomInput(e.target.value)}
               placeholder="Ask anything about PyTorch, roadmap, skills, CGPA..."
-              className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#C99632]"
+              className="flex-1 px-4 py-3 rounded-xl bg-[#FFFCF7] border border-[#0C2238]/15 text-xs text-[#10253A] placeholder-[#627083] focus:outline-none focus:border-[#C99632] shadow-inner"
             />
             <button
               type="submit"
-              className="px-5 py-3 rounded-xl bg-[#C99632] hover:bg-[#b08226] text-[#0C2238] font-extrabold text-xs transition-all cursor-pointer shrink-0 shadow-md flex items-center space-x-1.5"
+              className="px-5 py-3 rounded-xl bg-[#0C2238] hover:bg-[#123B63] text-white font-extrabold text-xs transition-all cursor-pointer shrink-0 shadow-md flex items-center space-x-1.5"
             >
               <span>Ask AI</span>
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-3.5 h-3.5 text-[#E8C56B]" />
             </button>
           </form>
 
           {/* Institutional Trust Advisory Note */}
-          <div className="pt-2 flex items-center space-x-2.5 text-xs font-semibold text-[#E8C56B]">
-            <ShieldAlert className="w-4 h-4 text-[#E8C56B] shrink-0" />
+          <div className="pt-2 flex items-center space-x-2.5 text-xs font-semibold text-[#7A6437]">
+            <ShieldAlert className="w-4 h-4 text-[#C99632] shrink-0" />
             <span>AUTHORITATIVE ERP RECORDS ≠ AI GUIDANCE: AI outputs are advisory decision recommendations reading your live student state.</span>
           </div>
 
