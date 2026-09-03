@@ -567,7 +567,7 @@ export const GoalProgressSection: React.FC<GoalProgressSectionProps> = ({ onGoal
 
       {/* 2. VERTICAL SEQUENTIAL ROADMAP TIMELINE */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between text-xs text-[#627083]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs text-[#627083]">
           <span className="font-bold text-[#10253A] flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5 text-[#C99632]" />
             Sequential Roadmap Timeline: Click any milestone to inspect activities
@@ -699,7 +699,7 @@ export const GoalProgressSection: React.FC<GoalProgressSectionProps> = ({ onGoal
         </div>
 
         {/* 2-Column Grid: Completed Activities vs Remaining Tasks */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
           
           {/* Completed Activities */}
           <div className="bg-[#FFFCF7] p-3.5 rounded-xl border border-[#0C2238]/06 shadow-2xs space-y-1.5">

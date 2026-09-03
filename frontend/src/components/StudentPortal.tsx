@@ -863,10 +863,10 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
     <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
       
       {/* 1. SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
+      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-b lg:border-b-0 lg:border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
         <div>
           {/* Top Brand Header */}
-          <div className="p-6 border-b border-[#E2D7C6] flex items-center space-x-3">
+          <div className="h-[76px] px-6 border-b border-[#E2D7C6] flex items-center space-x-3">
             <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
               <span className="text-[#F5C056]">VIT</span>
             </div>
@@ -879,7 +879,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1 text-xs font-semibold">
+          <nav className="p-3 space-y-1 text-xs font-semibold">
             {[
               { name: 'Overview', icon: LayoutDashboard },
               { name: 'Academics', icon: GraduationCap },
@@ -903,18 +903,22 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                   onClick={() => {
                     setActiveNav(item.name as any);
                   }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all cursor-pointer ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left ${
                     isActive
                       ? 'bg-[#123B63] text-white shadow-sm font-bold'
                       : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
+                  <div className="flex items-center space-x-3 min-w-0 flex-1 pr-1">
+                    <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
+                    </div>
+                    <span className="leading-tight text-xs font-semibold block text-left">
+                      {item.name}
+                    </span>
                   </div>
                   {item.badge && item.badge !== '0' && (
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ml-1.5 whitespace-nowrap ${
                       isActive ? 'bg-[#C49A52] text-[#102A43]' : 'bg-[#E9DDC9] text-[#102A43]'
                     }`}>
                       {item.badge}
@@ -927,23 +931,27 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
         </div>
 
         {/* Sidebar Footer Support & Exit */}
-        <div className="p-4 border-t border-[#E2D7C6] space-y-2 text-xs">
+        <div className="p-3 border-t border-[#E2D7C6] space-y-1.5 text-xs">
           <button 
             onClick={() => setActiveNav('Settings')}
-            className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold ${
+            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold text-left ${
               activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
             }`}
           >
-            <Settings className="w-4 h-4 text-[#1D4E73]" />
-            <span>Settings & Preferences</span>
+            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+              <Settings className="w-4 h-4 text-[#1D4E73]" />
+            </div>
+            <span className="leading-tight text-xs font-semibold">Settings & Preferences</span>
           </button>
 
           <button
             onClick={onBackToLanding}
-            className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer"
+            className="w-full flex items-center space-x-3 px-3 py-2 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer text-left"
           >
-            <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-            <span>Back to Portal Overview</span>
+            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
+            </div>
+            <span className="leading-tight text-xs font-bold">Back to Portal Overview</span>
           </button>
         </div>
       </aside>
@@ -952,7 +960,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
         {/* TOP STUDENT IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] min-h-[76px] px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
           <div className="flex items-center space-x-3.5">
             <button 
               onClick={() => setActiveNav('My Profile')}
@@ -1052,17 +1060,17 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
           {activeNav === 'Overview' && (
             <div className="space-y-6">
               
-              {/* TOP EXECUTIVE OVERVIEW: 2x2 COMPACT SUMMARY CARDS + MY DIRECTION + MENTOR (LEFT) + GOAL PROGRESS FLOW (RIGHT) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* TOP EXECUTIVE OVERVIEW: 50/50 BALANCED TWO-COLUMN LAYOUT */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                 
-                {/* LEFT SIDE (4 COLS): 2x2 SUMMARY CARDS + MY DIRECTION + MENTOR */}
-                <div className="lg:col-span-4 space-y-5">
+                {/* LEFT COLUMN (50%): 2x2 SUMMARY CARDS + UPCOMING + MENTOR */}
+                <div className="space-y-6">
                   
                   {/* 2x2 COMPACT SUMMARY CARDS GRID */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     
                     {/* Stat 1: Current CGPA */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
                       <div className="flex items-center justify-between">
                         <div className="w-9 h-9 rounded-2xl bg-[#DCFCE7] border border-[#BBF7D0] flex items-center justify-center text-[#15803D] shadow-2xs">
                           <GraduationCap className="w-4 h-4" />
@@ -1091,7 +1099,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                     </div>
 
                     {/* Stat 2: Attendance % */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
                       <div className="flex items-center justify-between">
                         <div className="w-9 h-9 rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] flex items-center justify-center text-[#4F46E5] shadow-2xs">
                           <Clock className="w-4 h-4" />
@@ -1124,7 +1132,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                     </div>
 
                     {/* Stat 3: Academic Stage */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
                       <div className="flex items-center justify-between">
                         <div className="w-9 h-9 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] shadow-2xs">
                           <BookOpen className="w-4 h-4" />
@@ -1151,7 +1159,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
                     </div>
 
                     {/* Stat 4: Dev Progress */}
-                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3">
+                    <div className="bg-[#FFFCF7]/95 backdrop-blur-xl rounded-3xl p-5 border border-[#0C2238]/08 shadow-xs hover:shadow-md hover:border-[#C99632]/40 transition-all duration-300 flex flex-col justify-between space-y-3 h-full">
                       <div className="flex items-center justify-between">
                         <div className="w-9 h-9 rounded-2xl bg-[#E0E7FF] border border-[#C7D2FE] flex items-center justify-center text-[#4338CA] shadow-2xs">
                           <Target className="w-4 h-4" />
@@ -1271,18 +1279,18 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
 
                 </div>
 
-                {/* RIGHT SIDE (8 COLS): GOAL PROGRESS ENGINE */}
-                <div className="lg:col-span-8">
+                {/* RIGHT COLUMN (50%): GOAL PROGRESS ENGINE */}
+                <div>
                   <GoalProgressSection />
                 </div>
 
               </div>
 
-              {/* MAIN 2-COLUMN STRUCTURED BENTO LAYOUT */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* MAIN 2-COLUMN STRUCTURED BENTO LAYOUT (50/50) */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                 
-                {/* LEFT COLUMN (7 COLS): CGPA TREND */}
-                <div className="lg:col-span-7 space-y-6">
+                {/* LEFT COLUMN (50%): CGPA TREND */}
+                <div className="space-y-6">
                   
                   {/* CGPA LINE CHART */}
                   <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">
@@ -1314,8 +1322,8 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({ onBackToLanding })
 
                 </div>
 
-                {/* RIGHT COLUMN (5 COLS): MY DIRECTION & PROFILE COMPLETION */}
-                <div className="lg:col-span-5 space-y-6">
+                {/* RIGHT COLUMN (50%): MY DIRECTION & PROFILE COMPLETION */}
+                <div className="space-y-6">
 
                   {/* "MY DIRECTION" PROFILE SECTION */}
                   <div className="bg-[#FFFDF8] rounded-2xl p-6 border border-[#E2D7C6] shadow-xs space-y-4">

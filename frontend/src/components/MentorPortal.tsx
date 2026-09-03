@@ -630,10 +630,10 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
     <div className="min-h-screen bg-[#F7F2E9] text-[#102A43] font-sans antialiased flex flex-col lg:flex-row">
       
       {/* 1. SIDEBAR NAVIGATION */}
-      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
+      <aside className="w-full lg:w-64 bg-[#FFFDF8] border-b lg:border-b-0 lg:border-r border-[#E2D7C6] flex flex-col justify-between shrink-0">
         <div>
           {/* Top Brand Header */}
-          <div className="p-6 border-b border-[#E2D7C6] flex items-center space-x-3">
+          <div className="h-[76px] px-6 border-b border-[#E2D7C6] flex items-center space-x-3">
             <div className="w-9 h-9 rounded-xl bg-[#123B63] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-[#C49A52]/40">
               <span className="text-[#F5C056]">VIT</span>
             </div>
@@ -646,7 +646,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1 text-xs font-semibold">
+          <nav className="p-3 space-y-1 text-xs font-semibold">
             {[
               { name: 'Overview', icon: LayoutDashboard },
               { name: 'Mentor Requests', icon: UserCheck, badge: pendingRequestsCount > 0 ? `${pendingRequestsCount}` : undefined },
@@ -668,18 +668,22 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
                   onClick={() => {
                     setActiveNav(item.name as any);
                   }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all cursor-pointer ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all cursor-pointer text-left ${
                     isActive
                       ? 'bg-[#123B63] text-white shadow-sm font-bold'
                       : 'text-[#102A43] hover:bg-[#E9DDC9]/50'
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
-                    <span>{item.name}</span>
+                  <div className="flex items-center space-x-3 min-w-0 flex-1 pr-1">
+                    <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#F5C056]' : 'text-[#1D4E73]'}`} />
+                    </div>
+                    <span className="leading-tight text-xs font-semibold block text-left">
+                      {item.name}
+                    </span>
                   </div>
                   {item.badge && (
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ml-1.5 whitespace-nowrap ${
                       isActive ? 'bg-[#C49A52] text-[#102A43]' : 'bg-[#E9DDC9] text-[#102A43]'
                     }`}>
                       {item.badge}
@@ -692,23 +696,27 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
         </div>
 
         {/* Sidebar Footer Support & Exit */}
-        <div className="p-4 border-t border-[#E2D7C6] space-y-2 text-xs">
+        <div className="p-3 border-t border-[#E2D7C6] space-y-1.5 text-xs">
           <button 
             onClick={() => setActiveNav('Settings')}
-            className={`w-full flex items-center space-x-3 px-3.5 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold ${
+            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-xl text-[#102A43] hover:bg-[#E9DDC9]/50 font-semibold text-left ${
               activeNav === 'Settings' ? 'bg-[#E9DDC9] font-bold' : ''
             }`}
           >
-            <Settings className="w-4 h-4 text-[#1D4E73]" />
-            <span>Settings & Preferences</span>
+            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+              <Settings className="w-4 h-4 text-[#1D4E73]" />
+            </div>
+            <span className="leading-tight text-xs font-semibold">Settings & Preferences</span>
           </button>
 
           <button
             onClick={onBackToLanding}
-            className="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer"
+            className="w-full flex items-center space-x-3 px-3 py-2 rounded-xl bg-[#E9DDC9]/60 hover:bg-[#E2D7C6] text-[#102A43] font-bold transition-colors cursor-pointer text-left"
           >
-            <ArrowLeft className="w-4 h-4 text-[#123B63]" />
-            <span>Back to Portal Overview</span>
+            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+              <ArrowLeft className="w-4 h-4 text-[#123B63]" />
+            </div>
+            <span className="leading-tight text-xs font-bold">Back to Portal Overview</span>
           </button>
         </div>
       </aside>
@@ -717,7 +725,7 @@ export const MentorPortal: React.FC<MentorPortalProps> = ({ onBackToLanding }) =
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
         {/* TOP FACULTY IDENTITY HEADER */}
-        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+        <header className="bg-[#FFFDF8] border-b border-[#E2D7C6] min-h-[76px] px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
           <div className="flex items-center space-x-3.5">
             <div className="w-11 h-11 rounded-2xl bg-[#123B63] text-[#F5C056] flex items-center justify-center font-extrabold text-sm shadow-sm border border-[#C49A52]/40 uppercase">
               {teacherProfile.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2) || 'FM'}
