@@ -328,3 +328,83 @@ Output ONLY valid JSON matching this schema:
     ]
   };
 }
+
+/**
+ * AI Student Goal Roadmap Generator
+ */
+export async function generateGoalRoadmap({ title, description, studentContext = {} }) {
+  const systemPrompt = `You are the Campus 1 AI Career Acceleration Engine.
+The student has created a new career/learning goal.
+Generate a structured, personalized roadmap containing at least 3 sequential milestones to help them achieve this goal.
+
+Use the provided student context if available. 
+Each milestone MUST follow this exact JSON schema format:
+{
+  "milestones": [
+    {
+      "title": "Short descriptive title for the milestone (max 50 chars)",
+      "description": "Clear 1-2 sentence description of what will be learned/achieved.",
+      "percentage": 0,
+      "status": "not_started",
+      "completedActivities": [],
+      "remainingTasks": [
+        "Actionable task 1",
+        "Actionable task 2",
+        "Actionable task 3"
+      ]
+    }
+  ]
+}
+
+Ensure "percentage" is 0, "status" is "not_started", and "completedActivities" is an empty array since this is a new goal. Provide meaningful "remainingTasks".
+Output ONLY valid JSON matching this schema. Do NOT include markdown codeblocks (\`\`\`json). Just the raw JSON object.`;
+
+  const contextStr = Object.entries(studentContext)
+    .filter(([_, v]) => v)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join(", ");
+  
+  const prompt = `Goal Title: ${title}
+Goal Description: ${description || "None provided"}
+Student Context: ${contextStr || "None provided"}`;
+
+  try {
+    const rawReply = await callGeminiAPI(systemPrompt, prompt);
+    // Find the JSON object in the response
+    const jsonMatch = rawReply.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error("No JSON object found in response");
+    }
+    
+    const parsed = JSON.parse(jsonMatch[0]);
+    
+    // Validate output structure
+    if (!parsed || !Array.isArray(parsed.milestones) || parsed.milestones.length === 0) {
+      throw new Error("Invalid roadmap structure: missing or empty milestones array");
+    }
+
+    // Sanitize and format milestones to match Mongoose schema strictly
+    const sanitizedMilestones = parsed.milestones.map((m, i) => {
+      // Map UI "not_started" to DB "NOT_STARTED" if needed, but UI uses "not_started", "in_progress", "completed". Wait, the Goal schema says: enum: ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"]
+      let dbStatus = "NOT_STARTED";
+      
+      return {
+        title: String(m.title || `Milestone ${i + 1}`).substring(0, 100),
+        description: String(m.description || "").substring(0, 500),
+        percentage: 0,
+        status: dbStatus,
+        completedActivities: [],
+        remainingTasks: Array.isArray(m.remainingTasks) 
+          ? m.remainingTasks.map(t => String(t).substring(0, 200)) 
+          : ["Begin initial study and preparation"]
+      };
+    });
+
+    return sanitizedMilestones;
+
+  } catch (err) {
+    console.error("AI Goal Roadmap Generation Failed:", err.message);
+    throw err; // Let controller handle the failure
+  }
+}
+

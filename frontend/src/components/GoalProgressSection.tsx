@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { studentGoalsApi } from '../services/api';
+import { studentStore } from '../services/studentStateStore';
 import {
   Target,
   CheckCircle2,
@@ -14,7 +16,9 @@ import {
   Layers,
   CheckSquare,
   AlertCircle,
-  ArrowDown
+  ArrowDown,
+  Plus,
+  Loader2
 } from 'lucide-react';
 
 export interface GoalStep {
@@ -31,6 +35,8 @@ export interface GoalDefinition {
   title: string;
   icon: React.ComponentType<{ className?: string }>;
   monthlyDelta: number; // e.g. 7.4
+  isCustom?: boolean;
+  source?: 'prototype' | 'database';
   steps: GoalStep[];
 }
 
@@ -448,36 +454,177 @@ interface GoalProgressSectionProps {
 }
 
 export const GoalProgressSection: React.FC<GoalProgressSectionProps> = ({ onGoalChange }) => {
+  const [dbGoals, setDbGoals] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newGoalTitle, setNewGoalTitle] = useState('');
+  const [newGoalDesc, setNewGoalDesc] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const fetchGoals = async () => {
+    try {
+      setIsLoading(true);
+      const res = await studentGoalsApi.getGoals();
+      setDbGoals(res.data);
+      // Sync primary goal with global store
+      const primary = res.data.find((g: any) => g.isPrimary);
+      if (primary) {
+        studentStore.setCareerGoal(primary.title);
+      }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchGoals();
+  }, []);
+
+  const displayGoals = useMemo(() => {
+    const prototypeGoals: GoalDefinition[] = INITIAL_GOALS.map(g => ({
+      ...g,
+      source: 'prototype',
+      isPrimary: g.title === studentStore.getState().careerGoal
+    }));
+
+    const databaseGoals: GoalDefinition[] = dbGoals.map(g => {
+      const isFailed = g.roadmapGenerationStatus === 'failed';
+      const steps = g.roadmap?.length > 0 ? g.roadmap.map((m: any) => ({
+        id: m._id || m.title,
+        title: m.title,
+        percentage: m.percentage || 0,
+        status: (m.status || 'not_started').toLowerCase(),
+        completedActivities: m.completedActivities || [],
+        remainingTasks: m.remainingTasks || []
+      })) : isFailed ? [{
+        id: `fail-${g._id}`,
+        title: 'Roadmap Generation Failed',
+        percentage: 0,
+        status: 'not_started',
+        completedActivities: [],
+        remainingTasks: ['Roadmap generation is temporarily unavailable.']
+      }] : [{
+        id: `pending-${g._id}`,
+        title: 'Roadmap Generation Pending',
+        percentage: 0,
+        status: 'not_started',
+        completedActivities: [],
+        remainingTasks: ['Waiting for AI...']
+      }];
+
+      return {
+        id: g._id,
+        title: g.title,
+        icon: Target,
+        monthlyDelta: 0,
+        isPrimary: g.isPrimary,
+        source: 'database',
+        isCustom: true,
+        steps
+      };
+    });
+
+    return [...prototypeGoals, ...databaseGoals];
+  }, [dbGoals, studentStore.getState().careerGoal]);
+
   // Active selected goal ID
-  const [selectedGoalId, setSelectedGoalId] = useState<string>('tcs_placement');
+  const [selectedGoalId, setSelectedGoalId] = useState<string>(INITIAL_GOALS[0].id);
+
+  // Auto-select primary goal when loaded if nothing selected
+  useEffect(() => {
+    const primary = displayGoals.find(g => g.isPrimary);
+    if (primary && selectedGoalId === INITIAL_GOALS[0].id && !isLoading) {
+      setSelectedGoalId(primary.id);
+    }
+  }, [displayGoals, isLoading]);
+
 
   // Currently active goal object
   const currentGoal = useMemo(() => {
-    return INITIAL_GOALS.find((g) => g.id === selectedGoalId) || INITIAL_GOALS[0];
-  }, [selectedGoalId]);
+    return displayGoals.find((g) => g.id === selectedGoalId) || displayGoals[0];
+  }, [selectedGoalId, displayGoals]);
 
   // Selected step for detail inspection (default: first in-progress step)
-  const [selectedStepId, setSelectedStepId] = useState<string>(() => {
-    const firstActive = currentGoal.steps.find((s) => s.status === 'in_progress');
-    return firstActive ? firstActive.id : currentGoal.steps[0].id;
-  });
+  const [selectedStepId, setSelectedStepId] = useState<string>('');
+
+  useEffect(() => {
+    if (currentGoal) {
+      const firstActive = currentGoal.steps.find((s) => s.status === 'in_progress');
+      setSelectedStepId(firstActive ? firstActive.id : currentGoal.steps[0].id);
+    }
+  }, [currentGoal]);
 
   // Whenever goal changes, set default selected step to its active step
   const handleSelectGoal = (goalId: string) => {
     setSelectedGoalId(goalId);
-    const target = INITIAL_GOALS.find((g) => g.id === goalId) || INITIAL_GOALS[0];
-    const firstActive = target.steps.find((s) => s.status === 'in_progress') || target.steps[0];
-    setSelectedStepId(firstActive.id);
     if (onGoalChange) onGoalChange(goalId);
+  };
+
+  const handleSetPrimary = async () => {
+    if (currentGoal.source === 'prototype') {
+      // For prototype goals, just update the local store (which syncs other AI features)
+      studentStore.setCareerGoal(currentGoal.title);
+      window.dispatchEvent(
+        new CustomEvent('campus-toast', {
+          detail: { title: 'Primary Goal Updated', message: `${currentGoal.title} is now your primary goal (Demo Mode).`, type: 'success' }
+        })
+      );
+      return;
+    }
+    
+    // For database goals, update via API and persist
+    try {
+      await studentGoalsApi.setPrimaryGoal(currentGoal.id);
+      studentStore.setCareerGoal(currentGoal.title);
+      window.dispatchEvent(
+        new CustomEvent('campus-toast', {
+          detail: { title: 'Primary Goal Updated', message: `${currentGoal.title} is now your primary goal.`, type: 'success' }
+        })
+      );
+      await fetchGoals();
+    } catch (err: any) {
+      console.error("Error setting primary:", err);
+    }
+  };
+
+  const handleAddGoal = async () => {
+    if (!newGoalTitle.trim()) {
+      setErrorMsg('Goal title is required');
+      return;
+    }
+    try {
+      setIsSaving(true);
+      setErrorMsg('');
+      const res = await studentGoalsApi.createGoal({ title: newGoalTitle.trim(), description: newGoalDesc.trim() });
+      window.dispatchEvent(
+        new CustomEvent('campus-toast', {
+          detail: { title: 'Goal Added', message: 'Goal added successfully', type: 'success' }
+        })
+      );
+      setNewGoalTitle('');
+      setNewGoalDesc('');
+      setIsModalOpen(false);
+      await fetchGoals();
+      setSelectedGoalId(res.data._id); // switch to the new goal
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to add goal');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Currently selected step object
   const currentStep = useMemo(() => {
+    if (!currentGoal) return null;
     return currentGoal.steps.find((s) => s.id === selectedStepId) || currentGoal.steps[0];
   }, [currentGoal, selectedStepId]);
 
   // Calculate overall goal completion percentage
   const overallGoalPercentage = useMemo(() => {
+    if (!currentGoal || currentGoal.steps.length === 0) return 0;
     const total = currentGoal.steps.reduce((acc, step) => acc + step.percentage, 0);
     return Math.round(total / currentGoal.steps.length);
   }, [currentGoal]);
@@ -495,26 +642,41 @@ export const GoalProgressSection: React.FC<GoalProgressSectionProps> = ({ onGoal
             Goal Progress
           </h3>
 
-          {/* Goal Mini-Tabs */}
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {INITIAL_GOALS.map((goal) => {
-              const isSelected = goal.id === selectedGoalId;
-              const IconComp = goal.icon;
-              return (
+          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+            {isLoading && displayGoals.length === INITIAL_GOALS.length ? (
+              <span className="text-xs text-[#627083] flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin"/> Loading goals...</span>
+            ) : (
+              <>
+                {displayGoals.map((goal) => {
+                  const isSelected = goal.id === selectedGoalId;
+                  const IconComp = goal.icon;
+                  return (
+                    <button
+                      key={goal.id}
+                      onClick={() => handleSelectGoal(goal.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center space-x-1.5 transition-all duration-200 border cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-2xs scale-[1.02]'
+                          : 'bg-[#FAF7F0] text-[#627083] border-[#0C2238]/08 hover:border-[#C99632]/50 hover:text-[#10253A]'
+                      }`}
+                    >
+                      <IconComp className={`w-3.5 h-3.5 ${isSelected ? 'text-[#C99632]' : 'text-[#627083]'}`} />
+                      <span>{goal.title}</span>
+                      {goal.isPrimary && (
+                         <span className={`ml-1 text-[9px] px-1.5 rounded-full ${isSelected ? 'bg-[#C99632] text-white' : 'bg-[#FEF3C7] text-[#D97706]'}`}>PRIMARY</span>
+                      )}
+                    </button>
+                  );
+                })}
                 <button
-                  key={goal.id}
-                  onClick={() => handleSelectGoal(goal.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center space-x-1.5 transition-all duration-200 border cursor-pointer ${
-                    isSelected
-                      ? 'bg-[#0C2238] text-white border-[#0C2238] shadow-2xs scale-[1.02]'
-                      : 'bg-[#FAF7F0] text-[#627083] border-[#0C2238]/08 hover:border-[#C99632]/50 hover:text-[#10253A]'
-                  }`}
+                  onClick={() => setIsModalOpen(true)}
+                  className="px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center space-x-1 transition-all duration-200 border border-dashed border-[#C99632]/50 text-[#C99632] bg-[#FAF7F0] hover:bg-[#FEF3C7] hover:border-[#C99632]"
                 >
-                  <IconComp className={`w-3.5 h-3.5 ${isSelected ? 'text-[#C99632]' : 'text-[#627083]'}`} />
-                  <span>{goal.title}</span>
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Goal</span>
                 </button>
-              );
-            })}
+              </>
+            )}
           </div>
         </div>
 
@@ -548,19 +710,29 @@ export const GoalProgressSection: React.FC<GoalProgressSectionProps> = ({ onGoal
             </span>
           </div>
 
-          <div>
-            <span className="text-[9px] font-extrabold uppercase tracking-wider text-[#627083] block">
-              Overall Goal Progress
-            </span>
-            <div className="flex items-center space-x-1.5">
-              <span className="text-xs font-extrabold text-[#10253A]">
-                {currentGoal.title}
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-[9px] font-extrabold uppercase tracking-wider text-[#627083] block">
+                Overall Goal Progress
               </span>
-              <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D]">
-                +{currentGoal.monthlyDelta}% this month
-              </span>
+              <div className="flex items-center space-x-1.5">
+                <span className="text-xs font-extrabold text-[#10253A]">
+                  {currentGoal?.title}
+                </span>
+                {!currentGoal?.isCustom && (
+                  <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#15803D]">
+                    +{currentGoal?.monthlyDelta}% this month
+                  </span>
+                )}
+              </div>
+              {!currentGoal?.isPrimary && (
+                <button 
+                  onClick={handleSetPrimary}
+                  className="mt-1 text-[10px] font-bold text-[#C99632] hover:text-[#B07E28] underline underline-offset-2 transition-colors"
+                >
+                  Set as Primary Goal
+                </button>
+              )}
             </div>
-          </div>
         </div>
 
       </div>
@@ -749,6 +921,82 @@ export const GoalProgressSection: React.FC<GoalProgressSectionProps> = ({ onGoal
         </div>
 
       </div>
+
+      {/* ADD GOAL MODAL */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0 bg-[#0C2238]/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-md bg-[#FFFCF7] rounded-3xl p-6 shadow-2xl border border-[#0C2238]/08 overflow-hidden z-10"
+            >
+              <h3 className="text-lg font-extrabold text-[#10253A] font-display mb-1 flex items-center gap-2">
+                <Target className="w-5 h-5 text-[#C99632]" />
+                Add New Goal
+              </h3>
+              <p className="text-sm text-[#627083] mb-5">What do you want to achieve?</p>
+
+              {errorMsg && (
+                <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-xs font-bold flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  {errorMsg}
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-extrabold text-[#10253A] uppercase tracking-wider">Goal Title *</label>
+                  <input
+                    type="text"
+                    autoFocus
+                    placeholder="e.g. Software Engineer, Data Scientist"
+                    value={newGoalTitle}
+                    onChange={(e) => setNewGoalTitle(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#0C2238]/10 bg-white text-sm font-semibold text-[#10253A] placeholder-[#627083]/50 focus:outline-none focus:border-[#C99632] focus:ring-1 focus:ring-[#C99632]"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-extrabold text-[#10253A] uppercase tracking-wider">Description (Optional)</label>
+                  <textarea
+                    placeholder="e.g. I want to build scalable apps"
+                    rows={3}
+                    value={newGoalDesc}
+                    onChange={(e) => setNewGoalDesc(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#0C2238]/10 bg-white text-sm text-[#10253A] placeholder-[#627083]/50 focus:outline-none focus:border-[#C99632] focus:ring-1 focus:ring-[#C99632] resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-[#0C2238]/08">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  disabled={isSaving}
+                  className="px-4 py-2 rounded-xl text-sm font-bold text-[#627083] hover:bg-[#0C2238]/05 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddGoal}
+                  disabled={isSaving || !newGoalTitle.trim()}
+                  className="px-5 py-2 rounded-xl text-sm font-bold text-white bg-[#0C2238] hover:bg-[#1A365D] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md flex items-center gap-2"
+                >
+                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                  {isSaving ? 'Creating personalized roadmap...' : 'Add Goal'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

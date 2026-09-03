@@ -46,3 +46,15 @@ export const studentAdminApi = {
     api.post('/admin/students/import-commit', { rows }),
 };
 
+// Student Goals API Calls
+export const studentGoalsApi = {
+  getGoals: () => 
+    api.get('/student/goals'),
+
+  createGoal: (data: { title: string; description?: string }) => 
+    api.post('/student/goals', data),
+
+  setPrimaryGoal: (goalId: string) => 
+    api.patch(`/student/goals/${goalId}/primary`),
+};
+

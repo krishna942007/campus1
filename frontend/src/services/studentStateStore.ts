@@ -170,10 +170,27 @@ export const studentStore = {
   },
 
   setCareerGoal: (goal: string) => {
-    if (!CAREER_PRIORITIES[goal]) return;
     currentState.careerGoal = goal;
-    currentState.todayPriority = { ...CAREER_PRIORITIES[goal].priority };
-    currentState.recommendations = [{ ...CAREER_PRIORITIES[goal].rec }];
+    if (CAREER_PRIORITIES[goal]) {
+      currentState.todayPriority = { ...CAREER_PRIORITIES[goal].priority };
+      currentState.recommendations = [{ ...CAREER_PRIORITIES[goal].rec }];
+    } else {
+      // Fallback for custom goals
+      currentState.todayPriority = {
+        title: 'Complete your next roadmap milestone',
+        reason: `Highest-impact action for your custom goal: ${goal}`,
+        impact: '+2% Career Readiness',
+        explanation: 'Continue following your personalized action plan to make progress on your goal.',
+        status: 'pending'
+      };
+      currentState.recommendations = [{
+        id: `rec-custom-${Date.now()}`,
+        topic: `Focus on fundamentals for ${goal}`,
+        basedOn: ['custom goal selection', 'general readiness'],
+        impact: '+2% career readiness',
+        added: false
+      }];
+    }
     triggerSyncAnimation();
   },
 
